@@ -9,8 +9,8 @@ import org.firstinspires.ftc.teamcode.mechwarriors.JunctionType;
 import org.firstinspires.ftc.teamcode.mechwarriors.SignalSide;
 import org.firstinspires.ftc.teamcode.mechwarriors.StartingLocation;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.*;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.AprilTagSignalDetector;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.NominalSignalDetector;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.SignalDetector;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.VuforiaSignalDetector;
 
@@ -27,16 +27,15 @@ public class PowerPlayAutoOpMode2 extends OpMode {
     StartingLocation startingLocation = StartingLocation.FRONT;
     SignalSide signalSide = SignalSide.NONE;
 
-    List<Behavior> behaviors = new ArrayList<Behavior>();
+    List<Behavior> behaviors = new ArrayList<>();
     int state = 0;
 
     @Override
     public void init() {
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
         robot = new MechRobot(hardwareMap);
-        signalDetector = new VuforiaSignalDetector(telemetry, hardwareMap);
+        signalDetector = new AprilTagSignalDetector(telemetry, hardwareMap);
         telemetry.addLine("Init done");
-
     }
 
     @Override
