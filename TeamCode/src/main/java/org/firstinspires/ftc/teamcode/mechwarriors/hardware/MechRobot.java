@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.hardware;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -32,6 +33,7 @@ public class MechRobot {
 
     Claw claw;
     LinearSlideLift lift;
+    JunctionDetectionSenorArray junctionDetectionSenorArray;
 
     public MechRobot(HardwareMap hardwareMap) {
         // Front Left Motor
@@ -56,6 +58,7 @@ public class MechRobot {
 
         claw = new EthanClaw(hardwareMap);
         lift = new LinearSlideLift(hardwareMap);
+        junctionDetectionSenorArray = new JunctionDetectionSenorArray(hardwareMap);
     }
 
     void initIMU(HardwareMap hardwareMap) {
@@ -77,6 +80,10 @@ public class MechRobot {
 
     public LinearSlideLift getLift() {
         return lift;
+    }
+
+    public JunctionDetectionSenorArray getJunctionDetectionSenorArray() {
+        return junctionDetectionSenorArray;
     }
 
     public void drive(double powerFrontRight, double powerFrontLeft, double powerBackLeft, double powerBackRight) {

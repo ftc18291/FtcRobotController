@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.JunctionDetectionSenorArray;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
 
 @TeleOp(group = "MechWarriors")
@@ -26,6 +27,9 @@ public class PowerPlayOpMode extends OpMode {
         if (gamepad1.right_bumper) {
             slowMode = false;
         }
+
+        robot.getJunctionDetectionSenorArray().detect();
+        telemetry.addLine(robot.getJunctionDetectionSenorArray().distancesToString());
 
         double y = -gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x * 1.1;
