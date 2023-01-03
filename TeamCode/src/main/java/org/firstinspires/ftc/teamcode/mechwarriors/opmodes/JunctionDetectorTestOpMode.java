@@ -106,7 +106,7 @@ public class JunctionDetectorTestOpMode extends OpMode {
         telemetry.addData("Alliance Color", allianceColor);
         telemetry.addData("Signal Side", signalSide);
 
-        if (runningState == "search1") {
+        if (runningState.equals("search1")) {
             testServo.setPosition(testServoPosition);
             try {
                 Thread.sleep(50);
@@ -126,7 +126,7 @@ public class JunctionDetectorTestOpMode extends OpMode {
                 minDistancePosition1 = testServoPosition;
             }
             telemetry.addData("minDistance1", minDistance1);
-        } else if (runningState == "search2") {
+        } else if (runningState.equals("search2")) {
             testServo.setPosition(testServoPosition);
             try {
                 Thread.sleep(50);
@@ -145,7 +145,7 @@ public class JunctionDetectorTestOpMode extends OpMode {
                 minDistancePosition2 = testServoPosition;
             }
             telemetry.addData("minDistance2", minDistance2);
-        } else if (runningState == "search3") {
+        } else if (runningState.equals("search3")) {
             double minDistance = (minDistance1 + minDistance2) / 2;
             minDistancePosition = (minDistancePosition1 + minDistancePosition2) / 2;
             telemetry.addData("minDistancePosition", minDistancePosition);
@@ -171,7 +171,7 @@ public class JunctionDetectorTestOpMode extends OpMode {
             desiredHeading = newAngleInDegrees;
 
             //runningState = "turnToHeading";
-        } else if (runningState == "turnToHeading") {
+        } else if (runningState.equals("turnToHeading")) {
             telemetry.addData("minDistancePosition", minDistancePosition);
             telemetry.addData("desiredHeading", desiredHeading);
             double robotHeading = robot.getHeading();

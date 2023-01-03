@@ -17,8 +17,8 @@ public class JunctionDetectionSenorArray {
     double averageLeftDistance = 0;
     double averageRightDistance = 0;
 
-    List<Double> leftDistances = new ArrayList<Double>();
-    List<Double> rightDistances = new ArrayList<Double>();
+    List<Double> leftDistances = new ArrayList<>();
+    List<Double> rightDistances = new ArrayList<>();
 
     public class DistanceData {
         public double left;
@@ -65,11 +65,9 @@ public class JunctionDetectionSenorArray {
     }
 
     public String distancesToString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("leftDistance: ")
-                .append(averageLeftDistance)
-                .append(", rightDistance: ")
-                .append(averageRightDistance);
-        return sb.toString();
+        return "leftDistance: " +
+                averageLeftDistance +
+                ", rightDistance: " +
+                averageRightDistance;
     }
 }
