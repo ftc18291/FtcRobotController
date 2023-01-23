@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.AllianceColor;
 import org.firstinspires.ftc.teamcode.mechwarriors.SignalSide;
 import org.firstinspires.ftc.teamcode.mechwarriors.StartingLocation;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Behavior;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.CloseClaw;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.FindJunction;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.AprilTagSignalDetector;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.JunctionDetectionSenorArray;
@@ -71,6 +72,7 @@ public class DistanceDetectorTestOpMode extends OpMode {
 
     @Override
     public void start() {
+        behaviors.add(new CloseClaw(telemetry, robot.getClaw()));
         behaviors.add(new FindJunction(telemetry, robot, robot.calculateDriveTicks(24)));
         behaviors.get(0).start();
     }

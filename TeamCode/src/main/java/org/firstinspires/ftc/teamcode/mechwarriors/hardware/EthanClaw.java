@@ -17,8 +17,8 @@ public class EthanClaw implements Claw {
 
     @Override
     public void open() {
-        leftClawServo.setPosition(0.75);
-        rightClawServo.setPosition(0.75);
+        leftClawServo.setPosition(0.95);
+        rightClawServo.setPosition(0.95);
     }
 
     @Override

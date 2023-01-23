@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ExtenderClaw;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.JunctionDetectionSenorArray;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
 
@@ -70,6 +73,8 @@ public class PowerPlayOpMode extends OpMode {
             claw.open();
             telemetry.addData("Claw", "Open");
         }
+
+        telemetry.addData("translate ticks", robot.getTranslateDistance());
 
         telemetry.addData("Drive ticks", robot.getDriveTicksString());
     }

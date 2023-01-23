@@ -170,7 +170,7 @@ public class JunctionDetectorTestOpMode extends OpMode {
             telemetry.addData("newAngleInDegrees", newAngleInDegrees);
             desiredHeading = newAngleInDegrees;
 
-            //runningState = "turnToHeading";
+             runningState = "turnToHeading";
         } else if (runningState.equals("turnToHeading")) {
             telemetry.addData("minDistancePosition", minDistancePosition);
             telemetry.addData("desiredHeading", desiredHeading);

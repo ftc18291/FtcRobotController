@@ -27,28 +27,32 @@ public class FindJunction extends Behavior {
         double ticks = robot.getDriveTicks();
         telemetry.addData("robot ticks", ticks);
         telemetry.addData("distance", maxDistance);
-        // if (ticks <= maxDistance) {
+
         JunctionDetectionSenorArray.DistanceData distanceData = robot.getJunctionDetectionSenorArray().detect();
         telemetry.addLine(robot.getJunctionDetectionSenorArray().distancesToString());
         double robotHeading = robot.getHeading();
         telemetry.addData("robotHeading", robotHeading);
         double steeringCorrection = 0;
         double speed = 0.07;
-        if (distanceData.left > 500 && distanceData.right > 500) {
-            // drive straight
-        } else {
-            if (distanceData.left < 250 && distanceData.right > 250) {
-                // turn left
-                speed = 0.0;
-                steeringCorrection = -0.2;
-            } else if (distanceData.left > 250 && distanceData.right < 250) {
-                // turn right
-                speed = 0.0;
-                steeringCorrection = 0.2;
-            } else if (distanceData.left < 250 && distanceData.right < 250) {
-                // we are done
-                isDone = true;
+        if (ticks <= maxDistance) {
+            if (distanceData.left > 500 && distanceData.right > 500) {
+                // drive straight
+            } else {
+                if (distanceData.left < 200 && distanceData.right > 200) {
+                    // turn left
+                    speed = 0.0;
+                    steeringCorrection = -0.2;
+                } else if (distanceData.left > 200 && distanceData.right < 200) {
+                    // turn right
+                    speed = 0.0;
+                    steeringCorrection = 0.2;
+                } else if (distanceData.left < 180 && distanceData.right < 180) {
+                    // we are done
+                    isDone = true;
+                }
             }
+        } else {
+            isDone = true;
         }
         if (isDone) {
             robot.stop();
@@ -58,6 +62,7 @@ public class FindJunction extends Behavior {
             robot.mecanumDrive(0, speed, steeringCorrection);
         }
 
-        // }
+
     }
 }
+

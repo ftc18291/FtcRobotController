@@ -131,14 +131,14 @@ public class MechRobot {
     public double getTranslateDistance() {
         return (Math.abs(frontLeftMotor.getCurrentPosition()) +
                 Math.abs(backLeftMotor.getCurrentPosition()) +
-                Math.abs(frontRightMotor.getCurrentPosition() +
-                        Math.abs(backRightMotor.getCurrentPosition()))) / 4.0;
+                Math.abs(frontRightMotor.getCurrentPosition()) +
+                Math.abs(backRightMotor.getCurrentPosition())) / 4.0;
     }
 
     public String getDriveTicksString() {
-        return "fl: " + frontLeftMotor.getCurrentPosition() + ", bl: " +
-                backLeftMotor.getCurrentPosition() + ", fr: " +
-                frontRightMotor.getCurrentPosition() + ", br: " +
+        return "fl: " + frontLeftMotor.getCurrentPosition() + "\nbl: " +
+                backLeftMotor.getCurrentPosition() + "\nfr: " +
+                frontRightMotor.getCurrentPosition() + "\nbr: " +
                 backRightMotor.getCurrentPosition();
     }
 
