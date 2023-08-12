@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ExtenderClaw;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.JunctionDetectionSenorArray;
@@ -14,11 +15,13 @@ public class PowerPlayOpMode extends OpMode {
     MechRobot robot;
     Claw claw;
     boolean slowMode = false;
+    double zeroPitchAngle;
 
     @Override
     public void init() {
         robot = new MechRobot(hardwareMap);
         claw = robot.getClaw();
+        zeroPitchAngle = robot.getPitchAngle();
     }
 
     @Override
@@ -38,14 +41,16 @@ public class PowerPlayOpMode extends OpMode {
         double x = gamepad1.left_stick_x * 1.1;
         double rx = gamepad1.right_stick_x;
 
-        //y = Utilities.squareInputWithSign(y);
-        //x = Utilities.squareInputWithSign(x);
-        //rx = Utilities.squareInputWithSign(rx);
+       // telemetry.addData("y", y);
+
+        y = Utilities.squareInputWithSign(y);
+        x = Utilities.squareInputWithSign(x);
+        rx = Utilities.squareInputWithSign(rx);
 
         if (slowMode) {
-            x = x * 0.5;
-            y = y * 0.5;
-            rx = rx * 0.5;
+            x = x * 0.4;
+            y = y * 0.4;
+            rx = rx * 0.4;
         }
 
         robot.mecanumDrive(x, y, rx);
@@ -54,6 +59,14 @@ public class PowerPlayOpMode extends OpMode {
         telemetry.addData("rx", rx);
 
         telemetry.addData("Lift ticks: ", robot.getLift().getLiftTicks());
+
+       /* telemetry.addData("Zero pitch angle", zeroPitchAngle);
+        double actualPitch = robot.getPitchAngle() - zeroPitchAngle;
+        telemetry.addData("actual pitch angle", actualPitch);
+        if (actualPitch > 1.5 || actualPitch < -1.5) {
+            telemetry.addLine("Pitch angle exceeded");
+            robot.stop();
+        }*/
 
         if (gamepad2.dpad_up) {
             robot.getLift().liftArmUp();
@@ -74,8 +87,13 @@ public class PowerPlayOpMode extends OpMode {
             telemetry.addData("Claw", "Open");
         }
 
-        telemetry.addData("translate ticks", robot.getTranslateDistance());
+        JunctionDetectionSenorArray.DistanceData distanceData = robot.getJunctionDetectionSenorArray().detect();
+        telemetry.addLine(robot.getJunctionDetectionSenorArray().distancesToString());
 
+        /*telemetry.addData("translate ticks", robot.getTranslateDistance());
         telemetry.addData("Drive ticks", robot.getDriveTicksString());
+        telemetry.addData("Heading", robot.getHeading());
+        telemetry.addData("Pitch Angle", robot.getPitchAngle());
+        telemetry.addData("Roll Angle", robot.getRollAngle());*/
     }
 }

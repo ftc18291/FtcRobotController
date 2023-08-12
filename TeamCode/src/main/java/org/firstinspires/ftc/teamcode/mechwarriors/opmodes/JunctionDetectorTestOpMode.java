@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 import static org.firstinspires.ftc.teamcode.mechwarriors.behaviors.TurnToHeading.almostEqual;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,9 +15,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.AllianceColor;
 import org.firstinspires.ftc.teamcode.mechwarriors.SignalSide;
 import org.firstinspires.ftc.teamcode.mechwarriors.StartingLocation;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Behavior;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.FindJunction;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.AprilTagSignalDetector;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.JunctionDetectionSenorArray;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.SignalDetector;
 
@@ -24,13 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous(group = "MechWarriors")
+@Disabled
 public class JunctionDetectorTestOpMode extends OpMode {
 
     MechRobot robot;
     SignalDetector signalDetector;
 
     AllianceColor allianceColor = AllianceColor.BLUE;
-    StartingLocation startingLocation = StartingLocation.FRONT;
+    StartingLocation startingLocation = StartingLocation.LEFT;
     SignalSide signalSide = SignalSide.NONE;
 
     List<Behavior> behaviors = new ArrayList<>();
@@ -73,9 +73,9 @@ public class JunctionDetectorTestOpMode extends OpMode {
         telemetry.addLine(robot.getJunctionDetectionSenorArray().distancesToString());
 
         if (gamepad1.y) {
-            startingLocation = StartingLocation.BACK;
+            startingLocation = StartingLocation.RIGHT;
         } else if (gamepad1.a) {
-            startingLocation = StartingLocation.FRONT;
+            startingLocation = StartingLocation.LEFT;
         }
 
         if (gamepad1.x) {
@@ -207,7 +207,7 @@ public class JunctionDetectorTestOpMode extends OpMode {
         StringBuilder sb = new StringBuilder();
         sb.append("\n  JUDGES\n");
         sb.append("|--------|\n");
-        if (startingLocation == StartingLocation.BACK) {
+        if (startingLocation == StartingLocation.RIGHT) {
             if (allianceColor == AllianceColor.BLUE) {
                 sb.append("| X      |\n");
             } else {
@@ -217,7 +217,7 @@ public class JunctionDetectorTestOpMode extends OpMode {
             sb.append("|        |\n");
         }
         sb.append("|        |\n");
-        if (startingLocation == StartingLocation.FRONT) {
+        if (startingLocation == StartingLocation.LEFT) {
             if (allianceColor == AllianceColor.BLUE) {
                 sb.append("| X      |\n");
             } else {

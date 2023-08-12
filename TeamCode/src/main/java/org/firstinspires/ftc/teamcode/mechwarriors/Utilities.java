@@ -11,10 +11,13 @@ public class Utilities {
      * @return
      */
     public static double squareInputWithSign(double input) {
-        double output = input * input;
+        //System.out.println("Input: " + input);
+        double positiveInput = Math.abs(input);
+        double output = positiveInput * positiveInput * positiveInput;
         if (input < 0) {
             output = output * -1;
         }
+        //System.out.println("Output: " + output);
         return output;
     }
 }

@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.hardware;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -29,7 +31,8 @@ public class MechRobot {
 
 
     // IMU
-    BNO055IMU imu;
+    //BNO055IMU imu;
+    IMU imu;
 
     Claw claw;
     LinearSlideLift lift;
@@ -53,7 +56,7 @@ public class MechRobot {
         setDriveMotorZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetMotorTicks();
 
-
+        // initIMU(hardwareMap);
         initIMU(hardwareMap);
 
         claw = new EthanClaw(hardwareMap);
@@ -61,7 +64,7 @@ public class MechRobot {
         junctionDetectionSenorArray = new JunctionDetectionSenorArray(hardwareMap);
     }
 
-    void initIMU(HardwareMap hardwareMap) {
+    /*void initIMU(HardwareMap hardwareMap) {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.accelerationIntegrationAlgorithm = null;
@@ -71,6 +74,14 @@ public class MechRobot {
         parameters.calibrationDataFile = "";
         parameters.loggingEnabled = false;
         parameters.loggingTag = "IMU";
+        imu.initialize(parameters);
+    }*/
+
+    void initIMU(HardwareMap hardwareMap) {
+        imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(
+                new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                        RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
     }
 
@@ -125,7 +136,22 @@ public class MechRobot {
     }
 
     public double getHeading() {
-        return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        //return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+    }
+
+    public double getPitchAngle() {
+        return imu.getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES);
+        //return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).thirdAngle;
+    }
+
+    public double getRollAngle() {
+        return imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.DEGREES);
+        //return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).secondAngle;
+    }
+
+    public void resetYaw() {
+        imu.resetYaw();
     }
 
     public double getTranslateDistance() {
@@ -163,4 +189,6 @@ public class MechRobot {
     public void stop() {
         this.drive(0, 0, 0, 0);
     }
+
+
 }

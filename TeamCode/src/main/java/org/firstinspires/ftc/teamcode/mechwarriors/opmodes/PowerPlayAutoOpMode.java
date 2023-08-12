@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.mechwarriors.AllianceColor;
 import org.firstinspires.ftc.teamcode.mechwarriors.JunctionType;
@@ -13,12 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous(group = "MechWarriors")
+@Disabled
 public class PowerPlayAutoOpMode extends OpMode {
 
     MechRobot robot;
 
     AllianceColor allianceColor = AllianceColor.BLUE;
-    StartingLocation startingLocation = StartingLocation.FRONT;
+    StartingLocation startingLocation = StartingLocation.LEFT;
     SignalSide signalSide = SignalSide.NONE;
 
     List<Behavior> behaviors = new ArrayList<Behavior>();
@@ -33,9 +35,9 @@ public class PowerPlayAutoOpMode extends OpMode {
     @Override
     public void init_loop() {
         if (gamepad1.y) {
-            startingLocation = StartingLocation.BACK;
+            startingLocation = StartingLocation.RIGHT;
         } else if (gamepad1.a) {
-            startingLocation = StartingLocation.FRONT;
+            startingLocation = StartingLocation.LEFT;
         }
 
         if (gamepad1.x) {
@@ -52,7 +54,7 @@ public class PowerPlayAutoOpMode extends OpMode {
 
     @Override
     public void start() {
-        if (startingLocation == StartingLocation.FRONT && allianceColor == AllianceColor.BLUE) {
+        if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.BLUE) {
             if (signalSide == SignalSide.ONE) {
 
             }
@@ -63,13 +65,13 @@ public class PowerPlayAutoOpMode extends OpMode {
             behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
             behaviors.add(new TurnToHeading(telemetry, robot, 90));
             behaviors.add(new DriveHeading(telemetry, robot, 90, 4000, 0.5));
-        } else if (startingLocation == StartingLocation.BACK && allianceColor == AllianceColor.BLUE) {
+        } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.BLUE) {
             behaviors.add(new Translate(telemetry, robot, 0, 3000, 0.5));
             //behaviors.add(new TurnToHeading(telemetry, "turn left to -90", robot, -90));
             behaviors.add(new ReverseHeading(telemetry, robot, 0, -3000, -1.0));
-        } else if (startingLocation == StartingLocation.FRONT && allianceColor == AllianceColor.RED) {
+        } else if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.RED) {
             behaviors.add(new TurnToHeading(telemetry, robot, -180));
-        } else if (startingLocation == StartingLocation.BACK && allianceColor == AllianceColor.RED) {
+        } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.RED) {
             behaviors.add(new TurnToHeading(telemetry, robot, 225));
         }
 

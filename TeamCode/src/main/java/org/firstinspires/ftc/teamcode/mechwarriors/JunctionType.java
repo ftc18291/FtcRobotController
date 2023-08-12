@@ -5,8 +5,8 @@ public enum JunctionType {
 
     GROUND(0),    // 0"
     TRAVEL(400),  // ~3"
-    LOW(2000),    // 13.5"
-    MEDIUM(3300), // 23.5"
+    LOW(800),    // 13.5"
+    MEDIUM(1600), // 23.5"
     HIGH(4100);   // 33.5"
 
     private final int ticks;

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -12,19 +13,19 @@ import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.*;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.AprilTagSignalDetector;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.SignalDetector;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.VuforiaSignalDetector;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous(group = "MechWarriors")
+@Disabled
 public class PowerPlayAutoOpMode2 extends OpMode {
 
     MechRobot robot;
     SignalDetector signalDetector;
 
     AllianceColor allianceColor = AllianceColor.BLUE;
-    StartingLocation startingLocation = StartingLocation.FRONT;
+    StartingLocation startingLocation = StartingLocation.LEFT;
     SignalSide signalSide = SignalSide.NONE;
 
     List<Behavior> behaviors = new ArrayList<>();
@@ -43,9 +44,9 @@ public class PowerPlayAutoOpMode2 extends OpMode {
         signalSide = signalDetector.detect();
 
         if (gamepad1.y) {
-            startingLocation = StartingLocation.BACK;
+            startingLocation = StartingLocation.RIGHT;
         } else if (gamepad1.a) {
-            startingLocation = StartingLocation.FRONT;
+            startingLocation = StartingLocation.LEFT;
         }
 
         if (gamepad1.x) {
@@ -69,7 +70,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
         behaviors.add(new RaiseLift(telemetry, robot, JunctionType.TRAVEL));
         behaviors.add(new DriveHeading(telemetry, robot, 0, robot.calculateDriveTicks(24), 0.25));
 
-        if (startingLocation == StartingLocation.FRONT && allianceColor == AllianceColor.BLUE) {
+        if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.BLUE) {
             behaviors.add(new TurnToHeading(telemetry, robot, -90));
             behaviors.add(new DriveHeading(telemetry, robot, -90, robot.calculateDriveTicks(20), 0.25));
             behaviors.add(new TurnToHeading(telemetry, robot, -45));
@@ -97,7 +98,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
                     break;
             }
 
-        } else if (startingLocation == StartingLocation.BACK && allianceColor == AllianceColor.BLUE) {
+        } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.BLUE) {
 
             behaviors.add(new TurnToHeading(telemetry, robot, 90));
             behaviors.add(new DriveHeading(telemetry, robot, 90, robot.calculateDriveTicks(20), 0.25));
@@ -126,7 +127,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
                     break;
             }
 
-        } else if (startingLocation == StartingLocation.FRONT && allianceColor == AllianceColor.RED) {
+        } else if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.RED) {
 
             behaviors.add(new TurnToHeading(telemetry, robot, 90));
             behaviors.add(new DriveHeading(telemetry, robot, 90, robot.calculateDriveTicks(20), 0.25));
@@ -155,7 +156,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
                     break;
             }
 
-        } else if (startingLocation == StartingLocation.BACK && allianceColor == AllianceColor.RED) {
+        } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.RED) {
 
             behaviors.add(new TurnToHeading(telemetry, robot, -90));
             behaviors.add(new DriveHeading(telemetry, robot, -90, robot.calculateDriveTicks(20), 0.25));
@@ -217,7 +218,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
         StringBuilder sb = new StringBuilder();
         sb.append("\n  JUDGES\n");
         sb.append("|--------|\n");
-        if (startingLocation == StartingLocation.BACK) {
+        if (startingLocation == StartingLocation.RIGHT) {
             if (allianceColor == AllianceColor.BLUE) {
                 sb.append("| X      |\n");
             } else {
@@ -227,7 +228,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
             sb.append("|        |\n");
         }
         sb.append("|        |\n");
-        if (startingLocation == StartingLocation.FRONT) {
+        if (startingLocation == StartingLocation.LEFT) {
             if (allianceColor == AllianceColor.BLUE) {
                 sb.append("| X      |\n");
             } else {
