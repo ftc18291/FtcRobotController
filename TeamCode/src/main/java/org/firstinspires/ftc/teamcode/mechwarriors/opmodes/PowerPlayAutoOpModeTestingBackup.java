@@ -50,7 +50,7 @@ public class PowerPlayAutoOpModeTestingBackup extends OpMode {
         allHubs = hardwareMap.getAll(LynxModule.class);
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
         robot = new MechRobot(hardwareMap);
-        signalDetector = new AprilTagSignalDetector(telemetry, hardwareMap);
+        //signalDetector = new AprilTagSignalDetector(telemetry, hardwareMap);
 
         for (LynxModule hub : allHubs) {
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);

@@ -36,7 +36,7 @@ public class DistanceDetectorTestOpMode extends OpMode {
     public void init() {
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
         robot = new MechRobot(hardwareMap);
-        signalDetector = new AprilTagSignalDetector(telemetry, hardwareMap);
+       // signalDetector = new AprilTagSignalDetector(telemetry, hardwareMap);
         telemetry.addLine("Init done");
     }
 
