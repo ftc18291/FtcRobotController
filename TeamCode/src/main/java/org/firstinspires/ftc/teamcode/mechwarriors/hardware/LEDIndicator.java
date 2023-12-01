@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
+package org.firstinspires.ftc.teamcode.mechwarriors.hardware;
 
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -7,8 +7,8 @@ public class LEDIndicator {
     private DigitalChannel redLED;
     private DigitalChannel greenLED;
 
-    enum LEDColor {
-        RED, GREEN, AMBER, OFF;
+    public enum LEDColor {
+        RED, GREEN, AMBER, OFF
     }
 
     public LEDIndicator(HardwareMap hardwareMap) {

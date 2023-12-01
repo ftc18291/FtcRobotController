@@ -1,19 +1,15 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
-import android.hardware.Sensor;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.LEDIndicator;
 
 @TeleOp
 public class CenterStageBackupRobotOpMode extends OpMode {
@@ -56,7 +52,7 @@ public class CenterStageBackupRobotOpMode extends OpMode {
         telemetry.addData("green", colorSensor.green());
         rightDriveMotor.setPower(speedy + speedx);
         leftDriveMotor.setPower(speedy - speedx);
-        if (gamepad1.dpad_up == true) {
+        if (gamepad1.dpad_up) {
             lightIndicator.setColor(LEDIndicator.LEDColor.RED);
         } else if (gamepad1.dpad_down) {
             lightIndicator.setColor(LEDIndicator.LEDColor.GREEN);
