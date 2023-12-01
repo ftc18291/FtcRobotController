@@ -23,7 +23,7 @@ public class PowerPlayAutoOpMode extends OpMode {
     StartingLocation startingLocation = StartingLocation.LEFT;
     SignalSide signalSide = SignalSide.NONE;
 
-    List<Behavior> behaviors = new ArrayList<Behavior>();
+    List<Behavior> behaviors = new ArrayList<>();
     int state = 0;
 
     @Override
