@@ -2,18 +2,22 @@ package org.firstinspires.ftc.teamcode.mechwarriors.behaviors;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechwarriors.JunctionType;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.LinearSlideLift;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Robot;
 
 public class RaiseLift extends Behavior {
-    MechRobot robot;
+    Robot robot;
     JunctionType junctionType;
 
-    public RaiseLift(Telemetry telemetry, MechRobot robot, JunctionType junctionType) {
+    public RaiseLift(Telemetry telemetry, Robot robot, JunctionType junctionType) {
         this.robot = robot;
         this.telemetry = telemetry;
         this.junctionType = junctionType;
         this.name = "Raise Lift = [Junction Type: " + junctionType + "]";
     }
+
+
 
     @Override
     public void start() {

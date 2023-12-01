@@ -31,7 +31,7 @@ public class ReverseHeading extends Behavior {
             telemetry.addData("robotHeading", robotHeading);
             double steeringCorrection = (robotHeading - heading) * 0.02;
             telemetry.addData("steeringCorrection", steeringCorrection);
-            robot.mecanumDrive(0, speed, steeringCorrection);
+            robot.drive(0, speed, steeringCorrection);
         } else {
             robot.stop();
             isDone = true;

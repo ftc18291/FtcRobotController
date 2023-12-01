@@ -20,7 +20,6 @@ import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.ReverseHeading;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Translate;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.TurnToHeading;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Wait;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.AprilTagSignalDetector;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.SignalDetector;
 
@@ -130,12 +129,12 @@ public class PowerPlayAutoOpModeTestingBackup extends OpMode {
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.LOW));
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(12), 0.60));
             behaviors.add(new DriveHeading(telemetry, robot, 0, robot.calculateDriveTicks(19.5), 0.60));
-            behaviors.add(new TurnToHeading(telemetry, robot, 90));
+            behaviors.add(new TurnToHeading(telemetry, robot, 90, 1));
             behaviors.add(new DriveHeading(telemetry, robot, 90, robot.calculateDriveTicks(45), 0.40));
             behaviors.add(new CloseClaw(telemetry, robot.getClaw()));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.MEDIUM));
             behaviors.add(new ReverseHeading(telemetry, robot, -90, -robot.calculateDriveTicks(42), -0.60));
-            behaviors.add(new TurnToHeading(telemetry, robot, 0));
+            behaviors.add(new TurnToHeading(telemetry, robot, 0, 1));
             behaviors.add(new ReverseHeading(telemetry, robot, 0, -robot.calculateDriveTicks(22), -0.50));
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(13), -0.50));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
@@ -184,12 +183,12 @@ public class PowerPlayAutoOpModeTestingBackup extends OpMode {
              behaviors.add(new LowerLift(telemetry, robot, JunctionType.LOW));
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(12), -0.60));
             behaviors.add(new DriveHeading(telemetry, robot, 0, robot.calculateDriveTicks(20), 0.60));
-            behaviors.add(new TurnToHeading(telemetry, robot, -90));
+            behaviors.add(new TurnToHeading(telemetry, robot, -90, 1));
             behaviors.add(new DriveHeading(telemetry, robot, -90, robot.calculateDriveTicks(45), 0.50));
             behaviors.add(new CloseClaw(telemetry, robot.getClaw()));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.MEDIUM));
             behaviors.add(new ReverseHeading(telemetry, robot, 90, -robot.calculateDriveTicks(42), -0.60));
-            behaviors.add(new TurnToHeading(telemetry, robot, 0));
+            behaviors.add(new TurnToHeading(telemetry, robot, 0, 1));
             behaviors.add(new ReverseHeading(telemetry, robot, 0, -robot.calculateDriveTicks(22), -0.50));
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(13), 0.50));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));

@@ -31,7 +31,7 @@ public class Translate extends Behavior {
             telemetry.addData("robotHeading", robotHeading);
             double steeringCorrection = (robotHeading - heading) * 0.02;
             telemetry.addData("steeringCorrection", steeringCorrection);
-            robot.mecanumDrive(speed, 0, steeringCorrection);
+            robot.drive(speed, 0, steeringCorrection);
         } else {
             robot.stop();
             isDone = true;

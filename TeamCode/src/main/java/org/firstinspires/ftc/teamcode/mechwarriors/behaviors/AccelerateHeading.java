@@ -50,7 +50,7 @@ public class AccelerateHeading extends Behavior {
     public void run() {
         System.out.println("motor ticks: " + robot.getDriveTicks());
         if (robot.getDriveTicks() < desiredTicks) {
-            robot.mecanumDrive(0, calculateSpeed((int) robot.getDriveTicks()), 0);
+            robot.drive(0, calculateSpeed((int) robot.getDriveTicks()), 0);
         } else {
             robot.stop();
             isDone = true;

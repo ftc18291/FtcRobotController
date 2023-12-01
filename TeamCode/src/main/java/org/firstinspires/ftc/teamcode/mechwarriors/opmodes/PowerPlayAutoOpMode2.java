@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.mechwarriors.JunctionType;
 import org.firstinspires.ftc.teamcode.mechwarriors.SignalSide;
 import org.firstinspires.ftc.teamcode.mechwarriors.StartingLocation;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.*;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.AprilTagSignalDetector;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.SignalDetector;
 
@@ -71,15 +70,15 @@ public class PowerPlayAutoOpMode2 extends OpMode {
         behaviors.add(new DriveHeading(telemetry, robot, 0, robot.calculateDriveTicks(24), 0.25));
 
         if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.BLUE) {
-            behaviors.add(new TurnToHeading(telemetry, robot, -90));
+            behaviors.add(new TurnToHeading(telemetry, robot, -90, 1));
             behaviors.add(new DriveHeading(telemetry, robot, -90, robot.calculateDriveTicks(20), 0.25));
-            behaviors.add(new TurnToHeading(telemetry, robot, -45));
+            behaviors.add(new TurnToHeading(telemetry, robot, -45, 1));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new DriveHeading(telemetry, robot, -45, robot.calculateDriveTicks(8), 0.1));
             behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, 45, -robot.calculateDriveTicks(8), -0.1));
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.TRAVEL));
-            behaviors.add(new TurnToHeading(telemetry, robot, -90));
+            behaviors.add(new TurnToHeading(telemetry, robot, -90, 1));
 
             switch (signalSide) {
                 case ONE:
@@ -93,22 +92,22 @@ public class PowerPlayAutoOpMode2 extends OpMode {
                     break;
                 case NONE:
                     behaviors.add(new ReverseHeading(telemetry, robot, 90, -robot.calculateDriveTicks(46), -0.25));
-                    behaviors.add(new TurnToHeading(telemetry, robot, 0));
+                    behaviors.add(new TurnToHeading(telemetry, robot, 0, 1));
                     behaviors.add(new ReverseHeading(telemetry, robot, 0, -robot.calculateDriveTicks(22), -0.25));
                     break;
             }
 
         } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.BLUE) {
 
-            behaviors.add(new TurnToHeading(telemetry, robot, 90));
+            behaviors.add(new TurnToHeading(telemetry, robot, 90, 1));
             behaviors.add(new DriveHeading(telemetry, robot, 90, robot.calculateDriveTicks(20), 0.25));
-            behaviors.add(new TurnToHeading(telemetry, robot, 45));
+            behaviors.add(new TurnToHeading(telemetry, robot, 45, 1));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new DriveHeading(telemetry, robot, 45, robot.calculateDriveTicks(8), 0.1));
             behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, -45, -robot.calculateDriveTicks(8), -0.1));
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.TRAVEL));
-            behaviors.add(new TurnToHeading(telemetry, robot, 90));
+            behaviors.add(new TurnToHeading(telemetry, robot, 90, 1));
 
             switch (signalSide) {
                 case ONE:
@@ -122,22 +121,22 @@ public class PowerPlayAutoOpMode2 extends OpMode {
                     break;
                 case NONE:
                     behaviors.add(new ReverseHeading(telemetry, robot, -90, -robot.calculateDriveTicks(46), -0.25));
-                    behaviors.add(new TurnToHeading(telemetry, robot, 0));
+                    behaviors.add(new TurnToHeading(telemetry, robot, 0, 1));
                     behaviors.add(new ReverseHeading(telemetry, robot, 0, -robot.calculateDriveTicks(22), -0.25));
                     break;
             }
 
         } else if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.RED) {
 
-            behaviors.add(new TurnToHeading(telemetry, robot, 90));
+            behaviors.add(new TurnToHeading(telemetry, robot, 90, 1));
             behaviors.add(new DriveHeading(telemetry, robot, 90, robot.calculateDriveTicks(20), 0.25));
-            behaviors.add(new TurnToHeading(telemetry, robot, 40));
+            behaviors.add(new TurnToHeading(telemetry, robot, 40, 1));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new DriveHeading(telemetry, robot, 40, robot.calculateDriveTicks(8), 0.1));
             behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, -40, -robot.calculateDriveTicks(8), -0.1));
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.TRAVEL));
-            behaviors.add(new TurnToHeading(telemetry, robot, 90));
+            behaviors.add(new TurnToHeading(telemetry, robot, 90, 1));
 
             switch (signalSide) {
                 case ONE:
@@ -151,22 +150,22 @@ public class PowerPlayAutoOpMode2 extends OpMode {
                     break;
                 case NONE:
                     behaviors.add(new ReverseHeading(telemetry, robot, -90, -robot.calculateDriveTicks(46), -0.25));
-                    behaviors.add(new TurnToHeading(telemetry, robot, 0));
+                    behaviors.add(new TurnToHeading(telemetry, robot, 0, 1));
                     behaviors.add(new ReverseHeading(telemetry, robot, 0, -robot.calculateDriveTicks(22), -0.25));
                     break;
             }
 
         } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.RED) {
 
-            behaviors.add(new TurnToHeading(telemetry, robot, -90));
+            behaviors.add(new TurnToHeading(telemetry, robot, -90, 1));
             behaviors.add(new DriveHeading(telemetry, robot, -90, robot.calculateDriveTicks(20), 0.25));
-            behaviors.add(new TurnToHeading(telemetry, robot, -40));
+            behaviors.add(new TurnToHeading(telemetry, robot, -40, 1));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new DriveHeading(telemetry, robot, -40, robot.calculateDriveTicks(8), 0.1));
             behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, 40, -robot.calculateDriveTicks(8), -0.1));
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.TRAVEL));
-            behaviors.add(new TurnToHeading(telemetry, robot, -90));
+            behaviors.add(new TurnToHeading(telemetry, robot, -90, 1));
 
             switch (signalSide) {
                 case ONE:
@@ -180,7 +179,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
                     break;
                 case NONE:
                     behaviors.add(new ReverseHeading(telemetry, robot, 90, -robot.calculateDriveTicks(46), -0.25));
-                    behaviors.add(new TurnToHeading(telemetry, robot, 0));
+                    behaviors.add(new TurnToHeading(telemetry, robot, 0, 1));
                     behaviors.add(new ReverseHeading(telemetry, robot, 0, -robot.calculateDriveTicks(22), -0.25));
                     break;
             }

@@ -52,5 +52,14 @@ public class ExtenderClaw implements Claw {
         clawExpansion.setPower(0);
     }
 
+    @Override
+    public void up() {
+    }
 
+    @Override
+    public void down() {
+    }
+
+    @Override
+    public void stop() {}
 }

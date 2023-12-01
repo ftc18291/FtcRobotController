@@ -1,33 +1,35 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ExtenderClaw;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.JunctionDetectionSenorArray;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.PlaneLauncher;
 
-@TeleOp(group = "MechWarriors")
-@Disabled
-public class PowerPlayOpMode extends OpMode {
+@TeleOp()
+public class CenterStageOpMode extends OpMode {
     MechRobot robot;
     Claw claw;
     boolean slowMode = false;
+
     double zeroPitchAngle;
+    PlaneLauncher planeLauncher;
 
     @Override
     public void init() {
         robot = new MechRobot(hardwareMap);
         claw = robot.getClaw();
         zeroPitchAngle = robot.getPitchAngle();
+        planeLauncher = new PlaneLauncher(hardwareMap);
     }
 
     @Override
     public void loop() {
+        telemetry.addData("motors", robot.getDriveTicksString());
+
 
         if (gamepad1.left_bumper) {
             slowMode = true;
@@ -36,14 +38,10 @@ public class PowerPlayOpMode extends OpMode {
             slowMode = false;
         }
 
-       // robot.getJunctionDetectionSenorArray().detect();
-        //telemetry.addLine(robot.getJunctionDetectionSenorArray().distancesToString());
 
         double y = -gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x * 1.1;
         double rx = gamepad1.right_stick_x;
-
-       // telemetry.addData("y", y);
 
         y = Utilities.squareInputWithSign(y);
         x = Utilities.squareInputWithSign(x);
@@ -62,14 +60,6 @@ public class PowerPlayOpMode extends OpMode {
 
         telemetry.addData("Lift ticks: ", robot.getLift().getLiftTicks());
 
-       /* telemetry.addData("Zero pitch angle", zeroPitchAngle);
-        double actualPitch = robot.getPitchAngle() - zeroPitchAngle;
-        telemetry.addData("actual pitch angle", actualPitch);
-        if (actualPitch > 1.5 || actualPitch < -1.5) {
-            telemetry.addLine("Pitch angle exceeded");
-            robot.stop();
-        }*/
-
         if (gamepad2.dpad_up) {
             robot.getLift().liftArmUp();
             telemetry.addData("Lift", "Up");
@@ -81,7 +71,7 @@ public class PowerPlayOpMode extends OpMode {
             telemetry.addData("Lift", "Stop");
         }
 
-        if (gamepad2.y) {
+        if (gamepad2.b) {
             claw.close();
             telemetry.addData("Claw", "Close");
         } else if (gamepad2.x) {
@@ -89,13 +79,17 @@ public class PowerPlayOpMode extends OpMode {
             telemetry.addData("Claw", "Open");
         }
 
-     //   JunctionDetectionSenorArray.DistanceData distanceData = robot.getJunctionDetectionSenorArray().detect();
-    //    telemetry.addLine(robot.getJunctionDetectionSenorArray().distancesToString());
+        if (gamepad2.y) {
+            claw.up();
 
-        /*telemetry.addData("translate ticks", robot.getTranslateDistance());
-        telemetry.addData("Drive ticks", robot.getDriveTicksString());
-        telemetry.addData("Heading", robot.getHeading());
-        telemetry.addData("Pitch Angle", robot.getPitchAngle());
-        telemetry.addData("Roll Angle", robot.getRollAngle());*/
+        } else if (gamepad2.a) {
+            claw.down();
+        } else {
+            claw.stop();
+        }
+        if (gamepad2.left_bumper){
+            planeLauncher.launch();
+        }
+
     }
 }

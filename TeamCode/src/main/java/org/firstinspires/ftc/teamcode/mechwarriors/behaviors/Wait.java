@@ -20,8 +20,9 @@ public class Wait extends Behavior {
     }
 
     public void run() {
+        telemetry.addData("Elapsed s", timer.milliseconds() / 10000);
         if (timer.milliseconds() >= delayMilliseconds) {
-            telemetry.addData("Elapsed ms: ", timer.milliseconds());
+            //telemetry.addData("Elapsed ms: ", timer.milliseconds());
             this.isDone = true;
         }
     }

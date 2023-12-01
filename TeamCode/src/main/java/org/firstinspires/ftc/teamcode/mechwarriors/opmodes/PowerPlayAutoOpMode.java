@@ -63,16 +63,16 @@ public class PowerPlayAutoOpMode extends OpMode {
             behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
             behaviors.add(new CloseClaw(telemetry, robot.getClaw()));
             behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
-            behaviors.add(new TurnToHeading(telemetry, robot, 90));
+            behaviors.add(new TurnToHeading(telemetry, robot, 90, 1));
             behaviors.add(new DriveHeading(telemetry, robot, 90, 4000, 0.5));
         } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.BLUE) {
             behaviors.add(new Translate(telemetry, robot, 0, 3000, 0.5));
             //behaviors.add(new TurnToHeading(telemetry, "turn left to -90", robot, -90));
             behaviors.add(new ReverseHeading(telemetry, robot, 0, -3000, -1.0));
         } else if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.RED) {
-            behaviors.add(new TurnToHeading(telemetry, robot, -180));
+            behaviors.add(new TurnToHeading(telemetry, robot, -180, 1));
         } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.RED) {
-            behaviors.add(new TurnToHeading(telemetry, robot, 225));
+            behaviors.add(new TurnToHeading(telemetry, robot, 225, 1));
         }
 
         behaviors.get(0).start();

@@ -1,17 +1,19 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.behaviors;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Robot;
 
 public class TurnToHeading extends Behavior {
-    MechRobot robot;
+    Robot robot;
     int desiredHeading;
+    double turningSpeed;
 
-    public TurnToHeading(Telemetry telemetry, MechRobot robot, int heading) {
+    public TurnToHeading(Telemetry telemetry, Robot robot, int heading, double turningSpeed) {
         this.robot = robot;
         this.telemetry = telemetry;
         this.name = "Turn to Heading = [heading: " + heading + "°]";
-        this.desiredHeading = -heading;
+        this.desiredHeading = heading;
+        this.turningSpeed = turningSpeed;
     }
 
     @Override
@@ -25,9 +27,9 @@ public class TurnToHeading extends Behavior {
 
         if (!almostEqual(robotHeading, desiredHeading, 1.0)) {
             telemetry.addData("robotHeading", robotHeading);
-            double steeringCorrection = (robotHeading - desiredHeading) * 0.01;
+            double steeringCorrection = (robotHeading - desiredHeading) * turningSpeed;
             telemetry.addData("steeringCorrection", steeringCorrection);
-            robot.mecanumDrive(0, 0, steeringCorrection);
+            robot.drive(0, 0, steeringCorrection);
         } else {
             robot.stop();
             isDone = true;

@@ -69,8 +69,8 @@ public class JunctionDetectorTestOpMode extends OpMode {
     public void init_loop() {
         signalSide = signalDetector.detect();
 
-        robot.getJunctionDetectionSenorArray().detect();
-        telemetry.addLine(robot.getJunctionDetectionSenorArray().distancesToString());
+      //  robot.getJunctionDetectionSenorArray().detect();
+        //telemetry.addLine(robot.getJunctionDetectionSenorArray().distancesToString());
 
         if (gamepad1.y) {
             startingLocation = StartingLocation.RIGHT;
@@ -180,7 +180,7 @@ public class JunctionDetectorTestOpMode extends OpMode {
                 telemetry.addData("robotHeading", robotHeading);
                 double steeringCorrection = (robotHeading - desiredHeading) * 0.03;
                 telemetry.addData("steeringCorrection", steeringCorrection);
-                robot.mecanumDrive(0, 0, steeringCorrection);
+                robot.drive(0, 0, steeringCorrection);
             } else {
                 robot.stop();
                 runningState = "done";
