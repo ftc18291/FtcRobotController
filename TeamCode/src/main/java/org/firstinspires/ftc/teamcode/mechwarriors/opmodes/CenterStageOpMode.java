@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.hardware.JunctionDetectionSen
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.PlaneLauncher;
 
-@TeleOp()
+@TeleOp(group = "MechWarriors")
 public class CenterStageOpMode extends OpMode {
     MechRobot robot;
     Claw claw;

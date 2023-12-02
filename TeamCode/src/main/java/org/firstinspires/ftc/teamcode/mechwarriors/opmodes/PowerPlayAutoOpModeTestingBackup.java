@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous(group = "MechWarriors")
+@Disabled
 public class PowerPlayAutoOpModeTestingBackup extends OpMode {
 
     MechRobot robot;
@@ -37,12 +39,12 @@ public class PowerPlayAutoOpModeTestingBackup extends OpMode {
     SignalSide signalSide = SignalSide.NONE;
 
 
-    List<Behavior> behaviors = new ArrayList<Behavior>();
+    List<Behavior> behaviors = new ArrayList<>();
     int state = 0;
     int waitTime = 0;
     boolean dpaddownPressed = false;
     boolean dpadupPressed = false;
-    List<LynxModule> allHubs = new ArrayList<LynxModule>();
+    List<LynxModule> allHubs = new ArrayList<>();
 
     @Override
     public void init() {

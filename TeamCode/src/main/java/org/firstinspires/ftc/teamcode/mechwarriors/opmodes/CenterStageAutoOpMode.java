@@ -28,7 +28,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Robot;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous
+@Autonomous(group = "MechWarriors")
 public class CenterStageAutoOpMode extends OpMode {
     Robot robot;
     List<Behavior> behaviors = new ArrayList<>();

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous
+@Disabled
 public class BackupRobotAutonomous extends OpMode {
     Robot backupRobot;
     List<Behavior> behaviors = new ArrayList<>();
