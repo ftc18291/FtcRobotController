@@ -22,6 +22,7 @@ public class CenterStageBackupRobotOpMode extends OpMode {
     TouchSensor magneticSensor;
     ColorSensor colorSensor;
     LEDIndicator lightIndicator;
+    DcMotor testMotor;
 
 
     @Override
@@ -32,6 +33,7 @@ public class CenterStageBackupRobotOpMode extends OpMode {
         touchSensor = hardwareMap.get(TouchSensor.class, "TouchSensor");
         magneticSensor = hardwareMap.get(TouchSensor.class, "MagneticSensor");
         colorSensor = hardwareMap.get(ColorSensor.class, "ColorSensor");
+        testMotor = hardwareMap.get(DcMotor.class, "testMotor");
         lightIndicator = new LEDIndicator(hardwareMap);
         leftDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -67,5 +69,6 @@ public class CenterStageBackupRobotOpMode extends OpMode {
         telemetry.addData("leftMotor", leftDriveMotor.getCurrentPosition());
         telemetry.addData("rightMotor", rightDriveMotor.getCurrentPosition());
 
+        testMotor.setPower(gamepad1.right_stick_x);
     }
 }

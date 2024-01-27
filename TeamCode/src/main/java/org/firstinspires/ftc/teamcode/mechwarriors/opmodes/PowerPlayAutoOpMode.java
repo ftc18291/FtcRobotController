@@ -60,9 +60,9 @@ public class PowerPlayAutoOpMode extends OpMode {
             }
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.MEDIUM));
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.GROUND));
-            behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
-            behaviors.add(new CloseClaw(telemetry, robot.getClaw()));
-            behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
+            behaviors.add(new OpenClaw(telemetry, robot.getLeftClaw()));
+            behaviors.add(new CloseClaw(telemetry, robot.getLeftClaw()));
+            behaviors.add(new OpenClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new TurnToHeading(telemetry, robot, 90, 1));
             behaviors.add(new DriveHeading(telemetry, robot, 90, 4000, 0.5));
         } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.BLUE) {

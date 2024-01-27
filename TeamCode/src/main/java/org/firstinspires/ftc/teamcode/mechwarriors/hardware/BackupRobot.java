@@ -32,6 +32,27 @@ public class BackupRobot extends Robot {
     }
 
     @Override
+    public Claw getLeftClaw() {
+        return null;
+    }
+
+    @Override
+    public Claw getRightClaw() {
+        return null;
+    }
+
+    @Override
+    public void openSweepers() {
+
+    }
+
+    @Override
+    public void closeSweepers() {
+
+    }
+
+
+    @Override
     public int calculateDriveTicks(double distanceInInches) {
 
         return (int) (distanceInInches * DRIVE_WHEEL_TICKS_PER_ONE_INCH);
@@ -53,6 +74,11 @@ public class BackupRobot extends Robot {
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    @Override
+    public double getTranslateDistance() {
+        return 0;
     }
 
 }

@@ -1,18 +1,13 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.hardware;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
 
 public class MechRobot extends Robot {
-
 
     // Drive motors: 537.7 ticks per revolution
     // Wheels 96mm diameter
@@ -22,17 +17,23 @@ public class MechRobot extends Robot {
     private final static double DRIVE_WHEEL_TICKS_PER_ROTATION = 537.7;
     private final static double DRIVE_WHEEL_TICKS_PER_ONE_INCH = DRIVE_WHEEL_CIRCUMFERENCE_IN / DRIVE_WHEEL_TICKS_PER_ROTATION;
 
-
     // Drive motors
     DcMotor frontRightMotor;
     DcMotor frontLeftMotor;
     DcMotor backLeftMotor;
     DcMotor backRightMotor;
 
-
-    Claw claw;
+    Claw leftClaw;
+    Claw rightClaw;
     LinearSlideLift lift;
-    ///JunctionDetectionSenorArray junctionDetectionSenorArray;
+
+    Servo leftSweeperServo;
+    Servo rightSweeperServo;
+
+    LEDIndicator sweeperPositionIndicator;
+
+    boolean sweeperStateChanged = false;
+    boolean sweepersOpen = false;
 
     public MechRobot(HardwareMap hardwareMap) {
         super(hardwareMap);
@@ -49,19 +50,54 @@ public class MechRobot extends Robot {
 
         // Back Right Motor
         backRightMotor = hardwareMap.get(DcMotor.class, "back_right_motor");
+        rightSweeperServo = hardwareMap.get(Servo.class, "right_sweeper_servo");
+        leftSweeperServo = hardwareMap.get(Servo.class, "left_sweeper_servo");
+        leftSweeperServo.setDirection(Servo.Direction.REVERSE);
+        rightSweeperServo.scaleRange(0.0, 0.47);  // open, closed
+        leftSweeperServo.scaleRange(0.425, 0.95); // closed, open
+
+
+
+        sweeperPositionIndicator = new LEDIndicator(hardwareMap);
+        sweeperPositionIndicator.setColor(LEDIndicator.LEDColor.GREEN);
+
+        closeSweepers();
 
         setDriveMotorZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         resetMotorTicks();
 
-        //initIMU(hardwareMap);
+        initIMU(hardwareMap);
 
-        claw = new PixelClaw(hardwareMap);
+        leftClaw = new PixelClaw(
+                hardwareMap,
+                "left_claw_servo",
+                "left_claw_extension_servo",
+                true,
+                0.57, //0.57
+                0.65, // 0.65
+                0.62, // this is actually down
+                1.0); // this is actually up
+        rightClaw = new PixelClaw(
+                hardwareMap,
+                "right_claw_servo",
+                "right_claw_extension_servo",
+                false,
+                0.11, //0.1
+                0.335, //0.32
+                0,
+                0.42); // .5
         lift = new LinearSlideLift(hardwareMap);
     }
 
-    public Claw getClaw() {
-        return claw;
+    public Claw getLeftClaw() {
+        return leftClaw;
     }
+
+    public Claw getRightClaw() {
+        return rightClaw;
+    }
+
+
 
     public LinearSlideLift getLift() {
         return lift;
@@ -84,6 +120,7 @@ public class MechRobot extends Robot {
     public int calculateDriveTicks(double distanceInInches) {
         return (int) (distanceInInches / DRIVE_WHEEL_TICKS_PER_ONE_INCH);
     }
+
 
     /**
      * Returns the distance the robot has traveled forward or backward in ticks
@@ -147,5 +184,37 @@ public class MechRobot extends Robot {
         this.drive(0, 0, 0, 0);
     }
 
+    @Override
+    public void openSweepers() {
+        sweeperPositionIndicator.setColor(LEDIndicator.LEDColor.RED);
+        leftSweeperServo.setPosition(0);
+        rightSweeperServo.setPosition(0);
+    }
+
+    @Override
+    public void closeSweepers() {
+        sweeperPositionIndicator.setColor(LEDIndicator.LEDColor.GREEN);
+        leftSweeperServo.setPosition(1.0);
+        rightSweeperServo.setPosition(1.0);
+    }
+
+
+
+    public void toggleSweepers(boolean buttonPressed, Telemetry telemetry) {
+        if (buttonPressed) {
+            sweeperStateChanged = true;
+        } else {
+            if (sweeperStateChanged) {
+                sweepersOpen = !sweepersOpen;
+                sweeperStateChanged = false;
+            }
+        }
+
+        if (sweepersOpen) {
+            openSweepers();
+        } else {
+            closeSweepers();
+        }
+    }
 
 }

@@ -114,7 +114,7 @@ public class PowerPlayAutoOpModeTestingBackup extends OpMode {
     public void start() {
         robot.resetYaw();
         behaviors.add(new Wait(telemetry, waitTime * 1000));
-        behaviors.add(new CloseClaw(telemetry, robot.getClaw()));
+        behaviors.add(new CloseClaw(telemetry, robot.getLeftClaw()));
         behaviors.add(new RaiseLift(telemetry, robot, JunctionType.TRAVEL));
 
         if ((startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.BLUE) ||
@@ -126,14 +126,14 @@ public class PowerPlayAutoOpModeTestingBackup extends OpMode {
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(13.75), -0.60));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new FindJunction(telemetry, robot, robot.calculateDriveTicks(2)));
-            behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
+            behaviors.add(new OpenClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, 0, -robot.calculateDriveTicks(2), -0.25));
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.LOW));
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(12), 0.60));
             behaviors.add(new DriveHeading(telemetry, robot, 0, robot.calculateDriveTicks(19.5), 0.60));
             behaviors.add(new TurnToHeading(telemetry, robot, 90, 1));
             behaviors.add(new DriveHeading(telemetry, robot, 90, robot.calculateDriveTicks(45), 0.40));
-            behaviors.add(new CloseClaw(telemetry, robot.getClaw()));
+            behaviors.add(new CloseClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.MEDIUM));
             behaviors.add(new ReverseHeading(telemetry, robot, -90, -robot.calculateDriveTicks(42), -0.60));
             behaviors.add(new TurnToHeading(telemetry, robot, 0, 1));
@@ -141,7 +141,7 @@ public class PowerPlayAutoOpModeTestingBackup extends OpMode {
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(13), -0.50));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new FindJunction(telemetry, robot, robot.calculateDriveTicks(2)));
-            behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
+            behaviors.add(new OpenClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, 0, -robot.calculateDriveTicks(2), -0.25));
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(12), 0.50));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.GROUND));
@@ -179,7 +179,7 @@ public class PowerPlayAutoOpModeTestingBackup extends OpMode {
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(14.25), 0.40));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new FindJunction(telemetry, robot, robot.calculateDriveTicks(3)));
-            behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
+            behaviors.add(new OpenClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, 0, -robot.calculateDriveTicks(2), -0.25));
             //behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(12.25), -0.30));
              behaviors.add(new LowerLift(telemetry, robot, JunctionType.LOW));
@@ -187,7 +187,7 @@ public class PowerPlayAutoOpModeTestingBackup extends OpMode {
             behaviors.add(new DriveHeading(telemetry, robot, 0, robot.calculateDriveTicks(20), 0.60));
             behaviors.add(new TurnToHeading(telemetry, robot, -90, 1));
             behaviors.add(new DriveHeading(telemetry, robot, -90, robot.calculateDriveTicks(45), 0.50));
-            behaviors.add(new CloseClaw(telemetry, robot.getClaw()));
+            behaviors.add(new CloseClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.MEDIUM));
             behaviors.add(new ReverseHeading(telemetry, robot, 90, -robot.calculateDriveTicks(42), -0.60));
             behaviors.add(new TurnToHeading(telemetry, robot, 0, 1));
@@ -195,7 +195,7 @@ public class PowerPlayAutoOpModeTestingBackup extends OpMode {
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(13), 0.50));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new FindJunction(telemetry, robot, robot.calculateDriveTicks(2)));
-            behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
+            behaviors.add(new OpenClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, 0, -robot.calculateDriveTicks(2), -0.25));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.GROUND));
             behaviors.add(new Translate(telemetry, robot, 0, robot.calculateDriveTicks(12), -0.50));

@@ -2,14 +2,15 @@ package org.firstinspires.ftc.teamcode.mechwarriors.behaviors;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Robot;
 
 public class Translate extends Behavior {
-    MechRobot robot;
+    Robot robot;
     int heading;
     int distance;
     double speed;
 
-    public Translate(Telemetry telemetry, MechRobot robot, int heading, int distance, double speed) {
+    public Translate(Telemetry telemetry, Robot robot, int heading, int distance, double speed) {
         this.robot = robot;
         this.telemetry = telemetry;
         this.name = "Translate = [distance: " + distance + "] [heading: " + heading + "] [speed: " + speed + "]";

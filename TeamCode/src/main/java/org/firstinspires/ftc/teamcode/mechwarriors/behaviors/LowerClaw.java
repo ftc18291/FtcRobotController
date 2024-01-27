@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
 public class LowerClaw extends Behavior {
     Claw claw;
     ElapsedTime timer;
-    final static int PAUSE_TIME = 1000;
+    final static int PAUSE_TIME = 250;
 
     public LowerClaw(Telemetry telemetry, Claw claw) {
         this.telemetry = telemetry;
@@ -19,6 +19,7 @@ public class LowerClaw extends Behavior {
 
     @Override
     public void start() {
+        this.isDone = false;
         this.claw.down();
         timer.reset();
     }

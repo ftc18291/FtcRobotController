@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechwarriors.AllianceColor;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.StartingLocation;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.BackupRobotDriveHeading;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Behavior;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.DetectPixel;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.DriveToDistance;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.TurnToHeading;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Wait;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.BackupRobot;
@@ -29,12 +31,14 @@ public class BackupRobotAutonomous extends OpMode {
     int waitTime = 0;
     boolean dpaddownPressed = false;
     boolean dpadupPressed = false;
+    DistanceSensor distanceSensor;
 
     @Override
     public void init() {
 
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
         backupRobot = new BackupRobot(hardwareMap);
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "OpticalDistanceSensor");
 
     }
 
@@ -82,29 +86,31 @@ public class BackupRobotAutonomous extends OpMode {
 
     @Override
     public void start() {
-        behaviors.add(new Wait(telemetry, waitTime * 1000));
-        behaviors.add(new DetectPixel(backupRobot.getTfodProcessor(), telemetry));
-        if (startingLocation == StartingLocation.LEFT) {
-            if (allianceColor == AllianceColor.BLUE) {
-                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 0, 24, .2));
-                behaviors.add(new TurnToHeading(telemetry, backupRobot, 90, .004));
-                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 90, 36, .2));
-            } else {
-                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 0, 24, .2));
-                behaviors.add(new TurnToHeading(telemetry, backupRobot, -90, .004));
-                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, -90, 84, .2));
-            }
-        } else {
-            if (allianceColor == AllianceColor.BLUE) {
-                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 0, 24, .2));
-                behaviors.add(new TurnToHeading(telemetry, backupRobot, 90, .004));
-                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 90, 84, .2));
-            } else {
-                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 0, 24, .2));
-                behaviors.add(new TurnToHeading(telemetry, backupRobot, -90, .004));
-                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, -90, 36, .2));
-            }
-        }
+        behaviors.add(new DriveToDistance(telemetry, backupRobot, distanceSensor, 0, 28, .07));
+
+//        behaviors.add(new Wait(telemetry, waitTime * 1000));
+//        behaviors.add(new DetectPixel(backupRobot.getTfodProcessor(), telemetry));
+//        if (startingLocation == StartingLocation.LEFT) {
+//            if (allianceColor == AllianceColor.BLUE) {
+//                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 0, 24, .2));
+//                behaviors.add(new TurnToHeading(telemetry, backupRobot, 90, .004));
+//                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 90, 36, .2));
+//            } else {
+//                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 0, 24, .2));
+//                behaviors.add(new TurnToHeading(telemetry, backupRobot, -90, .004));
+//                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, -90, 84, .2));
+//            }
+//        } else {
+//            if (allianceColor == AllianceColor.BLUE) {
+//                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 0, 24, .2));
+//                behaviors.add(new TurnToHeading(telemetry, backupRobot, 90, .004));
+//                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 90, 84, .2));
+//            } else {
+//                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, 0, 24, .2));
+//                behaviors.add(new TurnToHeading(telemetry, backupRobot, -90, .004));
+//                behaviors.add(new BackupRobotDriveHeading(backupRobot, telemetry, -90, 36, .2));
+//            }
+//        }
         behaviors.get(0).start();
     }
 

@@ -3,12 +3,9 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ExtenderClaw;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.JunctionDetectionSenorArray;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
 
 @TeleOp(group = "MechWarriors")
@@ -22,7 +19,7 @@ public class PowerPlayOpMode extends OpMode {
     @Override
     public void init() {
         robot = new MechRobot(hardwareMap);
-        claw = robot.getClaw();
+        claw = robot.getLeftClaw();
         zeroPitchAngle = robot.getPitchAngle();
     }
 

@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.behaviors;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
 
 public class CloseClaw extends Behavior {
     Claw claw;
     ElapsedTime timer;
-    final static int PAUSE_TIME = 1000;
+    final static int PAUSE_TIME = 250;
 
     public CloseClaw(Telemetry telemetry, Claw claw) {
         this.telemetry = telemetry;
@@ -18,6 +19,7 @@ public class CloseClaw extends Behavior {
 
     @Override
     public void start() {
+        this.isDone = false;
         this.claw.close();
         timer.reset();
     }

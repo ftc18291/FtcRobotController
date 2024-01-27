@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
 public class OpenClaw extends Behavior {
     Claw claw;
     ElapsedTime timer;
-    final static int PAUSE_TIME = 1000;
+    final static int PAUSE_TIME = 250;
 
     public OpenClaw(Telemetry telemetry, Claw claw) {
         this.telemetry = telemetry;
@@ -18,6 +18,7 @@ public class OpenClaw extends Behavior {
 
     @Override
     public void start() {
+        this.isDone = false;
         this.claw.open();
         timer.reset();
     }

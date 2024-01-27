@@ -9,11 +9,11 @@ public class PlaneLauncher {
 
     public PlaneLauncher(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "airplane_release_servo");
-        servo.setPosition(.49);
+        servo.setPosition(0.0);
     }
 
     public void launch() {
-        servo.setPosition(0);
+        servo.setPosition(.5);
     }
 
 

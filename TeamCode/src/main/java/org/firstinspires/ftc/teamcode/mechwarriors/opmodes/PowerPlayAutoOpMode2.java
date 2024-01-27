@@ -65,7 +65,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
 
     @Override
     public void start() {
-        behaviors.add(new CloseClaw(telemetry, robot.getClaw()));
+        behaviors.add(new CloseClaw(telemetry, robot.getLeftClaw()));
         behaviors.add(new RaiseLift(telemetry, robot, JunctionType.TRAVEL));
         behaviors.add(new DriveHeading(telemetry, robot, 0, robot.calculateDriveTicks(24), 0.25));
 
@@ -75,7 +75,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
             behaviors.add(new TurnToHeading(telemetry, robot, -45, 1));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new DriveHeading(telemetry, robot, -45, robot.calculateDriveTicks(8), 0.1));
-            behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
+            behaviors.add(new OpenClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, 45, -robot.calculateDriveTicks(8), -0.1));
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.TRAVEL));
             behaviors.add(new TurnToHeading(telemetry, robot, -90, 1));
@@ -104,7 +104,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
             behaviors.add(new TurnToHeading(telemetry, robot, 45, 1));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new DriveHeading(telemetry, robot, 45, robot.calculateDriveTicks(8), 0.1));
-            behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
+            behaviors.add(new OpenClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, -45, -robot.calculateDriveTicks(8), -0.1));
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.TRAVEL));
             behaviors.add(new TurnToHeading(telemetry, robot, 90, 1));
@@ -133,7 +133,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
             behaviors.add(new TurnToHeading(telemetry, robot, 40, 1));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new DriveHeading(telemetry, robot, 40, robot.calculateDriveTicks(8), 0.1));
-            behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
+            behaviors.add(new OpenClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, -40, -robot.calculateDriveTicks(8), -0.1));
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.TRAVEL));
             behaviors.add(new TurnToHeading(telemetry, robot, 90, 1));
@@ -162,7 +162,7 @@ public class PowerPlayAutoOpMode2 extends OpMode {
             behaviors.add(new TurnToHeading(telemetry, robot, -40, 1));
             behaviors.add(new RaiseLift(telemetry, robot, JunctionType.HIGH));
             behaviors.add(new DriveHeading(telemetry, robot, -40, robot.calculateDriveTicks(8), 0.1));
-            behaviors.add(new OpenClaw(telemetry, robot.getClaw()));
+            behaviors.add(new OpenClaw(telemetry, robot.getLeftClaw()));
             behaviors.add(new ReverseHeading(telemetry, robot, 40, -robot.calculateDriveTicks(8), -0.1));
             behaviors.add(new LowerLift(telemetry, robot, JunctionType.TRAVEL));
             behaviors.add(new TurnToHeading(telemetry, robot, -90, 1));

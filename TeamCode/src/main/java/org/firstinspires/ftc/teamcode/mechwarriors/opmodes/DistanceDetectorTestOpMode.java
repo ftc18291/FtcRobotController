@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.mechwarriors.StartingLocation;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Behavior;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.CloseClaw;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.FindJunction;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.AprilTagSignalDetector;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.SignalDetector;
 
@@ -67,7 +66,7 @@ public class DistanceDetectorTestOpMode extends OpMode {
 
     @Override
     public void start() {
-        behaviors.add(new CloseClaw(telemetry, robot.getClaw()));
+        behaviors.add(new CloseClaw(telemetry, robot.getLeftClaw()));
         behaviors.add(new FindJunction(telemetry, robot, robot.calculateDriveTicks(24)));
         behaviors.get(0).start();
     }
