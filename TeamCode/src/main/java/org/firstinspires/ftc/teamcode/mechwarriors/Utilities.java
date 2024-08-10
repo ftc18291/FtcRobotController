@@ -5,7 +5,7 @@ public class Utilities {
     public final static double MILLIMETERS_PER_INCH = 25.4;
 
     /**
-     * Can be used to "soften" the controls
+     * Can be used to "soften" the controls.
      *
      * @param input
      * @return
