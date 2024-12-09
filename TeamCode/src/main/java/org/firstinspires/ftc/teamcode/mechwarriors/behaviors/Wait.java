@@ -5,7 +5,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Wait extends Behavior {
 
-    ElapsedTime timer;    // todo: write your code here
+    ElapsedTime timer;
     int delayMilliseconds;
 
     public Wait(Telemetry telemetry, int delayMilliseconds) {

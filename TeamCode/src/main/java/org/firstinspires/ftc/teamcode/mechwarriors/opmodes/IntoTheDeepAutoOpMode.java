@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
@@ -15,6 +15,8 @@ import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.DriveHeading;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.LowerLift;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.OpenClaw;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RaiseLift;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.ReverseHeading;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Translate;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.TurnToHeading;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Wait;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
@@ -24,10 +26,11 @@ import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Robot;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(group = "CenterStage")
-@Disabled
-public class CenterStageAutoOpMode extends OpMode {
+@Autonomous(group = "IntoTheDeep", name = "Auto OpMode")
+public class IntoTheDeepAutoOpMode extends OpMode {
+
     Robot robot;
+
     List<Behavior> behaviors = new ArrayList<>();
     int state = 0;
     AllianceColor allianceColor = AllianceColor.BLUE;
@@ -35,20 +38,14 @@ public class CenterStageAutoOpMode extends OpMode {
     int waitTime = 0;
     boolean dpaddownPressed = false;
     boolean dpadupPressed = false;
-    Claw leftClaw;
-    Claw rightClaw;
-    DistanceSensor leftDistanceSensor;
-    DistanceSensor rightDistanceSensor;
+    Claw liftClaw;
 
     @Override
     public void init() {
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
         robot = new IntoTheDeepRobot(hardwareMap);
-        leftClaw = robot.getSampleClaw();
-        leftClaw.open();
-        rightClaw.open();
-        leftDistanceSensor = hardwareMap.get(DistanceSensor.class, "leftDistanceSensor");
-        rightDistanceSensor = hardwareMap.get(DistanceSensor.class, "rightDistanceSensor");
+        liftClaw = robot.getSampleClaw();
+        liftClaw.close();
     }
 
     @Override
@@ -89,52 +86,32 @@ public class CenterStageAutoOpMode extends OpMode {
         telemetry.addData("Starting Location", startingLocation);
         telemetry.addData("Alliance Color", allianceColor);
         telemetry.addData("Time to Wait", waitTime);
-        // telemetry.addLine(drawStartingLocation());
-
     }
 
     @Override
     public void start() {
         robot.resetYaw();
+        SparkFunOTOS.Pose2D position = robot.getSparkFunOTOS().getPosition();
+
         behaviors.add(new Wait(telemetry, waitTime * 1000));
-        //behaviors.add(new DetectPixel(robot.getTfodProcessor(), telemetry));
-        behaviors.add(new OpenClaw(telemetry, leftClaw));
-        behaviors.add(new OpenClaw(telemetry, rightClaw));
+        behaviors.add(new CloseClaw(telemetry, liftClaw));
+
         if (startingLocation == StartingLocation.LEFT) {
-            if (allianceColor == AllianceColor.RED) {
-                behaviors.add(new DriveHeading(telemetry, robot, 0, 25, .2));
-                behaviors.add(new TurnToHeading(telemetry, robot, -90, .006));
-                behaviors.add(new DriveHeading(telemetry, robot, -90, 76, .4));
-
-            } else {
-                behaviors.add(new DriveHeading(telemetry, robot, 0, 25, .2));
-                behaviors.add(new TurnToHeading(telemetry, robot, 90, .006));
-                behaviors.add(new DriveHeading(telemetry, robot, 90, 26, .4));
-            }
+            behaviors.add(new DriveHeading(telemetry, robot, 0, 12, .2));
+            behaviors.add(new TurnToHeading(telemetry, robot, 90, .006));
+            behaviors.add(new DriveHeading(telemetry, robot, 90, 34, .5));
+            behaviors.add(new TurnToHeading(telemetry, robot, 135, .006));
+            behaviors.add(new RaiseLift(telemetry, robot, LiftHeight.HIGH));
+            behaviors.add(new DriveHeading(telemetry, robot, 135, 15, .1));
+            behaviors.add(new OpenClaw(telemetry, liftClaw));
+            behaviors.add(new ReverseHeading(telemetry, robot, 135, -15, -0.2));
+            behaviors.add(new LowerLift(telemetry, robot, LiftHeight.GROUND));
+            behaviors.add(new TurnToHeading(telemetry, robot, 85, .006));
+            //behaviors.add(new ReverseHeading(telemetry, robot, 85, -83, -0.75));
         } else {
-            if (allianceColor == AllianceColor.RED) {
-                behaviors.add(new DriveHeading(telemetry, robot, 0, 25, .2));
-                behaviors.add(new TurnToHeading(telemetry, robot, -90, .006));
-                behaviors.add(new DriveHeading(telemetry, robot, -90, 26, .4));
-            } else {
-                behaviors.add(new DriveHeading(telemetry, robot, 0, 25, .2));
-                behaviors.add(new TurnToHeading(telemetry, robot, 90, .006));
-                behaviors.add(new DriveHeading(telemetry, robot, 90, 76, .4));
-            }
-        }
-        behaviors.add(new RaiseLift(telemetry, robot, LiftHeight.HIGH));
-        behaviors.add(new CloseClaw(telemetry, leftClaw));
-        behaviors.add(new CloseClaw(telemetry, rightClaw));
-        behaviors.add(new LowerLift(telemetry, robot, LiftHeight.GROUND));
-
-        if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.BLUE) {
-            //behaviors.add(new Translate(telemetry, robot, 180, robot.calculateDriveTicks(12), .2));
-            behaviors.add(new TurnToHeading(telemetry, robot, 175, .006));
-            behaviors.add(new DriveHeading(telemetry, robot, 175, 22, .2));
-        } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.RED) {
-            //behaviors.add(new Translate(telemetry, robot, -180, robot.calculateDriveTicks(12), .2));
-            behaviors.add(new TurnToHeading(telemetry, robot, -175, .006));
-            behaviors.add(new DriveHeading(telemetry, robot, -175, 22, .2));
+            behaviors.add(new DriveHeading(telemetry, robot, 0, 6, .2));
+            behaviors.add(new TurnToHeading(telemetry, robot, -90, .006));
+            behaviors.add(new DriveHeading(telemetry, robot, -90, 48, .5));
         }
         behaviors.get(0).start();
     }
@@ -162,29 +139,5 @@ public class CenterStageAutoOpMode extends OpMode {
         }
 
 
-    }
-
-    private String drawStartingLocation() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n  JUDGES\n");
-        sb.append("|--------|\n");
-        if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.BLUE) {
-            sb.append("| X      |\n");
-        } else if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.RED) {
-            sb.append("|      X |\n");
-        } else {
-            sb.append("|        |\n");
-        }
-        sb.append("|        |\n");
-        if (startingLocation == StartingLocation.RIGHT && allianceColor == AllianceColor.BLUE) {
-            sb.append("| X      |\n");
-        } else if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.RED) {
-            sb.append("|      X |\n");
-        } else {
-            sb.append("|        |\n");
-        }
-        sb.append("|--------|\n");
-        sb.append(" AUDIENCE\n");
-        return sb.toString();
     }
 }

@@ -1,15 +1,14 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.behaviors;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechwarriors.JunctionType;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
+import org.firstinspires.ftc.teamcode.mechwarriors.LiftHeight;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Robot;
 
 public class LowerLift extends Behavior {
     Robot robot;
-    JunctionType junctionType;
+    LiftHeight junctionType;
 
-    public LowerLift(Telemetry telemetry, Robot robot, JunctionType junctionType) {
+    public LowerLift(Telemetry telemetry, Robot robot, LiftHeight junctionType) {
         this.robot = robot;
         this.telemetry = telemetry;
         this.junctionType = junctionType;

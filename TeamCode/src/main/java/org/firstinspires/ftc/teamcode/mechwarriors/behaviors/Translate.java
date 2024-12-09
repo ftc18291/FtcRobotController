@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.behaviors;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Robot;
 
 public class Translate extends Behavior {

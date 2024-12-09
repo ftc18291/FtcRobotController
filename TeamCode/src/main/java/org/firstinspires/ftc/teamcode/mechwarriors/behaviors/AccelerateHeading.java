@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode.mechwarriors.behaviors;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.IntoTheDeepRobot;
 
 public class AccelerateHeading extends Behavior {
 
-    private MechRobot robot;
+    private IntoTheDeepRobot robot;
     public static final double MINIMUM_SPEED = 0.15;
     public static final double MAXIMUM_SPEED = 1.0;
     public static final int ACCELERATION_TIME_MS = 3000;
@@ -27,7 +27,7 @@ public class AccelerateHeading extends Behavior {
         ACCELERATE, DECELERATE, COAST
     }
 
-    public AccelerateHeading(MechRobot robot, Telemetry telemetry, int heading, int distance, double targetSpeed) {
+    public AccelerateHeading(IntoTheDeepRobot robot, Telemetry telemetry, int heading, int distance, double targetSpeed) {
         this.robot = robot;
         this.heading = heading;
         this.desiredTicks = distance;

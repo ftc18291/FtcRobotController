@@ -6,20 +6,20 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.IntoTheDeepRobot;
 
-@TeleOp(group = "MechWarriors")
+@TeleOp(group = "PowerPlay")
 @Disabled
 public class PowerPlayOpMode extends OpMode {
-    MechRobot robot;
+    IntoTheDeepRobot robot;
     Claw claw;
     boolean slowMode = false;
     double zeroPitchAngle;
 
     @Override
     public void init() {
-        robot = new MechRobot(hardwareMap);
-        claw = robot.getLeftClaw();
+        robot = new IntoTheDeepRobot(hardwareMap);
+        claw = robot.getSampleClaw();
         zeroPitchAngle = robot.getPitchAngle();
     }
 

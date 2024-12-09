@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,26 +12,21 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Behavior;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.CloseClaw;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.CloseSweepers;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.LowerClaw;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.OpenClaw;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.OpenSweepers;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RaiseClaw;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.MechRobot;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.PlaneLauncher;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.IntoTheDeepRobot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(group = "MechWarriors")
+@TeleOp(group = "CenterStage")
+@Disabled
 public class CenterStageOpMode extends OpMode {
-    MechRobot robot;
+    IntoTheDeepRobot robot;
     Claw leftClaw;
     Claw rightClaw;
     boolean slowMode = false;
     double zeroPitchAngle;
-    PlaneLauncher planeLauncher;
 
     DcMotor robotLift;
     Servo robotLiftServoArm;
@@ -44,11 +40,9 @@ public class CenterStageOpMode extends OpMode {
 
     @Override
     public void init() {
-        robot = new MechRobot(hardwareMap);
-        leftClaw = robot.getLeftClaw();
-        rightClaw = robot.getRightClaw();
+        robot = new IntoTheDeepRobot(hardwareMap);
+        leftClaw = robot.getSampleClaw();
         zeroPitchAngle = robot.getPitchAngle();
-        planeLauncher = new PlaneLauncher(hardwareMap);
         robotLift = hardwareMap.get(DcMotor.class, "robotLift");
         robotLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robotLiftServoArm = hardwareMap.get(Servo.class, "robotLiftServoArm");
@@ -62,18 +56,11 @@ public class CenterStageOpMode extends OpMode {
         leftClaw.open();
         rightClaw.open();
 
-        robot.closeSweepers();
 
-        pickUpPixelBehaviors.add(new CloseSweepers(telemetry, robot));
         pickUpPixelBehaviors.add(new CloseClaw(telemetry, leftClaw));
         pickUpPixelBehaviors.add(new CloseClaw(telemetry, rightClaw));
-        pickUpPixelBehaviors.add(new LowerClaw(telemetry, leftClaw));
-        pickUpPixelBehaviors.add(new LowerClaw(telemetry, rightClaw));
         pickUpPixelBehaviors.add(new OpenClaw(telemetry, leftClaw));
         pickUpPixelBehaviors.add(new OpenClaw(telemetry, rightClaw));
-        pickUpPixelBehaviors.add(new OpenSweepers(telemetry, robot));
-        pickUpPixelBehaviors.add(new RaiseClaw(telemetry, leftClaw));
-        pickUpPixelBehaviors.add(new RaiseClaw(telemetry, rightClaw));
     }
 
     @Override
@@ -127,7 +114,7 @@ public class CenterStageOpMode extends OpMode {
         }
 
         if (gamepad1.b) {
-            planeLauncher.launch();
+           // planeLauncher.launch();
         }
 
         // Gamepad 2
@@ -157,9 +144,6 @@ public class CenterStageOpMode extends OpMode {
                 telemetry.addLine("Pixels lift done");
                 pixelBeingLifted = false;
                 pixelBeingLiftedState = 0;
-                leftClaw.up();
-                rightClaw.up();
-                robot.closeSweepers();
             }
         } else {
             if (gamepad2.dpad_up) {
@@ -173,22 +157,10 @@ public class CenterStageOpMode extends OpMode {
                 telemetry.addData("Lift", "Stop");
             }
 
-            if (gamepad2.right_trigger > .85) {
-                telemetry.addLine("right trigger down");
-                rightClaw.down();
-            } else {
-                rightClaw.up();
-            }
-            if (gamepad2.left_trigger > .85) {
-                leftClaw.down();
-            } else {
-                leftClaw.up();
-            }
 
             rightClaw.toggleOpen(gamepad2.right_bumper, telemetry);
             leftClaw.toggleOpen(gamepad2.left_bumper, telemetry);
 
-            robot.toggleSweepers(gamepad2.a, telemetry);
         }
     }
 }

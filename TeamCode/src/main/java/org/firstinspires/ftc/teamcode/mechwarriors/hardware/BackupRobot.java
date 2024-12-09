@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.hardware;
 
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -26,29 +27,19 @@ public class BackupRobot extends Robot {
     }
 
     @Override
+    public SparkFunOTOS getSparkFunOTOS() {
+        return null;
+    }
+
+    @Override
     public void stop() {
         this.drive(0, 0, 0);
 
     }
 
     @Override
-    public Claw getLeftClaw() {
+    public Claw getSampleClaw() {
         return null;
-    }
-
-    @Override
-    public Claw getRightClaw() {
-        return null;
-    }
-
-    @Override
-    public void openSweepers() {
-
-    }
-
-    @Override
-    public void closeSweepers() {
-
     }
 
 

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.hardware;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -9,27 +10,25 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 public abstract class Robot {
     IMU imu;
-    //private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
-   // private TfodProcessor tfod;
-   // private VisionPortal visionPortal;
+    SparkFunOTOS sparkFunOTOS;
+
     private LinearSlideLift lift;
     public Robot(HardwareMap hardwareMap) {
-
         initIMU(hardwareMap);
-       // initTfod(hardwareMap);
     }
 
     void initIMU(HardwareMap hardwareMap) {
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(
-                new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
-                        RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+                new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                        RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
         imu.initialize(parameters);
     }
+
+    public abstract SparkFunOTOS getSparkFunOTOS();
 
     public LinearSlideLift getLift() {return lift;}
 
@@ -61,27 +60,5 @@ public abstract class Robot {
 
     public abstract void stop();
 
-    public abstract Claw getLeftClaw();
-
-    public abstract Claw getRightClaw();
-
-    public abstract void openSweepers();
-    public abstract void closeSweepers();
-
-//    public TfodProcessor getTfodProcessor(){
-//        return tfod;
-//    }
-//
-//    private void initTfod(HardwareMap hardwareMap) {
-//        tfod = TfodProcessor.easyCreateWithDefaults();
-//
-//        if (USE_WEBCAM) {
-//            visionPortal = VisionPortal.easyCreateWithDefaults(
-//                    hardwareMap.get(WebcamName.class, "Webcam 1"), tfod);
-//        } else {
-//            visionPortal = VisionPortal.easyCreateWithDefaults(
-//                    BuiltinCameraDirection.BACK, tfod);
-//        }
-//
-//    }
+    public abstract Claw getSampleClaw();
 }

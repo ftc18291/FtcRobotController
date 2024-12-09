@@ -8,39 +8,29 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class PixelClaw implements Claw {
+public class SampleClaw implements Claw {
 
     Servo clawServo;
-    Servo clawExtensionServo;
     boolean isOpen = false;
-    boolean isUp = false;
     boolean changed = false;
-    final static double OPEN = 1.0;
-    final static double CLOSED = 0.0;
+    final static double OPEN = 1;
+    final static double CLOSED = 0;
 
 
-    public PixelClaw(HardwareMap hardwareMap,
-                     String clawServoName,
-                     String clawExtensionServoName,
-                     boolean reversed,
-                     double closePosition,
-                     double openPosition,
-                     double extensionUp,
-                     double extensionDown) {
+    public SampleClaw(HardwareMap hardwareMap,
+                      String clawServoName,
+                      boolean reversed,
+                      double closePosition,
+                      double openPosition) {
         clawServo = hardwareMap.get(Servo.class, clawServoName);
-        clawExtensionServo = hardwareMap.get(Servo.class, clawExtensionServoName);
 
         clawServo.scaleRange(closePosition, openPosition);
-        clawExtensionServo.scaleRange(extensionUp, extensionDown);
         if (reversed) {
             clawServo.setDirection(Servo.Direction.REVERSE);
-            clawExtensionServo.setDirection(Servo.Direction.REVERSE);
         } else {
             clawServo.setDirection(Servo.Direction.FORWARD);
-            clawExtensionServo.setDirection(Servo.Direction.FORWARD);
         }
-        this.open();
-        this.up();
+        this.close();
     }
 
     @Override
@@ -53,22 +43,6 @@ public class PixelClaw implements Claw {
     public void close() {
         clawServo.setPosition(CLOSED);
         this.isOpen = false;
-    }
-
-    @Override
-    public void up() {
-        clawExtensionServo.setPosition(0.0);
-        this.isUp = true;
-    }
-
-    @Override
-    public void down() {
-        clawExtensionServo.setPosition(1.0);
-        this.isUp = false;
-    }
-
-    @Override
-    public void stop() {
     }
 
     @Override
