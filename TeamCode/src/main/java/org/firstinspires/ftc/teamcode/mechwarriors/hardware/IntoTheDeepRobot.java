@@ -31,39 +31,16 @@ public class IntoTheDeepRobot extends Robot {
     Claw sampleClaw;
     LinearSlideLift lift;
 
-    Servo leftSweeperServo;
-    Servo rightSweeperServo;
-
-    LEDIndicator sweeperPositionIndicator;
-
     public IntoTheDeepRobot(HardwareMap hardwareMap) {
         super(hardwareMap);
 
-        sparkFunOTOS = hardwareMap.get(SparkFunOTOS.class, "sparkFunOTOS");
-
-        // Front Left Motor
-        frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
-        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-
-        // Front Right Motor
-        frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
-
-        // Back Left Motor
-        backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
-        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-
-        // Back Right Motor
-        backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
+//        sparkFunOTOS = hardwareMap.get(SparkFunOTOS.class, "sparkFunOTOS");
 
 
-      //  sweeperPositionIndicator = new LEDIndicator(hardwareMap);
-      //  sweeperPositionIndicator.setColor(LEDIndicator.LEDColor.GREEN);
 
-        setDriveMotorZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        resetMotorTicks();
 
         initIMU(hardwareMap);
-        configureOtos();
+        //configureOtos();
 
         sampleClaw = new SampleClaw(
                 hardwareMap,
@@ -71,7 +48,6 @@ public class IntoTheDeepRobot extends Robot {
                 true,
                 0.25,
                 0.54);
-        lift = new LinearSlideLift(hardwareMap);
     }
 
     public Claw getSampleClaw() {

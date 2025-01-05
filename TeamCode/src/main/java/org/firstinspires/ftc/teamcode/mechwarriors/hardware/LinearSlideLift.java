@@ -1,14 +1,19 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.hardware;
 
+import android.sax.StartElementListener;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
 
 public class LinearSlideLift {
     private final static double LIFT_MAX_UP_POWER = 1.0;
     private final static double LIFT_MAX_DOWN_POWER = 1.0;
     private final static double LIFT_MIN_TICKS = 0;
-    private final static double LIFT_MAX_TICKS = 7500;
+    private final static double LIFT_MAX_TICKS = 4500;
     private final static double LIFT_SLOW_ZONE = 500;
     private final static double LIFT_SPOOL_DIAMETER_MM = 25;
     private final static double LIFT_SPOOL_DIAMETER_IN = LIFT_SPOOL_DIAMETER_MM / Utilities.MILLIMETERS_PER_INCH;
@@ -19,14 +24,14 @@ public class LinearSlideLift {
     private final static double LIFT_SPOOL_TICKS_PER_ONE_INCH = LIFT_SPOOL_CIRCUMFERENCE_IN / LIFT_SPOOL_TICKS_PER_ROTATION;
 
     // Lift motor
-    DcMotor liftMotor;
+    DcMotorEx liftMotor;
 
     public LinearSlideLift(HardwareMap hardwareMap) {
         // Lift Motor
-        liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
+        liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
         liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
@@ -45,6 +50,7 @@ public class LinearSlideLift {
         if (liftMotor.getCurrentPosition() <= LIFT_MIN_TICKS) {
             liftArmStop();
         } else if (liftMotor.getCurrentPosition() <= LIFT_SLOW_ZONE) {
+
             liftMotor.setPower(-LIFT_MAX_DOWN_POWER * 0.5);
         } else {
             liftMotor.setPower(-LIFT_MAX_DOWN_POWER);
@@ -57,6 +63,10 @@ public class LinearSlideLift {
 
     public double getLiftTicks() {
         return liftMotor.getCurrentPosition();
+    }
+
+    public double getMotorCurrent() {
+        return  liftMotor.getCurrent(CurrentUnit.AMPS);
     }
 
     public double calculateLiftTicks(double heightInInches) {

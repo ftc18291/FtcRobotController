@@ -45,16 +45,19 @@ public class IntoTheDeepNoDriveTeleOp extends OpMode {
     public void loop() {
 
         if (gamepad1.dpad_up) {
-            telemetry.addData("hang motors up", "");
             leftHangMotor.setPower(1);
-           // rightHangMotor.setPower(-1);
         } else if (gamepad1.dpad_down) {
-            telemetry.addData("hang motors down", "");
             leftHangMotor.setPower(-1);
-           // rightHangMotor.setPower(1);
         } else {
             leftHangMotor.setPower(0);
-           // rightHangMotor.setPower(0);
+        }
+
+        if (gamepad1.right_bumper) {
+            rightHangMotor.setPower(1);
+        } else if (gamepad1.left_bumper) {
+            rightHangMotor.setPower(-1);
+        } else {
+            rightHangMotor.setPower(0);
         }
 
 //        if (gamepad1.dpad_up) {
@@ -85,15 +88,7 @@ public class IntoTheDeepNoDriveTeleOp extends OpMode {
             clawServo.setPosition(0.1);
         }
 
-        if (gamepad1.right_bumper) {
-            telemetry.addData("right bumper", "");
-            leftHangMotor.setPower(1);
-        } else if (gamepad1.left_bumper) {
-            telemetry.addData("left bumper", "");
-            leftHangMotor.setPower(-1);
-        } else {
-            leftHangMotor.setPower(0);
-        }
+
 
     }
 }

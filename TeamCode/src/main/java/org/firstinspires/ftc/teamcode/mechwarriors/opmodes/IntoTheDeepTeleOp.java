@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
+import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.controller.PController;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,21 +14,32 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.mechwarriors.LiftHeight;
 import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
 
+@Config
 @TeleOp(group = "IntoTheDeep", name = "TeleOp")
 public class IntoTheDeepTeleOp extends OpMode {
 
     DcMotorEx clawArmMotor;
     DcMotorEx liftMotor;
 
+    PController liftMotorPIDController;
+    public static double liftKp = 0.01;
+    double liftTargetPosition = 0;
+
+    PController clawArmPIDController;
+    public static double clawArmKp = 0.02;
+    public static double clawArmTargetPosition = 0;
+
     Servo rightHangServo;
     Servo leftHangServo;
     DcMotorEx rightHangMotor;
     DcMotorEx leftHangMotor;
 
-    Servo clawServo;
+    Servo sampleClawServo;
 
     DcMotor frontLeftMotor;
     DcMotor backLeftMotor;
@@ -32,7 +48,10 @@ public class IntoTheDeepTeleOp extends OpMode {
 
     SparkFunOTOS sparkFunOTOS;
 
-    int liftTicks = 0;
+    GamepadEx gamepad2Ex;
+    ToggleButtonReader toggleButtonReader;
+    boolean clawOpen = true;
+
     boolean slowMode = false;
 
     @Override
@@ -64,15 +83,20 @@ public class IntoTheDeepTeleOp extends OpMode {
         backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        clawServo = hardwareMap.get(Servo.class, "clawServo");
+        sampleClawServo = hardwareMap.get(Servo.class, "clawServo");
+        sampleClawServo.scaleRange(0.25, 0.55);
+
         clawArmMotor = hardwareMap.get(DcMotorEx.class, "armLiftMotor");
         clawArmMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        clawArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        clawArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        clawArmMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        clawArmPIDController = new PController(clawArmKp);
+
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftMotorPIDController = new PController(liftKp);
 
         rightHangServo = hardwareMap.get(Servo.class, "rightHangServo");
         leftHangServo = hardwareMap.get(Servo.class, "leftHangServo");
@@ -83,17 +107,30 @@ public class IntoTheDeepTeleOp extends OpMode {
         rightHangMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftHangMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        gamepad2Ex = new GamepadEx(gamepad2);
+
+        toggleButtonReader = new ToggleButtonReader(
+                gamepad2Ex, GamepadKeys.Button.RIGHT_BUMPER
+        );
+
         slowMode = true;
     }
 
     @Override
-    public void loop() {
-        SparkFunOTOS.Pose2D pos = sparkFunOTOS.getPosition();
+    public void start() {
+        sampleClawServo.setPosition(0);
+    }
 
-        // Log the position to the telemetry
-        telemetry.addData("X coordinate", pos.x);
-        telemetry.addData("Y coordinate", pos.y);
-        telemetry.addData("Heading angle", pos.h);
+    @Override
+    public void loop() {
+        toggleButtonReader.readValue();
+
+        //        SparkFunOTOS.Pose2D pos = sparkFunOTOS.getPosition();
+        //
+        //        // Log the position to the telemetry
+        //        telemetry.addData("X coordinate", pos.x);
+        //        telemetry.addData("Y coordinate", pos.y);
+        //        telemetry.addData("Heading angle", pos.h);
 
         ////////////////////////////////////////////
 
@@ -140,7 +177,7 @@ public class IntoTheDeepTeleOp extends OpMode {
                 frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
                 // 3.19 inches
-                while (frontLeftMotor.getCurrentPosition()  < 60) {
+                while (frontLeftMotor.getCurrentPosition() < 60) {
                     // do nothing
                     frontLeftMotor.setPower(0.2);
                     backLeftMotor.setPower(0.2);
@@ -164,11 +201,11 @@ public class IntoTheDeepTeleOp extends OpMode {
             }
         }
 
-        if (gamepad1.dpad_up) {
+        if (gamepad1.dpad_down) {
             telemetry.addData("hang motors up", "");
             leftHangMotor.setPower(1);
             rightHangMotor.setPower(-1);
-        } else if (gamepad1.dpad_down) {
+        } else if (gamepad1.dpad_up) {
             telemetry.addData("hang motors down", "");
             leftHangMotor.setPower(-1);
             rightHangMotor.setPower(1);
@@ -176,59 +213,87 @@ public class IntoTheDeepTeleOp extends OpMode {
             leftHangMotor.setPower(0);
             rightHangMotor.setPower(0);
         }
-
-//
-//        if (gamepad1.y) {
-//            telemetry.addData("right hang motor up", "");
-//            rightHangMotor.setPower(1);
-//        } else if (gamepad1.a) {
-//            telemetry.addData("right hang motor down", "");
-//            rightHangMotor.setPower(-1);
-//        } else {
-//            rightHangMotor.setPower(0);
-//        }
+        telemetry.addData("Left hang motor current", leftHangMotor.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData("Right hang motor current", rightHangMotor.getCurrent(CurrentUnit.AMPS));
 
         ////////////////////////////////////////////
-
         if (gamepad2.dpad_down) {
-            clawArmMotor.setPower(0.4);
+            if (liftTargetPosition > 300) {
+                clawArmTargetPosition += 10;
+                if (clawArmTargetPosition > 490) {
+                    clawArmTargetPosition = 490;
+                }
+            }
         } else if (gamepad2.dpad_up) {
-            clawArmMotor.setPower(-0.25);
-        } else {
-            clawArmMotor.setPower(0);
+            clawArmTargetPosition -= 10;
+            if (clawArmTargetPosition < 0) {
+                clawArmTargetPosition = 0;
+            }
         }
-        telemetry.addData("ClawArmMotor Position", clawArmMotor.getCurrentPosition());
+//        if (gamepad2.dpad_up) {
+//            clawArmTargetPosition = 0;
+//        } else if (gamepad2.dpad_left) {
+//            if (liftTargetPosition > 300) {
+//                clawArmTargetPosition = 100;
+//            }
+//        } else if (gamepad2.dpad_down) {
+//            if (liftTargetPosition > 300) {
+//                clawArmTargetPosition = 340;
+//            }
+//        } else if (gamepad2.dpad_right) {
+//            if (liftTargetPosition > 300) {
+//                clawArmTargetPosition = 495;
+//            }
+//        }
+
+        double clawArmMotorCurrentPosition = clawArmMotor.getCurrentPosition();
+        clawArmPIDController.setP(clawArmKp);
+        double clawArmPower = clawArmPIDController.calculate(clawArmMotorCurrentPosition, clawArmTargetPosition);
+        clawArmPower = Math.max(-0.40, Math.min(0.40, clawArmPower));
+        clawArmMotor.setPower(clawArmPower);
+
+        telemetry.addLine("");
+        telemetry.addData("Claw Arm Target position", clawArmTargetPosition);
+        telemetry.addData("Claw Arm Current position", clawArmMotorCurrentPosition);
+        telemetry.addData("Claw Arm Power", clawArmPower);
+        telemetry.addData("Claw Arm Motor current", clawArmMotor.getCurrent(CurrentUnit.AMPS));
 
         /////////////////////////////////////////
 
-        liftTicks = liftMotor.getCurrentPosition();
-        telemetry.addData("lift ticks", liftTicks);
-        if (gamepad2.a) {
-            liftMotor.setPower(-1);
-            if (liftTicks <= 0) {
-                liftMotor.setPower(0);
-            }
-        } else if (gamepad2.b /*&& liftTicks >= 0*/) {
-            liftMotor.setPower(1);
-            if (liftTicks >= 7500) {
-                liftMotor.setPower(0);
-            }
-        } else {
-            liftMotor.setPower(0);
-        }
-        telemetry.addData("LiftMotor " +
-                "Position", clawArmMotor.getCurrentPosition());
-
-        /////////////////////////////////////////
-
-        // claw close
-        if (gamepad2.x) {
-            clawServo.setPosition(0.56);
-        }
-        // claw open
         if (gamepad2.y) {
-            clawServo.setPosition(0.25);
+            liftTargetPosition = LiftHeight.HIGH.getTicks();
+        } else if (gamepad2.x) {
+            liftTargetPosition = LiftHeight.RETRIEVE.getTicks();
+        } else if (gamepad2.a) {
+            if (clawArmTargetPosition < 200) {
+                liftTargetPosition = LiftHeight.BOTTOM.getTicks();
+            }
         }
+
+        double liftMotorCurrentPosition = liftMotor.getCurrentPosition();
+        double liftPower = liftMotorPIDController.calculate(liftMotorCurrentPosition, liftTargetPosition);
+        liftMotor.setPower(liftPower);
+
+        telemetry.addData("Lift Target position", liftTargetPosition);
+        telemetry.addData("Lift Current position", liftMotorCurrentPosition);
+        telemetry.addData("Lift Power", liftPower);
+        telemetry.addData("Lift Motor current", liftMotor.getCurrent(CurrentUnit.AMPS));
+
+        /////////////////////////////////////////
+
+        if (toggleButtonReader.wasJustReleased()) {
+            clawOpen = !clawOpen;
+            telemetry.addLine("Claw trigger just released.");
+
+            if (!clawOpen) {
+                // set to closed position
+                sampleClawServo.setPosition(1);
+            } else {
+                // set to open position
+                sampleClawServo.setPosition(0);
+            }
+        }
+        telemetry.addData("Claw open", clawOpen);
     }
 
     private void configureOtos() {

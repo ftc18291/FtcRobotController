@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
+package org.firstinspires.ftc.teamcode.mechwarriors.opmodes.old;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -125,7 +125,7 @@ public class CenterStageAutoOpMode extends OpMode {
         behaviors.add(new RaiseLift(telemetry, robot, LiftHeight.HIGH));
         behaviors.add(new CloseClaw(telemetry, leftClaw));
         behaviors.add(new CloseClaw(telemetry, rightClaw));
-        behaviors.add(new LowerLift(telemetry, robot, LiftHeight.GROUND));
+        behaviors.add(new LowerLift(telemetry, robot, LiftHeight.BOTTOM));
 
         if (startingLocation == StartingLocation.LEFT && allianceColor == AllianceColor.BLUE) {
             //behaviors.add(new Translate(telemetry, robot, 180, robot.calculateDriveTicks(12), .2));

@@ -3,10 +3,10 @@ package org.firstinspires.ftc.teamcode.mechwarriors;
 
 public enum LiftHeight {
 
-    GROUND(0),    // 0"
-    TRAVEL(400),  // ~3"
-    LOW(2750), // 23.5"
-    HIGH(7500);   // 33.5"
+    BOTTOM(0),    // 0"
+    RETRIEVE(400),  // ~3"
+    LOW(1900), // 23.5"
+    HIGH(4000);   // 33.5"
 
     private final int ticks;
 

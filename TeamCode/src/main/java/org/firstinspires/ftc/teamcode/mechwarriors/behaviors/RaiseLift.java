@@ -15,8 +15,6 @@ public class RaiseLift extends Behavior {
         this.name = "Raise Lift = [Junction Type: " + junctionType + "]";
     }
 
-
-
     @Override
     public void start() {
         run();
@@ -27,6 +25,7 @@ public class RaiseLift extends Behavior {
         //this.telemetry.addData("lift ticks", robot.getLift().getLiftTicks());
         if (robot.getLift().getLiftTicks() < junctionType.getTicks()) {
             robot.getLift().liftArmUp();
+            telemetry.addData("Lift current", robot.getLift().getMotorCurrent());
         } else {
             robot.getLift().liftArmStop();
             this.isDone = true;

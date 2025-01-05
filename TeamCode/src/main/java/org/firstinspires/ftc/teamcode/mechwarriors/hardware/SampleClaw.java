@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class SampleClaw implements Claw {
-
     Servo clawServo;
     boolean isOpen = false;
     boolean changed = false;
@@ -20,11 +19,11 @@ public class SampleClaw implements Claw {
     public SampleClaw(HardwareMap hardwareMap,
                       String clawServoName,
                       boolean reversed,
-                      double closePosition,
-                      double openPosition) {
+                      double minPosition,
+                      double maxPosition) {
         clawServo = hardwareMap.get(Servo.class, clawServoName);
 
-        clawServo.scaleRange(closePosition, openPosition);
+        clawServo.scaleRange(minPosition, maxPosition);
         if (reversed) {
             clawServo.setDirection(Servo.Direction.REVERSE);
         } else {

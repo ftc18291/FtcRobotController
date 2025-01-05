@@ -17,6 +17,7 @@ public class ConcurrentActions extends Behavior {
     @Override
     public void start() {
         for (Behavior behavior : actions) {
+            //telemetry.addData("Starting concurrent action", behavior.name);
             behavior.start();
         }
         run();
@@ -24,13 +25,19 @@ public class ConcurrentActions extends Behavior {
 
     @Override
     public void run() {
-        boolean notDone = true;
+        boolean allBehaviorsAreDone = true;
         for (Behavior behavior : actions) {
+            //telemetry.addData("Running concurrent action", behavior.name);
             if (!behavior.isDone()) {
+                //telemetry.addLine("Behavior running done");
+                allBehaviorsAreDone = false;
                 behavior.run();
-                notDone = true;
             }
-            isDone = !notDone;
+            telemetry.addLine("==============================");
+        }
+        if (allBehaviorsAreDone) {
+            //telemetry.addLine("All concurrent actions done");
+            this.isDone = true;
         }
     }
 }

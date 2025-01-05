@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Robot;
 public class DriveHeading extends Behavior {
     Robot robot;
     int heading;
+    double rawDistance;
     int distance;
     double speed;
 
@@ -16,6 +17,7 @@ public class DriveHeading extends Behavior {
         this.telemetry = telemetry;
         this.name = "Drive Heading = [heading: " + heading + "°] [distance: " + distance + "] [speed: " + speed + "]";
         this.heading = heading;
+        this.rawDistance = distance;
         this.distance = robot.calculateDriveTicks(distance);
         this.speed = speed;
     }
@@ -34,6 +36,7 @@ public class DriveHeading extends Behavior {
         telemetry.addData("distance", distance);
         SparkFunOTOS.Pose2D otosPos = robot.getSparkFunOTOS().getPosition();
         telemetry.addData("otosPos", "x: " + otosPos.x + ", y: " + otosPos.y);
+        //if (otosPos.x <= rawDistance) {
         if (ticks <= distance) {
             double robotHeading = robot.getHeading();
             telemetry.addData("robotHeading", robotHeading);
