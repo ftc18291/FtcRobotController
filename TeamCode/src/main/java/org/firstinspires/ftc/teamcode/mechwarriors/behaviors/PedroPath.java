@@ -24,13 +24,14 @@ public class PedroPath extends Behavior {
 
     @Override
     public void start() {
+        follower.followPath(path, true);
         this.run();
     }
 
     @Override
     public void run() {
         follower.update();
-        follower.followPath(path);
+
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("end x", endPose.getX());
         telemetry.addData("y", follower.getPose().getY());
@@ -41,9 +42,5 @@ public class PedroPath extends Behavior {
             follower.holdPoint(endPose);
             this.isDone = true;
         }
-//        if (follower.getPose().getX() > (endPose.getX() - NULL_ZONE) &&
-//                follower.getPose().getY() > (endPose.getY() - NULL_ZONE)) {
-//            this.isDone = true;
-//        }
     }
 }

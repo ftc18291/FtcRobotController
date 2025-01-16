@@ -26,7 +26,6 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-@Disabled
 @Autonomous(group = "IntoTheDeep", name = "Test Pedro Auto OpMode")
 public class TestPedroPath extends OpMode {
 

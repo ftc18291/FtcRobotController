@@ -125,12 +125,12 @@ public class IntoTheDeepTeleOp extends OpMode {
     public void loop() {
         toggleButtonReader.readValue();
 
-        //        SparkFunOTOS.Pose2D pos = sparkFunOTOS.getPosition();
-        //
-        //        // Log the position to the telemetry
-        //        telemetry.addData("X coordinate", pos.x);
-        //        telemetry.addData("Y coordinate", pos.y);
-        //        telemetry.addData("Heading angle", pos.h);
+//        SparkFunOTOS.Pose2D pos = sparkFunOTOS.getPosition();
+//
+//        // Log the position to the telemetry
+//        telemetry.addData("X coordinate", pos.x);
+//        telemetry.addData("Y coordinate", pos.y);
+//        telemetry.addData("Heading angle", pos.h);
 
         ////////////////////////////////////////////
 
@@ -341,8 +341,8 @@ public class IntoTheDeepTeleOp extends OpMode {
         // multiple speeds to get an average, then set the linear scalar to the
         // inverse of the error. For example, if you move the robot 100 inches and
         // the sensor reports 103 inches, set the linear scalar to 100/103 = 0.971
-        sparkFunOTOS.setLinearScalar(1.068); //93.6   100/93.6
-        sparkFunOTOS.setAngularScalar(0.998); // -8.421, 7.000   3600/3607.5
+        sparkFunOTOS.setLinearScalar(1.014); //93.6   100/93.6
+        sparkFunOTOS.setAngularScalar(1.003); // -8.421, 7.000   3600/3607.5
 
         // The IMU on the OTOS includes a gyroscope and accelerometer, which could
         // have an offset. Note that as of firmware version 1.0, the calibration

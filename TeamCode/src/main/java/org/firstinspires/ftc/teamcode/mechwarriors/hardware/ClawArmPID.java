@@ -38,14 +38,14 @@ public class ClawArmPID {
             isMoving = false;
         }
         double power = pidController.calculate(currentPosition, targetPosition);
-        power = Math.max(-0.50, Math.min(0.50, power));
+        power = Math.max(-0.50, Math.min(0.5, power));
         motor.setPower(power);
     }
 
     public void maintain() {
         double currentPosition = motor.getCurrentPosition();
         double power = pidController.calculate(currentPosition, targetPosition);
-        power = Math.max(-0.40, Math.min(0.0, power));
+        power = Math.max(-0.50, Math.min(0.5, power));
         motor.setPower(power);
     }
 
