@@ -49,12 +49,12 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
     boolean dpadupPressed = false;
 
     private final Pose startPose = new Pose(9, 104.5, Math.toRadians(90));
-    private final Pose scorePose = new Pose(16.5, 130.5, Math.toRadians(135));
-    private final Pose pickup1Pose = new Pose(37, 102.5, Math.toRadians(60));
-    private final Pose pickup2Pose = new Pose(37, 112.5, Math.toRadians(60));
-    private final Pose pickup3Pose = new Pose(37, 122.5, Math.toRadians(60));
+    private final Pose scorePose = new Pose(16, 130, Math.toRadians(135));
+    private final Pose pickup1Pose = new Pose(36, 102.5, Math.toRadians(60));
+    private final Pose pickup2Pose = new Pose(36, 112.5, Math.toRadians(60));
+    private final Pose pickup3Pose = new Pose(37, 123.5, Math.toRadians(60));
 
-    private final Pose park = new Pose(58, 102, Math.toRadians(270));
+    private final Pose park = new Pose(58, 102.5, Math.toRadians(270));
     private Path scorePreload;
     private Path goToSample1, scoreSample1;
     private Path goToSample2, scoreSample2;
@@ -137,11 +137,13 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
             // Score sample
             behaviors.add(new SetClawArmPosition(telemetry, clawArm, ClawArmPosition.SCORE));
             behaviors.add(new OpenClaw(telemetry, sampleClaw));
+            behaviors.add(new CloseClaw(telemetry, sampleClaw));
             behaviors.add(new SetClawArmPosition(telemetry, clawArm, ClawArmPosition.STOW));
 
             // Drive to sample 1
             behaviors.add(new ConcurrentActions(telemetry,
                     new PedroPath(follower, goToSample1, pickup1Pose, telemetry),
+                    new OpenClaw(telemetry, sampleClaw),
                     new SetLiftHeight(telemetry, lift, LiftHeight.RETRIEVE)
             ));
 
@@ -159,11 +161,13 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
             // Score sample
             behaviors.add(new SetClawArmPosition(telemetry, clawArm, ClawArmPosition.SCORE));
             behaviors.add(new OpenClaw(telemetry, sampleClaw));
+            behaviors.add(new CloseClaw(telemetry, sampleClaw));
             behaviors.add(new SetClawArmPosition(telemetry, clawArm, ClawArmPosition.STOW));
 
             // Drive to sample 2
             behaviors.add(new ConcurrentActions(telemetry,
                     new PedroPath(follower, goToSample2, pickup2Pose, telemetry),
+                    new OpenClaw(telemetry, sampleClaw),
                     new SetLiftHeight(telemetry, lift, LiftHeight.RETRIEVE)
             ));
 
@@ -181,11 +185,13 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
             // Score sample
             behaviors.add(new SetClawArmPosition(telemetry, clawArm, ClawArmPosition.SCORE));
             behaviors.add(new OpenClaw(telemetry, sampleClaw));
+            behaviors.add(new CloseClaw(telemetry, sampleClaw));
             behaviors.add(new SetClawArmPosition(telemetry, clawArm, ClawArmPosition.STOW));
 
             // Drive to sample 3
             behaviors.add(new ConcurrentActions(telemetry,
                     new PedroPath(follower, goToSample3, pickup3Pose, telemetry),
+                    new OpenClaw(telemetry, sampleClaw),
                     new SetLiftHeight(telemetry, lift, LiftHeight.RETRIEVE)
             ));
 
@@ -203,13 +209,15 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
             // Score sample
             behaviors.add(new SetClawArmPosition(telemetry, clawArm, ClawArmPosition.SCORE));
             behaviors.add(new OpenClaw(telemetry, sampleClaw));
+            behaviors.add(new CloseClaw(telemetry, sampleClaw));
             behaviors.add(new SetClawArmPosition(telemetry, clawArm, ClawArmPosition.STOW));
 
-            // Lower lift
+            // Park
             behaviors.add(new ConcurrentActions(telemetry,
                     new PedroPath(follower, goToPark, park, telemetry),
-                    new SetLiftHeight(telemetry, lift, LiftHeight.BOTTOM)
+                    new SetLiftHeight(telemetry, lift, LiftHeight.RETRIEVE)
             ));
+            behaviors.add(new SetClawArmPosition(telemetry, clawArm, ClawArmPosition.PARK));
         } else {
 //            behaviors.add(new DriveHeading(telemetry, robot, 0, 6, .2));
 //            behaviors.add(new TurnToHeading(telemetry, robot, -90, .006));
@@ -233,6 +241,7 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.update();
+
         follower.update();
     }
 
@@ -280,7 +289,7 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
         scoreSample3 = new Path(new BezierLine(new Point(pickup3Pose), new Point(scorePose)));
         scoreSample3.setLinearHeadingInterpolation(pickup3Pose.getHeading(), scorePose.getHeading());
 
-        goToPark = new Path(new BezierCurve(new Point(scorePose), new Point(60, 125), new Point(park)));
+        goToPark = new Path(new BezierCurve(new Point(scorePose), new Point(75, 145), new Point(park)));
         goToPark.setLinearHeadingInterpolation(scorePose.getHeading(), park.getHeading());
     }
 }

@@ -15,6 +15,8 @@ public class ClawArmPID {
     public static double kP = 0.01;
     double targetPosition = 0;
     public static double NULL_ZONE = 40;
+    public static double MAX_UP_POWER = -0.35;
+    public static double MAX_DOWN_POWER = 0.35;
 
     boolean isMoving = false;
 
@@ -38,14 +40,14 @@ public class ClawArmPID {
             isMoving = false;
         }
         double power = pidController.calculate(currentPosition, targetPosition);
-        power = Math.max(-0.50, Math.min(0.5, power));
+        power = Math.max(MAX_UP_POWER, Math.min(MAX_DOWN_POWER, power));
         motor.setPower(power);
     }
 
     public void maintain() {
         double currentPosition = motor.getCurrentPosition();
         double power = pidController.calculate(currentPosition, targetPosition);
-        power = Math.max(-0.50, Math.min(0.5, power));
+        power = Math.max(MAX_UP_POWER, Math.min(MAX_DOWN_POWER, power));
         motor.setPower(power);
     }
 

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
 public class CloseClaw extends Behavior {
     Claw claw;
     ElapsedTime timer;
-    final static int PAUSE_TIME = 500;
+    final static int PAUSE_TIME = 400;
 
     public CloseClaw(Telemetry telemetry, Claw claw) {
         this.telemetry = telemetry;

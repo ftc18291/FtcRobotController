@@ -88,13 +88,13 @@ public class IntoTheDeepTeleOp extends OpMode {
 
         clawArmMotor = hardwareMap.get(DcMotorEx.class, "armLiftMotor");
         clawArmMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        clawArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       // clawArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         clawArmMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         clawArmPIDController = new PController(clawArmKp);
 
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       // liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotorPIDController = new PController(liftKp);
 
