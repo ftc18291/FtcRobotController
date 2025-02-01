@@ -2,9 +2,11 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PController;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
+import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,6 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoControllerEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -26,7 +29,7 @@ public class IntoTheDeepTeleOp extends OpMode {
     DcMotorEx clawArmMotor;
     DcMotorEx liftMotor;
 
-    PController liftMotorPIDController;
+    PIDFController liftMotorPIDController;
     public static double liftKp = 0.01;
     double liftTargetPosition = 0;
 
@@ -34,12 +37,17 @@ public class IntoTheDeepTeleOp extends OpMode {
     public static double clawArmKp = 0.02;
     public static double clawArmTargetPosition = 0;
 
+    ServoControllerEx controlHubServoControllerEx;
+    ServoControllerEx expansionHubServoController;
+
     Servo rightHangServo;
     Servo leftHangServo;
     DcMotorEx rightHangMotor;
     DcMotorEx leftHangMotor;
 
     Servo sampleClawServo;
+    public static double clawServoMin = 0.25;
+    public static double clawServoMax = 0.55;
 
     DcMotor frontLeftMotor;
     DcMotor backLeftMotor;
@@ -61,30 +69,34 @@ public class IntoTheDeepTeleOp extends OpMode {
         // All the configuration for the OTOS is done in this helper method, check it out!
         configureOtos();
 
-        frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
-        backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
-        frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
-        backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
+        frontLeftMotor = hardwareMap.dcMotor.get("leftFront");
+        backLeftMotor = hardwareMap.dcMotor.get("leftRear");
+        frontRightMotor = hardwareMap.dcMotor.get("rightFront");
+        backRightMotor = hardwareMap.dcMotor.get("rightRear");
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       // frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+      //  backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+       // frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+       // backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        controlHubServoControllerEx = hardwareMap.get(ServoControllerEx.class, "Control Hub");
+        expansionHubServoController = hardwareMap.get(ServoControllerEx.class, "Expansion Hub");
 
         sampleClawServo = hardwareMap.get(Servo.class, "clawServo");
-        sampleClawServo.scaleRange(0.25, 0.55);
+        sampleClawServo.scaleRange(clawServoMin, clawServoMax);
 
         clawArmMotor = hardwareMap.get(DcMotorEx.class, "armLiftMotor");
         clawArmMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -96,7 +108,7 @@ public class IntoTheDeepTeleOp extends OpMode {
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
        // liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        liftMotorPIDController = new PController(liftKp);
+        liftMotorPIDController = new PIDFController(liftKp, 0, 0, 0);
 
         rightHangServo = hardwareMap.get(Servo.class, "rightHangServo");
         leftHangServo = hardwareMap.get(Servo.class, "leftHangServo");
@@ -125,6 +137,13 @@ public class IntoTheDeepTeleOp extends OpMode {
     public void loop() {
         toggleButtonReader.readValue();
 
+        sampleClawServo.scaleRange(clawServoMin, clawServoMax);
+
+
+        telemetry.addData("backLeftMotor", backLeftMotor.getCurrentPosition());
+        telemetry.addData("backRightMotor", backRightMotor.getCurrentPosition());
+        telemetry.addData("frontLeftMotor", frontLeftMotor.getCurrentPosition());
+        telemetry.addData("frontRightMotor", frontRightMotor.getCurrentPosition());
 //        SparkFunOTOS.Pose2D pos = sparkFunOTOS.getPosition();
 //
 //        // Log the position to the telemetry
@@ -172,13 +191,10 @@ public class IntoTheDeepTeleOp extends OpMode {
 
         if (gamepad1.back) {
             if (gamepad1.y) {
-                sparkFunOTOS.resetTracking();
-                frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-                // 3.19 inches
-                while (frontLeftMotor.getCurrentPosition() < 60) {
-                    // do nothing
+                long startingPosition = backRightMotor.getCurrentPosition();
+                long ticks = startingPosition - 500; //  0.002968434 ticks per inch
+                //while (backRightMotor.getCurrentPosition() < ticks) {
+                while (backRightMotor.getCurrentPosition() > ticks) {
                     frontLeftMotor.setPower(0.2);
                     backLeftMotor.setPower(0.2);
                     frontRightMotor.setPower(0.2);
@@ -205,10 +221,22 @@ public class IntoTheDeepTeleOp extends OpMode {
             telemetry.addData("hang motors up", "");
             leftHangMotor.setPower(1);
             rightHangMotor.setPower(-1);
+            controlHubServoControllerEx.pwmDisable();
+            expansionHubServoController.pwmDisable();
+            frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         } else if (gamepad1.dpad_up) {
             telemetry.addData("hang motors down", "");
             leftHangMotor.setPower(-1);
             rightHangMotor.setPower(1);
+            controlHubServoControllerEx.pwmDisable();
+            expansionHubServoController.pwmDisable();
+            frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         } else {
             leftHangMotor.setPower(0);
             rightHangMotor.setPower(0);
@@ -271,6 +299,9 @@ public class IntoTheDeepTeleOp extends OpMode {
         }
 
         double liftMotorCurrentPosition = liftMotor.getCurrentPosition();
+        //double feedForward = (1.5 * liftMotorCurrentPosition) / (LiftHeight.HIGH.getTicks());
+        //liftMotorPIDController.setF(feedForward);
+        //telemetry.addData("Lift Target feedForward", feedForward);
         double liftPower = liftMotorPIDController.calculate(liftMotorCurrentPosition, liftTargetPosition);
         liftMotor.setPower(liftPower);
 

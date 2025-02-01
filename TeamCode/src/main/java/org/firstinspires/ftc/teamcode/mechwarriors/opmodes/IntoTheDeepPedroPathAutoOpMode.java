@@ -1,5 +1,12 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
+import com.pedropathing.follower.Follower;
+import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.BezierCurve;
+import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.Path;
+import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -20,18 +27,16 @@ import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ClawArmPID;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.LinearSlideLiftPID;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.SampleClaw;
-import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous(group = "IntoTheDeep", name = "Pedro Auto OpMode")
 public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
+
+
 
     //Robot robot;
     LinearSlideLiftPID lift;
@@ -49,12 +54,12 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
     boolean dpadupPressed = false;
 
     private final Pose startPose = new Pose(9, 104.5, Math.toRadians(90));
-    private final Pose scorePose = new Pose(16, 130, Math.toRadians(135));
-    private final Pose pickup1Pose = new Pose(36, 102.5, Math.toRadians(60));
-    private final Pose pickup2Pose = new Pose(36, 112.5, Math.toRadians(60));
-    private final Pose pickup3Pose = new Pose(37, 123.5, Math.toRadians(60));
+    private final Pose scorePose = new Pose(17, 128, Math.toRadians(135));
+    private final Pose pickup1Pose = new Pose(36, 103.75, Math.toRadians(60));
+    private final Pose pickup2Pose = new Pose(36, 114.25, Math.toRadians(60));
+    private final Pose pickup3Pose = new Pose(37, 125.25, Math.toRadians(60));
 
-    private final Pose park = new Pose(58, 102.5, Math.toRadians(270));
+    private final Pose park = new Pose(64, 98, Math.toRadians(270));
     private Path scorePreload;
     private Path goToSample1, scoreSample1;
     private Path goToSample2, scoreSample2;
@@ -65,7 +70,6 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
     @Override
     public void init() {
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
-        // robot = new IntoTheDeepRobot(hardwareMap);
         lift = new LinearSlideLiftPID(hardwareMap);
         clawArm = new ClawArmPID(hardwareMap);
 
@@ -73,10 +77,10 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
                 hardwareMap,
                 "clawServo",
                 true,
-                0.25,
+                0.15,
                 0.55);
-        //sampleClaw.close();
 
+        Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
         buildPaths();
@@ -289,7 +293,7 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
         scoreSample3 = new Path(new BezierLine(new Point(pickup3Pose), new Point(scorePose)));
         scoreSample3.setLinearHeadingInterpolation(pickup3Pose.getHeading(), scorePose.getHeading());
 
-        goToPark = new Path(new BezierCurve(new Point(scorePose), new Point(75, 145), new Point(park)));
+        goToPark = new Path(new BezierCurve(new Point(scorePose), new Point(80, 150), new Point(park)));
         goToPark.setLinearHeadingInterpolation(scorePose.getHeading(), park.getHeading());
     }
 }

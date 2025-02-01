@@ -2,8 +2,12 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes.testopmodes;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.pedropathing.follower.Follower;
+import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.Path;
+import com.pedropathing.pathgen.Point;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -17,12 +21,6 @@ import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ClawArmPID;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.IntoTheDeepRobot;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.LinearSlideLiftPID;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Robot;
-import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
-
 import java.util.ArrayList;
 import java.util.List;
 
