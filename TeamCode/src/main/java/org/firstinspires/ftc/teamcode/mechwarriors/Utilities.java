@@ -11,7 +11,7 @@ public class Utilities {
      * @return
      */
     public static double squareInputWithSign(double input) {
-        //System.out.println("Input: " + input);
+        //System.out.println("Input: " + input); test
         double positiveInput = Math.abs(input);
         double output = positiveInput * positiveInput * positiveInput;
         if (input < 0) {
