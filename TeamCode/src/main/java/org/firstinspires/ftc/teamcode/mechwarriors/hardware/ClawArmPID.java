@@ -15,7 +15,7 @@ public class ClawArmPID {
     public static double kP = 0.01;
     double targetPosition = 0;
     public static double NULL_ZONE = 40;
-    public static double MAX_UP_POWER = -0.35;
+    public static double MAX_UP_POWER = -0.45;
     public static double MAX_DOWN_POWER = 0.35;
 
     boolean isMoving = false;

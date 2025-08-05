@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PController;
+import com.arcrobotics.ftclib.controller.PDController;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -10,6 +11,7 @@ import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -33,9 +35,18 @@ public class IntoTheDeepTeleOp extends OpMode {
     public static double liftKp = 0.01;
     double liftTargetPosition = 0;
 
-    PController clawArmPIDController;
-    public static double clawArmKp = 0.02;
+    PDController clawArmPIDController;
+    public static double clawArmKp = 0.9;
+    public static double clawArmKd = 0.07;
     public static double clawArmTargetPosition = 0;
+
+    public static double clawArmUpIncrement = 0.15;
+    public static double clawArmDownIncrement = 0.075;
+
+    Servo clawRotationServo;
+    double clawRotationLocation = 0.50;
+
+    AnalogInput clawArmAngle;
 
     ServoControllerEx controlHubServoControllerEx;
     ServoControllerEx expansionHubServoController;
@@ -47,7 +58,7 @@ public class IntoTheDeepTeleOp extends OpMode {
 
     Servo sampleClawServo;
     public static double clawServoMin = 0.25;
-    public static double clawServoMax = 0.55;
+    public static double clawServoMax = 0.60;
 
     DcMotor frontLeftMotor;
     DcMotor backLeftMotor;
@@ -98,11 +109,14 @@ public class IntoTheDeepTeleOp extends OpMode {
         sampleClawServo = hardwareMap.get(Servo.class, "clawServo");
         sampleClawServo.scaleRange(clawServoMin, clawServoMax);
 
+        clawRotationServo = hardwareMap.get(Servo.class, "clawRotationServo");
+        clawArmAngle = hardwareMap.get(AnalogInput.class, "clawArmAngle");
+
         clawArmMotor = hardwareMap.get(DcMotorEx.class, "armLiftMotor");
         clawArmMotor.setDirection(DcMotorSimple.Direction.REVERSE);
        // clawArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         clawArmMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        clawArmPIDController = new PController(clawArmKp);
+        clawArmPIDController = new PDController(clawArmKp, clawArmKd);
 
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -245,19 +259,42 @@ public class IntoTheDeepTeleOp extends OpMode {
         telemetry.addData("Right hang motor current", rightHangMotor.getCurrent(CurrentUnit.AMPS));
 
         ////////////////////////////////////////////
+        telemetry.addData("clawArmAngle", clawArmAngle.getVoltage());
+        // 1.427
+        // 3.1
         if (gamepad2.dpad_down) {
-            if (liftTargetPosition > 300) {
-                clawArmTargetPosition += 10;
-                if (clawArmTargetPosition > 490) {
-                    clawArmTargetPosition = 490;
+            if (liftTargetPosition > 100) {
+                clawArmTargetPosition += clawArmDownIncrement;
+                if (clawArmTargetPosition > 3.1) {
+                    clawArmTargetPosition = 3.1;
                 }
             }
         } else if (gamepad2.dpad_up) {
-            clawArmTargetPosition -= 10;
-            if (clawArmTargetPosition < 0) {
-                clawArmTargetPosition = 0;
+            clawArmTargetPosition -= clawArmUpIncrement;
+            if (clawArmTargetPosition < 1.75) {
+                clawRotationLocation = 0.5;
+            }
+            if (clawArmTargetPosition < 1.425) {
+                clawArmTargetPosition = 1.425;
             }
         }
+
+//        if (gamepad2.dpad_down) {
+//            if (liftTargetPosition > 300) {
+//                clawArmTargetPosition += 17;
+//                if (clawArmTargetPosition > 490) {
+//                    clawArmTargetPosition = 490;
+//                }
+//            }
+//        } else if (gamepad2.dpad_up) {
+//            clawArmTargetPosition -= 10;
+//            if (clawArmTargetPosition < 50) {
+//                clawRotationLocation = 0.5;
+//            }
+//            if (clawArmTargetPosition < 0) {
+//                clawArmTargetPosition = 0;
+//            }
+//        }
 //        if (gamepad2.dpad_up) {
 //            clawArmTargetPosition = 0;
 //        } else if (gamepad2.dpad_left) {
@@ -275,9 +312,11 @@ public class IntoTheDeepTeleOp extends OpMode {
 //        }
 
         double clawArmMotorCurrentPosition = clawArmMotor.getCurrentPosition();
+        double clawArmPotentiometerCurrentPosition = clawArmAngle.getVoltage();
         clawArmPIDController.setP(clawArmKp);
-        double clawArmPower = clawArmPIDController.calculate(clawArmMotorCurrentPosition, clawArmTargetPosition);
-        clawArmPower = Math.max(-0.40, Math.min(0.40, clawArmPower));
+        clawArmPIDController.setD(clawArmKd);
+        double clawArmPower = clawArmPIDController.calculate(clawArmPotentiometerCurrentPosition, clawArmTargetPosition);
+        clawArmPower = Math.max(-0.60, Math.min(0.60, clawArmPower));
         clawArmMotor.setPower(clawArmPower);
 
         telemetry.addLine("");
@@ -286,16 +325,33 @@ public class IntoTheDeepTeleOp extends OpMode {
         telemetry.addData("Claw Arm Power", clawArmPower);
         telemetry.addData("Claw Arm Motor current", clawArmMotor.getCurrent(CurrentUnit.AMPS));
 
+        if (gamepad2.dpad_left) {
+            clawRotationLocation += 0.025;
+            if (clawRotationLocation >= 0.85) {
+                clawRotationLocation = 0.85;
+            }
+        } else if (gamepad2.dpad_right) {
+            clawRotationLocation -= 0.025;
+            if (clawRotationLocation <= 0.125) {
+                clawRotationLocation = 0.125;
+            }
+        }
+        telemetry.addData("clawRotationLocation", clawRotationLocation);
+        clawRotationServo.setPosition(clawRotationLocation);
+
         /////////////////////////////////////////
 
         if (gamepad2.y) {
-            liftTargetPosition = LiftHeight.HIGH.getTicks();
+            liftTargetPosition = LiftHeight.HIGHAIDAN.getTicks();
         } else if (gamepad2.x) {
             liftTargetPosition = LiftHeight.RETRIEVE.getTicks();
         } else if (gamepad2.a) {
             if (clawArmTargetPosition < 200) {
                 liftTargetPosition = LiftHeight.BOTTOM.getTicks();
             }
+        }
+        else if (gamepad2.b) {
+            liftTargetPosition = LiftHeight.LOW.getTicks();
         }
 
         double liftMotorCurrentPosition = liftMotor.getCurrentPosition();
