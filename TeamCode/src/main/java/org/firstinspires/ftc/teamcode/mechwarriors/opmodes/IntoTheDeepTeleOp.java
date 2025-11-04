@@ -9,6 +9,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -26,6 +27,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
 
 @Config
 @TeleOp(group = "IntoTheDeep", name = "TeleOp")
+@Disabled
 public class IntoTheDeepTeleOp extends OpMode {
 
     DcMotorEx clawArmMotor;

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous(group = "IntoTheDeep", name = "Old Auto OpMode")
+@Disabled
 public class IntoTheDeepAutoOpMode extends OpMode {
 
     Robot robot;

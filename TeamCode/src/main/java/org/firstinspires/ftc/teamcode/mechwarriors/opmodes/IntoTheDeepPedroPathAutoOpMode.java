@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
 import com.pedropathing.follower.Follower;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.BezierCurve;
-import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.Path;
-import com.pedropathing.pathgen.Point;
-import com.pedropathing.util.Constants;
+
+import com.pedropathing.geometry.BezierCurve;
+import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -29,15 +29,13 @@ import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ClawArmPID;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.LinearSlideLiftPID;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.SampleClaw;
-import pedroPathing.constants.FConstants;
-import pedroPathing.constants.LConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous(group = "IntoTheDeep", name = "Pedro Auto OpMode")
+@Disabled
 public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
-
 
 
     //Robot robot;
@@ -87,8 +85,8 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
                 0.15,
                 0.55);
 
-        Constants.setConstants(FConstants.class, LConstants.class);
-        follower = new Follower(hardwareMap);
+        //Constants.setConstants(FConstants.class, LConstants.class);
+        //follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
         buildPaths();
 
@@ -291,28 +289,28 @@ public class IntoTheDeepPedroPathAutoOpMode extends OpMode {
     }
 
     private void buildPaths() {
-        scorePreload = new Path(new BezierLine(new Point(startPose), new Point(scorePose)));
+        scorePreload = new Path(new BezierLine(startPose, scorePose));
         scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
 
-        goToSample1 = new Path(new BezierLine(new Point(scorePose), new Point(pickup1Pose)));
+        goToSample1 = new Path(new BezierLine( (scorePose), (pickup1Pose)));
         goToSample1.setLinearHeadingInterpolation(scorePose.getHeading(), pickup1Pose.getHeading());
 
-        scoreSample1 = new Path(new BezierLine(new Point(pickup1Pose), new Point(scorePose)));
+        scoreSample1 = new Path(new BezierLine((pickup1Pose), (scorePose)));
         scoreSample1.setLinearHeadingInterpolation(pickup1Pose.getHeading(), scorePose.getHeading());
 
-        goToSample2 = new Path(new BezierLine(new Point(scorePose), new Point(pickup2Pose)));
+        goToSample2 = new Path(new BezierLine(scorePose,  pickup2Pose));
         goToSample2.setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading());
 
-        scoreSample2 = new Path(new BezierLine(new Point(pickup2Pose), new Point(scorePose)));
+        scoreSample2 = new Path(new BezierLine((pickup2Pose), (scorePose)));
         scoreSample2.setLinearHeadingInterpolation(pickup2Pose.getHeading(), scorePose.getHeading());
 
-        goToSample3 = new Path(new BezierLine(new Point(scorePose), new Point(pickup3Pose)));
+        goToSample3 = new Path(new BezierLine((scorePose), (pickup3Pose)));
         goToSample3.setLinearHeadingInterpolation(scorePose.getHeading(), pickup3Pose.getHeading());
 
-        scoreSample3 = new Path(new BezierLine(new Point(pickup3Pose), new Point(scorePose)));
+        scoreSample3 = new Path(new BezierLine((pickup3Pose), (scorePose)));
         scoreSample3.setLinearHeadingInterpolation(pickup3Pose.getHeading(), scorePose.getHeading());
 
-        goToPark = new Path(new BezierCurve(new Point(scorePose), new Point(80, 150), new Point(park)));
-        goToPark.setLinearHeadingInterpolation(scorePose.getHeading(), park.getHeading());
+       // goToPark = new Path(new BezierCurve((scorePose), new Point(80, 150), (park)));
+      //  goToPark.setLinearHeadingInterpolation(scorePose.getHeading(), park.getHeading());
     }
 }

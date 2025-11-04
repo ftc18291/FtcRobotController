@@ -1,38 +1,45 @@
-package org.firstinspires.ftc.teamcode.mechwarriors.opmodes.testopmodes;
+package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.Path;
-import com.pedropathing.pathgen.Point;
+
+import com.pedropathing.geometry.BezierCurve;
+import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorGoBildaPinpoint;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechwarriors.AllianceColor;
 import org.firstinspires.ftc.teamcode.mechwarriors.StartingLocation;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Behavior;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.PedroPath;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RotateArtifactSorter;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.ShootArtifact;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Wait;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ClawArmPID;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.IntoTheDeepRobot;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.LinearSlideLiftPID;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Robot;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ArtifactSorter;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(group = "IntoTheDeep", name = "Test Pedro Auto OpMode")
-public class TestPedroPath extends OpMode {
+@Config
+@Autonomous(name = "Decode Auto OpMode")
+public class DecodeAutoOpMode extends OpMode {
 
-    Robot robot;
-    LinearSlideLiftPID lift;
-    ClawArmPID clawArm;
-    Claw liftClaw;
 
     private Follower follower;
+
+    ArtifactSorter artifactSorter;
+
+    DcMotorEx launcherMotor;
+    Servo launcherServo;
+
 
     List<Behavior> behaviors = new ArrayList<>();
     int state = 0;
@@ -42,28 +49,30 @@ public class TestPedroPath extends OpMode {
     boolean dpaddownPressed = false;
     boolean dpadupPressed = false;
 
-    private final Pose pose1 = new Pose(0, 0, Math.toRadians(90));
-    private final Pose pose2 = new Pose(0, 36, Math.toRadians(90));
+    private final Pose blueStartPose = new Pose(38, 135.5, Math.toRadians(90));
+    private final Pose blueScorePose = new Pose(37.7, 108.3, Math.toRadians(135));
 
-    private Path pose1ToPose2;
-    private Path pose2ToPose1;
+    private final Pose bluePark = new Pose(64, 98, Math.toRadians(270));
+    private Path scorePreload;
+
+    private Path goToPark;
 
     @Override
     public void init() {
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
-
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
-        robot = new IntoTheDeepRobot(hardwareMap);
-        lift = new LinearSlideLiftPID(hardwareMap);
-        clawArm = new ClawArmPID(hardwareMap);
 
-        liftClaw = robot.getSampleClaw();
-        liftClaw.close();
+        artifactSorter = new ArtifactSorter(hardwareMap);
 
-        follower = new Follower(hardwareMap);
-        follower.setStartingPose(pose1);
+        launcherMotor = hardwareMap.get(DcMotorEx.class, "launcherMotor");
+        launcherMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        launcherServo = hardwareMap.get(Servo.class, "launcherServo");
+        launcherServo.scaleRange(0.65, 1.0);
+        launcherServo.setPosition(0);
+
+        follower = Constants.createFollower(hardwareMap);
+        follower.setStartingPose(blueStartPose);
         buildPaths();
+
     }
 
     @Override
@@ -104,28 +113,44 @@ public class TestPedroPath extends OpMode {
         telemetry.addData("Starting Location", startingLocation);
         telemetry.addData("Alliance Color", allianceColor);
         telemetry.addData("Time to Wait", waitTime);
+
     }
 
     @Override
     public void start() {
         behaviors.add(new Wait(telemetry, waitTime * 1000));
 
-        behaviors.add(new PedroPath(follower, pose1ToPose2, pose2, telemetry));
-        behaviors.add(new PedroPath(follower, pose2ToPose1, pose1, telemetry));
-        behaviors.add(new PedroPath(follower, pose1ToPose2, pose2, telemetry));
-        behaviors.add(new PedroPath(follower, pose2ToPose1, pose1, telemetry));
-        behaviors.add(new PedroPath(follower, pose1ToPose2, pose2, telemetry));
-        behaviors.add(new PedroPath(follower, pose2ToPose1, pose1, telemetry));
+        if (allianceColor == AllianceColor.BLUE) {
+            // Drive to score position
+            behaviors.add(new PedroPath(follower, scorePreload, blueScorePose, telemetry));
 
-        behaviors.get(0).start();
+            // Shoot three artifacts
+            behaviors.add(new ShootArtifact(telemetry, launcherMotor, launcherServo));
+            behaviors.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            behaviors.add(new ShootArtifact(telemetry, launcherMotor, launcherServo));
+            behaviors.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            behaviors.add(new ShootArtifact(telemetry, launcherMotor, launcherServo));
+
+            // Drive to park position
+            // TODO: add path to park
+        } else {
+            // TODO: Add behaviors for RED
+        }
+
+        if (startingLocation == StartingLocation.LEFT) {
+
+        } else {
+
+        }
+        artifactSorter.init();
+        //  behaviors.get(0).start();
     }
 
     @Override
     public void loop() {
+        follower.update();
         runBehaviors();
 
-        telemetry.addData("Lift position", lift.getHeight());
-        telemetry.addData("Claw Arm position", clawArm.getPosition());
 
         telemetry.addData("state", state);
         telemetry.addData("x", follower.getPose().getX());
@@ -133,6 +158,7 @@ public class TestPedroPath extends OpMode {
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.update();
 
+        follower.update();
     }
 
     private void runBehaviors() {
@@ -158,11 +184,10 @@ public class TestPedroPath extends OpMode {
     }
 
     private void buildPaths() {
-        pose1ToPose2 = new Path(new BezierLine(new Point(pose1), new Point(pose2)));
-        pose1ToPose2.setLinearHeadingInterpolation(pose1.getHeading(), pose2.getHeading());
+        scorePreload = new Path(new BezierLine(blueStartPose, blueScorePose));
+        scorePreload.setLinearHeadingInterpolation(blueStartPose.getHeading(), blueScorePose.getHeading());
 
-        pose2ToPose1 = new Path(new BezierLine(new Point(pose2), new Point(pose1)));
-        pose2ToPose1.setLinearHeadingInterpolation(pose2.getHeading(), pose1.getHeading());
-
+        goToPark = new Path(new BezierCurve(blueScorePose, new Pose(80, 150), bluePark));
+        goToPark.setLinearHeadingInterpolation(blueScorePose.getHeading(), bluePark.getHeading());
     }
 }

@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.behaviors;
 
 import com.pedropathing.follower.Follower;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.Path;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.Path;
+
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
