@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
+package org.firstinspires.ftc.teamcode.mechwarriors.opmodes.intothedeep;
 
 import com.pedropathing.follower.Follower;
 
-import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;

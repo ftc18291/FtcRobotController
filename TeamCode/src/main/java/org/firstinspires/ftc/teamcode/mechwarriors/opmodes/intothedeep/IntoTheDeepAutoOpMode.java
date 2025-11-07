@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
+package org.firstinspires.ftc.teamcode.mechwarriors.opmodes.intothedeep;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;

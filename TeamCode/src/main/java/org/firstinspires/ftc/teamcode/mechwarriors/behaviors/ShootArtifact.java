@@ -12,6 +12,8 @@ public class ShootArtifact extends Behavior {
     DcMotorEx launchMotor;
     Servo launchServo;
 
+    double launchMotorVelocity;
+
     boolean launched = false;
     boolean retractStarted = false;
 
@@ -20,10 +22,11 @@ public class ShootArtifact extends Behavior {
 
     ElapsedTime watchdogTimer;
 
-    public ShootArtifact(Telemetry telemetry, DcMotorEx shooterMotor, Servo launchServo) {
+    public ShootArtifact(Telemetry telemetry, DcMotorEx shooterMotor, Servo launchServo, double launchMotorVelocity) {
         this.telemetry = telemetry;
         this.launchMotor = shooterMotor;
         this.launchServo = launchServo;
+        this.launchMotorVelocity = launchMotorVelocity;
         shootingTimer = new ElapsedTime();
         retractTimer = new ElapsedTime();
         watchdogTimer = new ElapsedTime();
@@ -32,30 +35,42 @@ public class ShootArtifact extends Behavior {
     @Override
     public void start() {
         watchdogTimer.reset();
-        launchMotor.setVelocity(2000);
+        launchMotor.setVelocity(launchMotorVelocity);
         run();
     }
 
     @Override
     public void run() {
-        if (watchdogTimer.milliseconds() >= 1500) {
+        telemetry.addData("Watchdog timer", watchdogTimer.milliseconds());
+        if (watchdogTimer.milliseconds() >= 5000) {
+            telemetry.addLine("Timed out");
+            launchServo.setPosition(0);
+            launchMotor.setVelocity(0);
             isDone = true;
         } else {
             if (!launched) {
-                if (launchMotor.getVelocity() > 1950) {
+                // Wait for motor spin up
+                telemetry.addData("Waiting for motor spin up", launchMotor.getVelocity());
+                if (launchMotor.getVelocity() > (launchMotorVelocity - 10)) {
+                    // Now launch artifact
                     launched = true;
                     launchServo.setPosition(1.0);
                     shootingTimer.reset();
+                    telemetry.addLine("Launching artifact");
                 }
             } else {
-                if (shootingTimer.milliseconds() > 500 && !retractStarted) {
+                // Artifact launched, now wait for servo to retract
+                telemetry.addData("Waiting for servo retraction", shootingTimer.milliseconds());
+                if (shootingTimer.milliseconds() > 800 && !retractStarted) {
                     launchServo.setPosition(0);
                     launchMotor.setVelocity(0);
                     retractTimer.reset();
                     retractStarted = true;
+                    telemetry.addLine("Servo retracted");
                 }
 
-                if (retractStarted && retractTimer.milliseconds() > 500) {
+                if (retractStarted && retractTimer.milliseconds() > 800) {
+                    telemetry.addLine("Done");
                     isDone = true;
                 }
             }

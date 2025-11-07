@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.mechwarriors.hardware;
 
 import com.qualcomm.robotcore.hardware.*;
 
-import org.firstinspires.ftc.teamcode.mechwarriors.opmodes.ArtifactSorterMode;
-
 public class ArtifactSorter {
 
     public static final double TICKS_PER_ROTATION = 587.04;
@@ -27,25 +25,14 @@ public class ArtifactSorter {
     DcMotorEx sorterMotor;
     DigitalChannel sorterTouchSensor;
 
-    Servo leftSweeperServo;
-    Servo rightSweeperServo;
+
 
     boolean isBusy = false;
 
     public ArtifactSorter(HardwareMap hardwareMap) {
 
-        leftSweeperServo = hardwareMap.get(Servo.class, "leftSweeperServo");
-        rightSweeperServo = hardwareMap.get(Servo.class, "rightSweeperServo");
-        leftSweeperServo.setDirection(Servo.Direction.REVERSE);
-        leftSweeperServo.scaleRange(0.1, 0.92); // reverse/forward
-        rightSweeperServo.scaleRange(0.05, 0.9); //
-
-        leftSweeperServo.setPosition(0);
-        rightSweeperServo.setPosition(0);
-
         sorterMotor = hardwareMap.get(DcMotorEx.class, "sorterMotor");
         sorterMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //sorterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         sorterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         PIDFCoefficients pidNew = new PIDFCoefficients(NEW_P, NEW_I, NEW_D, 0);
         sorterMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidNew);
