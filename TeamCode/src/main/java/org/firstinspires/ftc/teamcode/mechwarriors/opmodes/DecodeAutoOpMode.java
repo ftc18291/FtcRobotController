@@ -6,6 +6,8 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -18,6 +20,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.AllianceColor;
 import org.firstinspires.ftc.teamcode.mechwarriors.StartingLocation;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Behavior;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.PedroPath;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.ReadObelisk;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RotateArtifactSorter;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.ShootArtifact;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Wait;
@@ -27,6 +30,8 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Config
 @Autonomous(name = "Decode Auto OpMode")
@@ -44,6 +49,8 @@ public class DecodeAutoOpMode extends OpMode {
 
     Limelight3A limelight;
 
+    // Default to April Tag 21
+    AtomicInteger obeliskId = new AtomicInteger(21);
 
     List<Behavior> behaviors = new ArrayList<>();
     int state = 0;
@@ -56,13 +63,15 @@ public class DecodeAutoOpMode extends OpMode {
     //Blue
     private final Pose blueStartPose = new Pose(38, 135.5, Math.toRadians(90));
     private final Pose blueObeliskPose = new Pose(57.3, 87.4, Math.toRadians(80));
-    private final Pose blueScorePose = new Pose(37.7, 108.3, Math.toRadians(135));
+    //private final Pose blueScorePose = new Pose(37.7, 108.3, Math.toRadians(135));
+    private final Pose blueScorePose = new Pose(40, 106, Math.toRadians(135));
     private final Pose blueLeavePose = new Pose(40.5, 61.5, Math.toRadians(180));
 
     //Red
     private final Pose redStartPose = new Pose(104.6, 135.5, Math.toRadians(90));
     private final Pose redObeliskPose = new Pose(86.8, 87.4, Math.toRadians(100));
-    private final Pose redScorePose = new Pose(110.8, 108.3, Math.toRadians(35));
+    //private final Pose redScorePose = new Pose(110.8, 108.3, Math.toRadians(35));
+    private final Pose redScorePose = new Pose(108, 106, Math.toRadians(35));
     private final Pose redLeavePose = new Pose(102.4, 61.5, Math.toRadians(0));
 
 
@@ -99,7 +108,6 @@ public class DecodeAutoOpMode extends OpMode {
         buildPaths();
 
         limelight.start();
-
     }
 
     @Override
@@ -153,15 +161,11 @@ public class DecodeAutoOpMode extends OpMode {
 
             // Drive to score position
             behaviors.add(new PedroPath(follower, goToBlueObelisk, blueObeliskPose, telemetry));
-            behaviors.add(new Wait(telemetry, 1000));
+            behaviors.add(new ReadObelisk(limelight, telemetry, obeliskId));
             behaviors.add(new PedroPath(follower, gotoBlueScore, blueScorePose, telemetry));
+            behaviors.add(new Wait(telemetry, 1000));
 
-            // Shoot three artifacts
-            behaviors.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
-            behaviors.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            behaviors.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
-            behaviors.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            behaviors.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            // Shooting pattern added in loop
 
             // Drive to park position
             behaviors.add(new PedroPath(follower, goToBlueLeave, blueLeavePose, telemetry));
@@ -170,17 +174,13 @@ public class DecodeAutoOpMode extends OpMode {
 
             //Drive to score position
             behaviors.add(new PedroPath(follower, goToRedObelisk, redObeliskPose, telemetry));
-            behaviors.add(new Wait(telemetry, 1000));
+            behaviors.add(new ReadObelisk(limelight, telemetry, obeliskId));
             behaviors.add(new PedroPath(follower, goToRedScorePose, redScorePose, telemetry));
+            behaviors.add(new Wait(telemetry, 1000));
 
-            //Shoot three artifacts
-            behaviors.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
-            behaviors.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            behaviors.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
-            behaviors.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            behaviors.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            // Shooting pattern added in loop
 
-            //Drive to park position
+            // Drive to park position
             behaviors.add(new PedroPath(follower, goToRedLeave, redLeavePose, telemetry));
 
         }
@@ -199,7 +199,7 @@ public class DecodeAutoOpMode extends OpMode {
         follower.update();
         runBehaviors();
 
-
+        telemetry.addData("obeliskId", obeliskId);
         telemetry.addData("state", state);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
@@ -207,6 +207,12 @@ public class DecodeAutoOpMode extends OpMode {
         telemetry.update();
 
         follower.update();
+    }
+
+    @Override
+    public void stop() {
+        limelight.stop();
+        limelight.shutdown();
     }
 
     private void runBehaviors() {
@@ -217,6 +223,10 @@ public class DecodeAutoOpMode extends OpMode {
                 telemetry.addData("Running behavior", behaviors.get(state).getName());
                 behaviors.get(state).run();
             } else {
+                if (Objects.nonNull(behaviors.get(state).getName()) &&
+                        behaviors.get(state).getName().equals("ReadObelisk")) {
+                    behaviors.addAll(state + 2, buildShooterOrder());
+                }
                 //increments the behavior
                 state++;
                 //starts next behavior if there are any left
@@ -251,5 +261,35 @@ public class DecodeAutoOpMode extends OpMode {
 
         goToRedLeave = new Path(new BezierLine(redScorePose, redLeavePose));
         goToRedLeave.setLinearHeadingInterpolation(redScorePose.getHeading(), redLeavePose.getHeading());
+    }
+
+    private List<Behavior> buildShooterOrder() {
+        List<Behavior> obeliskBehavior = new ArrayList<>();
+
+        if (obeliskId.get() == 21) {
+            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+        } else if (obeliskId.get() == 22) {
+            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+        } else if (obeliskId.get() == 23) {
+            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+        }
+
+        return obeliskBehavior;
     }
 }
