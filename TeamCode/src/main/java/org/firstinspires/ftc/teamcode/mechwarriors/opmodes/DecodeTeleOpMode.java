@@ -41,6 +41,8 @@ public class DecodeTeleOpMode extends OpMode {
 
     Boolean sorterRotateButtonPressed = false;
 
+    Boolean sorterReverseButtonPressed = false;
+
     Boolean sorterSetIntakeModeButtonPressed = false;
     Boolean sorterSetLaunchModeButtonPressed = false;
 
@@ -166,6 +168,21 @@ public class DecodeTeleOpMode extends OpMode {
             sorterRotateButtonPressed = false;
             artifactSorter.rotateOneSlot();
         }
+
+        if (gamepad2.y) {
+            artifactSorter.sorterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            artifactSorter.sorterMotor.setPower(-0.3);
+        } else if (gamepad2.yWasReleased()) {
+            artifactSorter.sorterMotor.setPower(0);
+            artifactSorter.sorterMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            artifactSorter.sorterMotor.setPower(0.3);
+        }
+
+
+
+
+
+        // }
 
         // Rotate sorter from launch to intake position
         if (gamepad2.left_bumper) {

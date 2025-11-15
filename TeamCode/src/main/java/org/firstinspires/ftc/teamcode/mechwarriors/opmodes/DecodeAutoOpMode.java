@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
@@ -22,6 +23,8 @@ import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Behavior;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.PedroPath;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.ReadObelisk;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RotateArtifactSorter;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RotateArtifactSortertoIntake;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RotateArtifactSortertoShoot;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.ShootArtifact;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Wait;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ArtifactIntaker;
@@ -61,18 +64,18 @@ public class DecodeAutoOpMode extends OpMode {
     boolean dpadupPressed = false;
 
     //Blue
-    private final Pose blueStartPose = new Pose(38, 135.5, Math.toRadians(90));
+    private final Pose blueStartPose = new Pose(21.7, 122.9, Math.toRadians(53.5));
+    //private final Pose blueStartPose = new Pose(33, 134.5, Math.toRadians(0));
     private final Pose blueObeliskPose = new Pose(57.3, 87.4, Math.toRadians(80));
-    //private final Pose blueScorePose = new Pose(37.7, 108.3, Math.toRadians(135));
     private final Pose blueScorePose = new Pose(40, 106, Math.toRadians(135));
-    private final Pose blueLeavePose = new Pose(40.5, 61.5, Math.toRadians(180));
+    private final Pose blueLeavePose = new Pose(40, 60, Math.toRadians(180));
 
     //Red
-    private final Pose redStartPose = new Pose(104.6, 135.5, Math.toRadians(90));
-    private final Pose redObeliskPose = new Pose(86.8, 87.4, Math.toRadians(100));
-    //private final Pose redScorePose = new Pose(110.8, 108.3, Math.toRadians(35));
-    private final Pose redScorePose = new Pose(108, 106, Math.toRadians(35));
-    private final Pose redLeavePose = new Pose(102.4, 61.5, Math.toRadians(0));
+    private final Pose redStartPose = new Pose(122.3, 122.9, Math.toRadians(126.5));
+    //private final Pose redStartPose = new Pose(111, 134.5, Math.toRadians(180));
+    private final Pose redObeliskPose = new Pose(86.7, 87.4, Math.toRadians(100));
+    private final Pose redScorePose = new Pose(104, 106, Math.toRadians(35));
+    private final Pose redLeavePose = new Pose(103, 60, Math.toRadians(0));
 
 
     private Path goToBlueObelisk;
@@ -159,10 +162,13 @@ public class DecodeAutoOpMode extends OpMode {
         if (allianceColor == AllianceColor.BLUE) {
             follower.setStartingPose(blueStartPose);
 
+            //behaviors.add(new RotateArtifactSortertoIntake(telemetry, artifactSorter));
+
             // Drive to score position
             behaviors.add(new PedroPath(follower, goToBlueObelisk, blueObeliskPose, telemetry));
             behaviors.add(new ReadObelisk(limelight, telemetry, obeliskId));
             behaviors.add(new PedroPath(follower, gotoBlueScore, blueScorePose, telemetry));
+            //behaviors.add(new RotateArtifactSortertoShoot(telemetry, artifactSorter));
             behaviors.add(new Wait(telemetry, 1000));
 
             // Shooting pattern added in loop
@@ -171,12 +177,14 @@ public class DecodeAutoOpMode extends OpMode {
             behaviors.add(new PedroPath(follower, goToBlueLeave, blueLeavePose, telemetry));
         } else {
             follower.setStartingPose(redStartPose);
-
+           // behaviors.add(new RotateArtifactSortertoIntake(telemetry, artifactSorter));
             //Drive to score position
             behaviors.add(new PedroPath(follower, goToRedObelisk, redObeliskPose, telemetry));
             behaviors.add(new ReadObelisk(limelight, telemetry, obeliskId));
             behaviors.add(new PedroPath(follower, goToRedScorePose, redScorePose, telemetry));
+            //behaviors.add(new RotateArtifactSortertoShoot(telemetry, artifactSorter));
             behaviors.add(new Wait(telemetry, 1000));
+            //behaviors.add(new Wait(telemetry, 1000));
 
             // Shooting pattern added in loop
 
@@ -249,17 +257,17 @@ public class DecodeAutoOpMode extends OpMode {
         gotoBlueScore = new Path((new BezierLine(blueObeliskPose, blueScorePose)));
         gotoBlueScore.setLinearHeadingInterpolation(blueObeliskPose.getHeading(), blueScorePose.getHeading());
 
-        goToBlueLeave = new Path(new BezierLine(blueScorePose, blueLeavePose));
+        goToBlueLeave = new Path(new BezierCurve(blueScorePose, new Pose(62, 92), blueLeavePose));
         goToBlueLeave.setLinearHeadingInterpolation(blueScorePose.getHeading(), blueLeavePose.getHeading());
 
         // Red
         goToRedObelisk = new Path(new BezierLine(redStartPose, redObeliskPose));
         goToRedObelisk.setLinearHeadingInterpolation(redStartPose.getHeading(), redObeliskPose.getHeading());
 
-        goToRedScorePose = new Path(new BezierLine(redObeliskPose, redScorePose));
+        goToRedScorePose = new Path(new BezierLine( redObeliskPose, redScorePose));
         goToRedScorePose.setLinearHeadingInterpolation(redObeliskPose.getHeading(), redScorePose.getHeading());
 
-        goToRedLeave = new Path(new BezierLine(redScorePose, redLeavePose));
+        goToRedLeave = new Path(new BezierCurve(redScorePose, new Pose(82, 92), redLeavePose));
         goToRedLeave.setLinearHeadingInterpolation(redScorePose.getHeading(), redLeavePose.getHeading());
     }
 

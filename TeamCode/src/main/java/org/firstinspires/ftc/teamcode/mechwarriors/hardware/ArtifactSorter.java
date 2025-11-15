@@ -22,7 +22,7 @@ public class ArtifactSorter {
 
     private double currentTicksTarget = 0;
     boolean rotating = false;
-    DcMotorEx sorterMotor;
+    public DcMotorEx sorterMotor;
     DigitalChannel sorterTouchSensor;
 
 
@@ -63,6 +63,15 @@ public class ArtifactSorter {
             position = 0;
         }
         currentTicksTarget = currentTicksTarget + TICKS_PER_SLOT;
+        sorterMotor.setTargetPosition((int) currentTicksTarget);
+    }
+
+    public void rotateBackOneSlot() {
+        position--;
+        if (position == 0) {
+            position = 2;
+        }
+        currentTicksTarget = currentTicksTarget - TICKS_PER_SLOT;
         sorterMotor.setTargetPosition((int) currentTicksTarget);
     }
 
