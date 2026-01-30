@@ -33,7 +33,9 @@ public class ReadObelisk extends Behavior {
 
     @Override
     public void run() {
+        telemetry.addLine("Attempting Limelight processing");
         if (watchdogTimer.milliseconds() > 1000) {
+            telemetry.addLine("Timer up. No obelisk found. Using default value.");
             isDone = true;
         } else {
             telemetry.addLine("Limelight processing");
@@ -47,6 +49,8 @@ public class ReadObelisk extends Behavior {
                     this.obeliskId.set(id);
                     isDone = true;
                 }
+            } else {
+                telemetry.addLine("No obelisk found");
             }
         }
     }

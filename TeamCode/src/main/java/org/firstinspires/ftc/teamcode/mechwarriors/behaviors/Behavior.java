@@ -7,6 +7,10 @@ public abstract class Behavior {
     Telemetry telemetry;
     boolean isDone = false;
 
+    //public Behavior(String name) {
+  //      this.name = name;
+   // }
+
     public abstract void start();
     public abstract void run();
     public String getName() {

@@ -7,14 +7,9 @@ import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
-import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechwarriors.AllianceColor;
@@ -22,12 +17,14 @@ import org.firstinspires.ftc.teamcode.mechwarriors.StartingLocation;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Behavior;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.PedroPath;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.ReadObelisk;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RotateArtifactSorter;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RotateArtifactSortertoIntake;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RotateArtifactSortertoShoot;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.RotateArtifactSorterOneSlot;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.SetSweeperToFrontPosition;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.SetSweeperToRearPosition;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.ShootArtifact;
+import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.TurnOnIntake;
 import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Wait;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ArtifactIntaker;
+import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ArtifactLauncher;
 import org.firstinspires.ftc.teamcode.mechwarriors.hardware.ArtifactSorter;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -47,8 +44,7 @@ public class DecodeAutoOpMode extends OpMode {
 
     ArtifactSorter artifactSorter;
 
-    DcMotorEx launcherMotor;
-    Servo launcherServo;
+    ArtifactLauncher artifactLauncher;
 
     Limelight3A limelight;
 
@@ -69,6 +65,7 @@ public class DecodeAutoOpMode extends OpMode {
     private final Pose blueObeliskPose = new Pose(57.3, 87.4, Math.toRadians(80));
     private final Pose blueScorePose = new Pose(40, 106, Math.toRadians(135));
     private final Pose blueLeavePose = new Pose(40, 60, Math.toRadians(180));
+    private final Pose blueIntakePose = new Pose(106.5, 83.5, Math.toRadians(35));
 
     //Red
     private final Pose redStartPose = new Pose(122.3, 122.9, Math.toRadians(126.5));
@@ -76,16 +73,19 @@ public class DecodeAutoOpMode extends OpMode {
     private final Pose redObeliskPose = new Pose(86.7, 87.4, Math.toRadians(100));
     private final Pose redScorePose = new Pose(104, 106, Math.toRadians(35));
     private final Pose redLeavePose = new Pose(103, 60, Math.toRadians(0));
+    private final Pose redIntakePose = new Pose(39.7, 83.7);
 
 
     private Path goToBlueObelisk;
     private Path gotoBlueScore;
     private Path goToBlueLeave;
+    private Path goToBlueIntake;
 
 
     private Path goToRedObelisk;
     private Path goToRedScorePose;
     private Path goToRedLeave;
+    private Path goToRedIntake;
 
 
     @Override
@@ -97,14 +97,8 @@ public class DecodeAutoOpMode extends OpMode {
 
         artifactIntaker = new ArtifactIntaker(hardwareMap);
         artifactIntaker.setSweeperToRearPosition();
-
-        artifactSorter = new ArtifactSorter(hardwareMap);
-
-        launcherMotor = hardwareMap.get(DcMotorEx.class, "launcherMotor");
-        launcherMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        launcherServo = hardwareMap.get(Servo.class, "launcherServo");
-        launcherServo.scaleRange(0.65, 1.0);
-        launcherServo.setPosition(0);
+        artifactSorter = new ArtifactSorter(hardwareMap, telemetry);
+        artifactLauncher = new ArtifactLauncher(hardwareMap, telemetry);
 
         follower = Constants.createFollower(hardwareMap);
 
@@ -156,42 +150,39 @@ public class DecodeAutoOpMode extends OpMode {
 
     @Override
     public void start() {
-        artifactIntaker.setSweeperToRearPosition();
+        behaviors.add(new SetSweeperToRearPosition(telemetry, artifactIntaker));
         behaviors.add(new Wait(telemetry, waitTime * 1000));
 
         if (allianceColor == AllianceColor.BLUE) {
             follower.setStartingPose(blueStartPose);
 
-            //behaviors.add(new RotateArtifactSortertoIntake(telemetry, artifactSorter));
-
             // Drive to score position
             behaviors.add(new PedroPath(follower, goToBlueObelisk, blueObeliskPose, telemetry));
             behaviors.add(new ReadObelisk(limelight, telemetry, obeliskId));
             behaviors.add(new PedroPath(follower, gotoBlueScore, blueScorePose, telemetry));
-            //behaviors.add(new RotateArtifactSortertoShoot(telemetry, artifactSorter));
             behaviors.add(new Wait(telemetry, 1000));
 
-            // Shooting pattern added in loop
+            // Shooting pattern gets added in loop
 
             // Drive to park position
+            behaviors.add(new SetSweeperToFrontPosition(telemetry, artifactIntaker));
             behaviors.add(new PedroPath(follower, goToBlueLeave, blueLeavePose, telemetry));
         } else {
             follower.setStartingPose(redStartPose);
-           // behaviors.add(new RotateArtifactSortertoIntake(telemetry, artifactSorter));
+
             //Drive to score position
             behaviors.add(new PedroPath(follower, goToRedObelisk, redObeliskPose, telemetry));
             behaviors.add(new ReadObelisk(limelight, telemetry, obeliskId));
             behaviors.add(new PedroPath(follower, goToRedScorePose, redScorePose, telemetry));
-            //behaviors.add(new RotateArtifactSortertoShoot(telemetry, artifactSorter));
             behaviors.add(new Wait(telemetry, 1000));
-            //behaviors.add(new Wait(telemetry, 1000));
 
-            // Shooting pattern added in loop
+            // Shooting pattern gets added in loop
 
             // Drive to park position
+            behaviors.add(new SetSweeperToFrontPosition(telemetry, artifactIntaker));
             behaviors.add(new PedroPath(follower, goToRedLeave, redLeavePose, telemetry));
-
         }
+
 
         if (startingLocation == StartingLocation.LEFT) {
 
@@ -199,12 +190,13 @@ public class DecodeAutoOpMode extends OpMode {
 
         }
         artifactSorter.init();
-        //  behaviors.get(0).start();
     }
 
     @Override
     public void loop() {
         follower.update();
+        telemetry.addData("sorter motor", artifactSorter.sorterMotor.getCurrentPosition());
+        telemetry.addData("currentTicksTarget", artifactSorter.currentTicksTarget);
         runBehaviors();
 
         telemetry.addData("obeliskId", obeliskId);
@@ -220,7 +212,7 @@ public class DecodeAutoOpMode extends OpMode {
     @Override
     public void stop() {
         limelight.stop();
-        limelight.shutdown();
+        //limelight.shutdown();
     }
 
     private void runBehaviors() {
@@ -233,6 +225,7 @@ public class DecodeAutoOpMode extends OpMode {
             } else {
                 if (Objects.nonNull(behaviors.get(state).getName()) &&
                         behaviors.get(state).getName().equals("ReadObelisk")) {
+                    telemetry.addLine("Adding shooting behaviors");
                     behaviors.addAll(state + 2, buildShooterOrder());
                 }
                 //increments the behavior
@@ -257,45 +250,53 @@ public class DecodeAutoOpMode extends OpMode {
         gotoBlueScore = new Path((new BezierLine(blueObeliskPose, blueScorePose)));
         gotoBlueScore.setLinearHeadingInterpolation(blueObeliskPose.getHeading(), blueScorePose.getHeading());
 
-        goToBlueLeave = new Path(new BezierCurve(blueScorePose, new Pose(62, 92), blueLeavePose));
-        goToBlueLeave.setLinearHeadingInterpolation(blueScorePose.getHeading(), blueLeavePose.getHeading());
+        goToBlueIntake = new Path(new BezierLine(blueScorePose, blueIntakePose));
+        goToBlueIntake.setLinearHeadingInterpolation(blueScorePose.getHeading(), blueIntakePose.getHeading());
+
+        goToBlueLeave = new Path(new BezierCurve(blueIntakePose, new Pose(62, 92), blueLeavePose));
+        goToBlueLeave.setLinearHeadingInterpolation(blueIntakePose.getHeading(), blueLeavePose.getHeading());
+
 
         // Red
         goToRedObelisk = new Path(new BezierLine(redStartPose, redObeliskPose));
         goToRedObelisk.setLinearHeadingInterpolation(redStartPose.getHeading(), redObeliskPose.getHeading());
 
-        goToRedScorePose = new Path(new BezierLine( redObeliskPose, redScorePose));
+        goToRedScorePose = new Path(new BezierLine(redObeliskPose, redScorePose));
         goToRedScorePose.setLinearHeadingInterpolation(redObeliskPose.getHeading(), redScorePose.getHeading());
+
+        goToRedIntake = new Path(new BezierLine(redIntakePose, blueLeavePose));
+        goToRedIntake.setLinearHeadingInterpolation(redIntakePose.getHeading(), blueLeavePose.getHeading());
 
         goToRedLeave = new Path(new BezierCurve(redScorePose, new Pose(82, 92), redLeavePose));
         goToRedLeave.setLinearHeadingInterpolation(redScorePose.getHeading(), redLeavePose.getHeading());
+
     }
 
     private List<Behavior> buildShooterOrder() {
         List<Behavior> obeliskBehavior = new ArrayList<>();
 
         if (obeliskId.get() == 21) {
-            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
-            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
-            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            obeliskBehavior.add(new ShootArtifact(telemetry, artifactLauncher));
+            obeliskBehavior.add(new RotateArtifactSorterOneSlot(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, artifactLauncher));
+            obeliskBehavior.add(new RotateArtifactSorterOneSlot(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, artifactLauncher));
         } else if (obeliskId.get() == 22) {
-            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
-            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
-            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            obeliskBehavior.add(new RotateArtifactSorterOneSlot(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, artifactLauncher));
+            obeliskBehavior.add(new RotateArtifactSorterOneSlot(telemetry, artifactSorter));
+            obeliskBehavior.add(new RotateArtifactSorterOneSlot(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, artifactLauncher));
+            obeliskBehavior.add(new RotateArtifactSorterOneSlot(telemetry, artifactSorter));
+            obeliskBehavior.add(new RotateArtifactSorterOneSlot(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, artifactLauncher));
         } else if (obeliskId.get() == 23) {
-            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
-            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
-            obeliskBehavior.add(new RotateArtifactSorter(telemetry, artifactSorter));
-            obeliskBehavior.add(new ShootArtifact(telemetry, launcherMotor, launcherServo, 2200));
+            obeliskBehavior.add(new RotateArtifactSorterOneSlot(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, artifactLauncher));
+            obeliskBehavior.add(new RotateArtifactSorterOneSlot(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, artifactLauncher));
+            obeliskBehavior.add(new RotateArtifactSorterOneSlot(telemetry, artifactSorter));
+            obeliskBehavior.add(new ShootArtifact(telemetry, artifactLauncher));
         }
 
         return obeliskBehavior;

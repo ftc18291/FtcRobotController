@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.mechwarriors.hardware;
 
 import com.qualcomm.robotcore.hardware.*;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class ArtifactSorter {
 
     public static final double TICKS_PER_ROTATION = 587.04;
@@ -20,17 +22,17 @@ public class ArtifactSorter {
 
     private ArtifactSorterMode artifactSorterMode = ArtifactSorterMode.LAUNCH;
 
-    private double currentTicksTarget = 0;
+    public double currentTicksTarget = 0;
     boolean rotating = false;
     public DcMotorEx sorterMotor;
     DigitalChannel sorterTouchSensor;
 
-
+    Telemetry telemetry;
 
     boolean isBusy = false;
 
-    public ArtifactSorter(HardwareMap hardwareMap) {
-
+    public ArtifactSorter(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
         sorterMotor = hardwareMap.get(DcMotorEx.class, "sorterMotor");
         sorterMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sorterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -49,10 +51,13 @@ public class ArtifactSorter {
 
     /**
      * Returns if the sorter is currently busy.
+     *
      * @return true if busy, else false
      */
     public boolean isBusy() {
+        telemetry.addLine("currentTicksTarget: " + currentTicksTarget + ", sorterMotor: " + sorterMotor.getCurrentPosition());
         // If the sorter motor position is within +/- 2 ticks of the target, then we are done
+
         return currentTicksTarget >= sorterMotor.getCurrentPosition() - 2 &&
                 currentTicksTarget <= sorterMotor.getCurrentPosition() + 2;
     }
