@@ -110,8 +110,6 @@ public class DecodeTeleOpMode extends OpMode {
     public void loop() {
         artifactLauncher.checkSpeed();
 
-        artifactLauncher.setRampPosition(rampPosition);
-
         double distance;
 
         LLResult result = limelight.getLatestResult();
@@ -216,10 +214,11 @@ public class DecodeTeleOpMode extends OpMode {
 
         // Intake motor
         if (gamepad2.b &&
-               // artifactIntaker.getSweeperPosition() == 0 &&
+               artifactIntaker.getSweeperPosition() == ArtifactIntaker.SweeperPosition.FORWARD &&
                 artifactSorter.getArtifactSorterMode() == ArtifactSorterMode.INTAKE) {
             artifactIntaker.runIntakeMotor();
         } else if (gamepad2.x &&
+                artifactIntaker.getSweeperPosition() == ArtifactIntaker.SweeperPosition.FORWARD &&
                 artifactSorter.getArtifactSorterMode() == ArtifactSorterMode.INTAKE) {
             artifactIntaker.reverseIntakeMotor();
         } else {

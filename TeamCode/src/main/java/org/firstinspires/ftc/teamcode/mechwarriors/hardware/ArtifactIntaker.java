@@ -12,6 +12,11 @@ public class ArtifactIntaker {
 
     Servo artifactLock;
 
+    public enum SweeperPosition {
+        FORWARD, BACKWARD
+    }
+    SweeperPosition sweeperPosition;
+
     public ArtifactIntaker(HardwareMap hardwareMap) {
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -22,7 +27,7 @@ public class ArtifactIntaker {
 
         artifactLock = hardwareMap.get(Servo.class, "artifactLock");
         artifactLock.scaleRange(0.15, 0.95);
-        artifactLock.setPosition(0);
+        setSweeperToFrontPosition();
     }
 
     public void runIntakeMotor() {
@@ -41,11 +46,16 @@ public class ArtifactIntaker {
     }
 
     public void setSweeperToRearPosition() {
+        sweeperPosition = SweeperPosition.BACKWARD;
         artifactLock.setPosition(1.0);
     }
     public void setSweeperToFrontPosition() {
+        sweeperPosition = SweeperPosition.FORWARD;
         artifactLock.setPosition(0);
     }
 
+    public SweeperPosition getSweeperPosition() {
+        return sweeperPosition;
+    }
 
 }

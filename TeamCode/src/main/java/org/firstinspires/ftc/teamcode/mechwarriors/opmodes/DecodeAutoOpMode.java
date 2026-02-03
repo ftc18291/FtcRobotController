@@ -59,33 +59,33 @@ public class DecodeAutoOpMode extends OpMode {
     boolean dpaddownPressed = false;
     boolean dpadupPressed = false;
 
-    //Blue
+    //Blue n-- starting heading ~39
     private final Pose blueStartPose = new Pose(21.7, 122.9, Math.toRadians(53.5));
     //private final Pose blueStartPose = new Pose(33, 134.5, Math.toRadians(0));
-    private final Pose blueObeliskPose = new Pose(57.3, 87.4, Math.toRadians(80));
-    private final Pose blueScorePose = new Pose(40, 106, Math.toRadians(135));
-    private final Pose blueLeavePose = new Pose(40, 60, Math.toRadians(180));
-    private final Pose blueIntakePose = new Pose(106.5, 83.5, Math.toRadians(35));
+    private final Pose blueObeliskPose = new Pose(57.3, 97.4, Math.toRadians(80));
+    private final Pose blueScorePose = new Pose(50.2, 92.4, Math.toRadians(145));
+    private final Pose blueLeavePose = new Pose(37.8, 59.93, Math.toRadians(180));
+    //private final Pose blueIntakePose = new Pose(106.5, 83.5, Math.toRadians(35));
 
     //Red
     private final Pose redStartPose = new Pose(122.3, 122.9, Math.toRadians(126.5));
     //private final Pose redStartPose = new Pose(111, 134.5, Math.toRadians(180));
     private final Pose redObeliskPose = new Pose(86.7, 87.4, Math.toRadians(100));
-    private final Pose redScorePose = new Pose(104, 106, Math.toRadians(35));
-    private final Pose redLeavePose = new Pose(103, 60, Math.toRadians(0));
-    private final Pose redIntakePose = new Pose(39.7, 83.7);
+    private final Pose redScorePose = new Pose(93.5, 93.9, Math.toRadians(30));
+    private final Pose redLeavePose = new Pose(104.7, 59.5, Math.toRadians(0));
+    //private final Pose redIntakePose = new Pose(39.7, 83.7);
 
 
     private Path goToBlueObelisk;
     private Path gotoBlueScore;
     private Path goToBlueLeave;
-    private Path goToBlueIntake;
+   // private Path goToBlueIntake;
 
 
     private Path goToRedObelisk;
     private Path goToRedScorePose;
     private Path goToRedLeave;
-    private Path goToRedIntake;
+    //private Path goToRedIntake;
 
 
     @Override
@@ -250,11 +250,11 @@ public class DecodeAutoOpMode extends OpMode {
         gotoBlueScore = new Path((new BezierLine(blueObeliskPose, blueScorePose)));
         gotoBlueScore.setLinearHeadingInterpolation(blueObeliskPose.getHeading(), blueScorePose.getHeading());
 
-        goToBlueIntake = new Path(new BezierLine(blueScorePose, blueIntakePose));
-        goToBlueIntake.setLinearHeadingInterpolation(blueScorePose.getHeading(), blueIntakePose.getHeading());
+//        goToBlueIntake = new Path(new BezierLine(blueScorePose, blueIntakePose));
+//        goToBlueIntake.setLinearHeadingInterpolation(blueScorePose.getHeading(), blueIntakePose.getHeading());
 
-        goToBlueLeave = new Path(new BezierCurve(blueIntakePose, new Pose(62, 92), blueLeavePose));
-        goToBlueLeave.setLinearHeadingInterpolation(blueIntakePose.getHeading(), blueLeavePose.getHeading());
+        goToBlueLeave = new Path(new BezierCurve(blueScorePose, new Pose(62, 92), blueLeavePose));
+        goToBlueLeave.setLinearHeadingInterpolation(blueScorePose.getHeading(), blueLeavePose.getHeading());
 
 
         // Red
@@ -264,8 +264,8 @@ public class DecodeAutoOpMode extends OpMode {
         goToRedScorePose = new Path(new BezierLine(redObeliskPose, redScorePose));
         goToRedScorePose.setLinearHeadingInterpolation(redObeliskPose.getHeading(), redScorePose.getHeading());
 
-        goToRedIntake = new Path(new BezierLine(redIntakePose, blueLeavePose));
-        goToRedIntake.setLinearHeadingInterpolation(redIntakePose.getHeading(), blueLeavePose.getHeading());
+//        goToRedIntake = new Path(new BezierLine(redIntakePose, blueLeavePose));
+//        goToRedIntake.setLinearHeadingInterpolation(redIntakePose.getHeading(), blueLeavePose.getHeading());
 
         goToRedLeave = new Path(new BezierCurve(redScorePose, new Pose(82, 92), redLeavePose));
         goToRedLeave.setLinearHeadingInterpolation(redScorePose.getHeading(), redLeavePose.getHeading());

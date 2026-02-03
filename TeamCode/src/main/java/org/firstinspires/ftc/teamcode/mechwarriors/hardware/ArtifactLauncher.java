@@ -18,7 +18,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class ArtifactLauncher {
 
     private static final double SLOW_SPEED = 2000.0;
-    private static final double FAST_SPEED = 2400.0;
+    private static final double FAST_SPEED = 2420.0;
+
+    public static final double LIFT_SERVO_LOWER_POSITION = 0.25;
 
     DcMotorEx launcherMotor;
     Servo launcherServo;
@@ -43,8 +45,6 @@ public class ArtifactLauncher {
     public static double NEW_I = 40;
     public static double NEW_D = 10;
     public static double NEW_F = 0;
-
-
 
 
     public ArtifactLauncher(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -102,18 +102,6 @@ public class ArtifactLauncher {
         } else {
             ledIndicator.setColor(LEDIndicator.LEDColor.OFF);
         }
-//        if (launcherMotor.getVelocity() > 0 && launcherMotor.getVelocity() < launcherMotorSpeed) {
-//            ledIndicator.setColor(LEDIndicator.LEDColor.RED);
-//        } else if (launcherMotor.getVelocity() >= launcherMotorSpeed &&
-//                launcherMotor.getVelocity() <= launcherMotorSpeed + 10) {
-//            ledIndicator.setColor(LEDIndicator.LEDColor.GREEN);
-//        } else {
-//            ledIndicator.setColor(LEDIndicator.LEDColor.OFF);
-//        }
-    }
-
-    public void setRampPosition(double pos) {
-        rampPosition = pos;
     }
 
     public void setShootingMode() {
@@ -123,12 +111,10 @@ public class ArtifactLauncher {
             shootingMode = ShootingMode.SHORT;
         }
         if (shootingMode == ShootingMode.SHORT) {
-            rightLifterServo.setPosition(0);
-            leftLifterServo.setPosition(0);
+            raiseLifter();
             launcherMotorSpeed = SLOW_SPEED;
         } else {
-            rightLifterServo.setPosition(0.25);
-            leftLifterServo.setPosition(0.25);
+            lowerLifter();
             launcherMotorSpeed = FAST_SPEED;
         }
     }
@@ -159,13 +145,13 @@ public class ArtifactLauncher {
     }
 
     public void raiseLifter() {
-        leftLifterServo.setPosition(1);
-        rightLifterServo.setPosition(1);
+        rightLifterServo.setPosition(0);
+        leftLifterServo.setPosition(0);
     }
 
     public void lowerLifter() {
-        leftLifterServo.setPosition(0);
-        rightLifterServo.setPosition(0);
+        rightLifterServo.setPosition(LIFT_SERVO_LOWER_POSITION);
+        leftLifterServo.setPosition(LIFT_SERVO_LOWER_POSITION);
     }
 
 

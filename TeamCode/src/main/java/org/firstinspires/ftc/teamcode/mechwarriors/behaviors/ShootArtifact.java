@@ -49,7 +49,8 @@ public class ShootArtifact extends Behavior {
             if (!launched) {
                 // Wait for motor spin up
                 telemetry.addData("Waiting for motor spin up", launcher.getLaunchMotorVelocity());
-                if (launcher.getLaunchMotorVelocity() > (launcher.getLauncherDesiredSpeed() - 10)) {
+                if (launcher.getLaunchMotorVelocity() > (launcher.getLauncherDesiredSpeed() - 10) &&
+                        launcher.getLaunchMotorVelocity() < (launcher.getLauncherDesiredSpeed() + 10)) {
                     // Now launch artifact
                     launched = true;
                     launcher.launch();
