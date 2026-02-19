@@ -5,6 +5,8 @@ public enum IndicatorLightColor {
     PURPLE(.772f),
     GREEN(.500f),
 
+    RED(.277f),
+
     OFF(.000f);
 
     private float value;

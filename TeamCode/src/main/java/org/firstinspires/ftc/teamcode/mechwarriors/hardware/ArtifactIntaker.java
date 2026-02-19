@@ -20,18 +20,15 @@ public class ArtifactIntaker {
     public ArtifactIntaker(HardwareMap hardwareMap) {
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-       // intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         intakeRollersMotor = hardwareMap.get(DcMotorEx.class, "intakeRollersMotor");
-       // intakeRollersMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         artifactLock = hardwareMap.get(Servo.class, "artifactLock");
-        artifactLock.scaleRange(0.15, 0.95);
+        artifactLock.scaleRange(0.07, 0.85);
         setSweeperToFrontPosition();
     }
 
     public void runIntakeMotor() {
-        intakeMotor.setVelocity(1000);
+        intakeMotor.setVelocity(1500);
+        intakeMotor.setPower(1.0);
         intakeRollersMotor.setPower(1.0);
     }
 

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.hardware;
 import android.sax.StartElementListener;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -17,15 +18,20 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @Config
 public class ArtifactLauncher {
 
-    private static final double SLOW_SPEED = 2000.0;
+    public static final double SLOW_SPEED = 2000.0;
     private static final double FAST_SPEED = 2420.0;
 
     public static final double LIFT_SERVO_LOWER_POSITION = 0.25;
+
+    public static final double LAUNCH_SERVO_RETRACT_POSITION = 0.882;
+    public static final double LAUNCH_SERVO_LAUNCH_POSITION = 1.400;
 
     DcMotorEx launcherMotor;
     Servo launcherServo;
     ServoImplEx leftLifterServo;
     ServoImplEx rightLifterServo;
+
+    AnalogInput launchServoPosition;
 
     double rampPosition = 0.0;
     LEDIndicator ledIndicator;
@@ -35,12 +41,6 @@ public class ArtifactLauncher {
     PIDFCoefficients launchMotorPIDFValues;
 
     Telemetry telemetry;
-
-    //public static double NEW_P = 10;
-    //public static double NEW_I = 3;
-    //public static double NEW_D = 0;
-    //public static double NEW_F = 0;
-
     public static double NEW_P = 100;
     public static double NEW_I = 40;
     public static double NEW_D = 10;
@@ -58,6 +58,8 @@ public class ArtifactLauncher {
         launcherServo.scaleRange(0.65, 1.0);
         launcherServo.setDirection(Servo.Direction.REVERSE);
         launcherServo.setPosition(0);
+
+        launchServoPosition = hardwareMap.get(AnalogInput.class, "launchServoPosition");
 
         leftLifterServo = hardwareMap.get(ServoImplEx.class, "leftLifterServo");
         leftLifterServo.setPwmRange(new PwmControl.PwmRange(900, 2100));
@@ -82,17 +84,6 @@ public class ArtifactLauncher {
     }
 
     public void startFlywheel() {
-       /* telemetry.addData("P", launchMotorPIDFValues.p);
-        telemetry.addData("I", launchMotorPIDFValues.i);
-        telemetry.addData("D", launchMotorPIDFValues.d);
-        telemetry.addData("F", launchMotorPIDFValues.f);
-
-
-        launchMotorPIDFValues.p = NEW_P;
-        launchMotorPIDFValues.i = NEW_I;
-        launchMotorPIDFValues.d = NEW_D;
-        launchMotorPIDFValues.f = NEW_F;
-        launcherMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, launchMotorPIDFValues);*/
         launcherMotor.setVelocity(launcherMotorSpeed);
     }
 
@@ -150,7 +141,7 @@ public class ArtifactLauncher {
     }
 
     public void lowerLifter() {
-        rightLifterServo.setPosition(LIFT_SERVO_LOWER_POSITION);
+        rightLifterServo.setPosition(LIFT_SERVO_LOWER_POSITION + 0.035);
         leftLifterServo.setPosition(LIFT_SERVO_LOWER_POSITION);
     }
 
@@ -161,5 +152,25 @@ public class ArtifactLauncher {
 
     public double getLauncherDesiredSpeed() {
         return launcherMotorSpeed;
+    }
+
+    public double getLaunchServoPosition() {
+        return launchServoPosition.getVoltage();
+    }
+
+    public boolean isLaunchServoInLaunchPosition() {
+        return (getLaunchServoPosition() >= LAUNCH_SERVO_LAUNCH_POSITION);
+    }
+
+    public boolean isLaunchServoInRetractPosition() {
+        return (getLaunchServoPosition() <= LAUNCH_SERVO_RETRACT_POSITION);
+    }
+
+    public void autoShoot() {
+        launcherMotor.setVelocity(SLOW_SPEED);
+
+        if (launcherMotor.getVelocity() == SLOW_SPEED) {
+
+        }
     }
 }

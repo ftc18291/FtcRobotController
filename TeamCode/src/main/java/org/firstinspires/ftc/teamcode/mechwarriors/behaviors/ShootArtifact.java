@@ -60,7 +60,8 @@ public class ShootArtifact extends Behavior {
             } else {
                 // Artifact launched, now wait for servo to retract
                 telemetry.addData("Waiting for servo retraction", shootingTimer.milliseconds());
-                if (shootingTimer.milliseconds() > 800 && !retractStarted) {
+                if (launcher.isLaunchServoInLaunchPosition() && !retractStarted) {
+                    //if (shootingTimer.milliseconds() > 800 && !retractStarted) {
                     launcher.launchReset();
                     launcher.stopFlywheel();
                     retractTimer.reset();
@@ -68,7 +69,8 @@ public class ShootArtifact extends Behavior {
                     telemetry.addLine("Servo retracted");
                 }
 
-                if (retractStarted && retractTimer.milliseconds() > 800) {
+                if (retractStarted && launcher.isLaunchServoInRetractPosition()) {
+                    //if (retractStarted && retractTimer.milliseconds() > 800) {
                     telemetry.addLine("Done");
                     isDone = true;
                 }
