@@ -13,16 +13,16 @@ public class ShootArtifact extends Behavior {
     boolean launched = false;
     boolean retractStarted = false;
 
-    ElapsedTime shootingTimer;
-    ElapsedTime retractTimer;
+  //  ElapsedTime shootingTimer;
+  //  ElapsedTime retractTimer;
 
     ElapsedTime watchdogTimer;
 
     public ShootArtifact(Telemetry telemetry, ArtifactLauncher launcher) {
         this.telemetry = telemetry;
         this.launcher = launcher;
-        shootingTimer = new ElapsedTime();
-        retractTimer = new ElapsedTime();
+       // shootingTimer = new ElapsedTime();
+       // retractTimer = new ElapsedTime();
         watchdogTimer = new ElapsedTime();
 
         this.name = "Shoot Artifact";
@@ -54,17 +54,17 @@ public class ShootArtifact extends Behavior {
                     // Now launch artifact
                     launched = true;
                     launcher.launch();
-                    shootingTimer.reset();
+                   // shootingTimer.reset();
                     telemetry.addLine("Launching artifact");
                 }
             } else {
                 // Artifact launched, now wait for servo to retract
-                telemetry.addData("Waiting for servo retraction", shootingTimer.milliseconds());
+               // telemetry.addData("Waiting for servo retraction", shootingTimer.milliseconds());
                 if (launcher.isLaunchServoInLaunchPosition() && !retractStarted) {
                     //if (shootingTimer.milliseconds() > 800 && !retractStarted) {
                     launcher.launchReset();
                     launcher.stopFlywheel();
-                    retractTimer.reset();
+                  //  retractTimer.reset();
                     retractStarted = true;
                     telemetry.addLine("Servo retracted");
                 }

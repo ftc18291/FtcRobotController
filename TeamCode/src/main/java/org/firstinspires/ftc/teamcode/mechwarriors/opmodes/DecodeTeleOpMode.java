@@ -41,9 +41,9 @@ public class DecodeTeleOpMode extends OpMode {
 
 
     PIDController autoAimPID;
-    public static double AUTO_AIM_KP = 0.002;
+    public static double AUTO_AIM_KP = 0.05;
     public static double AUTO_AIM_KI = 0;
-    public static double AUTO_AIM_KD = 0.0001;
+    public static double AUTO_AIM_KD = 0.0007;
 
     public static double rampPosition = 0.25;
 
@@ -94,6 +94,9 @@ public class DecodeTeleOpMode extends OpMode {
         // Artifact Sorter
         artifactSorter = new ArtifactSorter(hardwareMap, telemetry);
 
+        ArtifactSorterMode mode = (ArtifactSorterMode) blackboard.getOrDefault(BlackboardItems.SORTER_MODE.name(), ArtifactSorterMode.LAUNCH);
+        artifactSorter.setArtifactSorterMode(mode);
+
 
         sorterTouchSensor = hardwareMap.get(DigitalChannel.class, "sorterTouchSensor");
 
@@ -117,6 +120,7 @@ public class DecodeTeleOpMode extends OpMode {
     @Override
     public void loop() {
         artifactLauncher.checkSpeed();
+
 
         double distance;
         boolean isRunning;
