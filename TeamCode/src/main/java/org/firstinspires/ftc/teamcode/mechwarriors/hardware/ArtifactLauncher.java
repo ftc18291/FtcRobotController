@@ -23,7 +23,7 @@ public class ArtifactLauncher {
 
     public static final double LIFT_SERVO_LOWER_POSITION = 0.25;
 
-    public static final double LAUNCH_SERVO_RETRACT_POSITION = 0.882;
+    public static final double LAUNCH_SERVO_RETRACT_POSITION = 0.884;
     public static final double LAUNCH_SERVO_LAUNCH_POSITION = 1.400;
 
     DcMotorEx launcherMotor;

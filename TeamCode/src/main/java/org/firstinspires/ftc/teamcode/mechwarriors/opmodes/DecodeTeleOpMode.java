@@ -74,7 +74,7 @@ public class DecodeTeleOpMode extends OpMode {
     HuskyLens huskyLens;
     AutoShoot autoShoot;
 
-    boolean isAutoShootRunning = false;
+    Boolean isAutoShootRunning = false;
 
     IndicatorLight indicatorLight;
 
@@ -94,8 +94,8 @@ public class DecodeTeleOpMode extends OpMode {
         // Artifact Sorter
         artifactSorter = new ArtifactSorter(hardwareMap, telemetry);
 
-        ArtifactSorterMode mode = (ArtifactSorterMode) blackboard.getOrDefault(BlackboardItems.SORTER_MODE.name(), ArtifactSorterMode.LAUNCH);
-        artifactSorter.setArtifactSorterMode(mode);
+        // ArtifactSorterMode mode = (ArtifactSorterMode) blackboard.getOrDefault(BlackboardItems.SORTER_MODE.name(), ArtifactSorterMode.LAUNCH);
+        //  artifactSorter.setArtifactSorterMode(mode);
 
 
         sorterTouchSensor = hardwareMap.get(DigitalChannel.class, "sorterTouchSensor");
@@ -136,7 +136,7 @@ public class DecodeTeleOpMode extends OpMode {
             int id = aprilTagResult.getFiducialId();
             telemetry.addData("Seeing April Tag", id);
             indicatorLight.setColor(IndicatorLightColor.GREEN);
-           // limelightTargetX = aprilTagResult.getTargetXDegrees();
+            // limelightTargetX = aprilTagResult.getTargetXDegrees();
 //            if (limelightTargetX > 1.0) {
 //                // LEFT
 //                rightLedIndicatorLight.setColor(LEDIndicator.LEDColor.RED);
@@ -265,6 +265,9 @@ public class DecodeTeleOpMode extends OpMode {
             isAutoShootRunning = false;
         }
         String autoShootState = autoShoot.autoShoot(isAutoShootRunning);
+        if (isAutoShootRunning != null && !isAutoShootRunning) {
+            isAutoShootRunning = null;
+        }
 
         if (autoShootState.isEmpty()) {
             if (gamepad2.right_trigger > 0.5) {

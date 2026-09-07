@@ -23,15 +23,14 @@ public class AutoShoot {
         this.artifactLauncher = artifactLauncher;
         this.artifactSorter = artifactSorter;
         this.telemetry = telemetry;
+        state = "";
         timer.startTime();
     }
 
-    public String autoShoot(boolean isRunning) {
+    public String autoShoot(Boolean isRunning) {
         telemetry.addData("state", state);
         telemetry.addData("counter", counter);
-        if (isRunning) {
-
-
+        if (isRunning != null && isRunning) {
             switch (state) {
                 case "startFlywheel":
                     artifactLauncher.startFlywheel();
@@ -75,7 +74,7 @@ public class AutoShoot {
                 default:
                     break;
             }
-        } else {
+        } else if (isRunning != null && !isRunning) {
             state = "";
             artifactLauncher.stopFlywheel();
             artifactLauncher.launchReset();
