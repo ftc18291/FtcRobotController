@@ -20,8 +20,8 @@ import com.qualcomm.robotcore.hardware.ServoControllerEx;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.mechwarriors.LiftHeight;
-import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
+import org.firstinspires.ftc.teamcode.mechwarriors.Miscellaneous.LiftHeight;
+import org.firstinspires.ftc.teamcode.mechwarriors.Miscellaneous.Utilities;
 
 @Config
 @TeleOp(group = "IntoTheDeep", name = "TeleOp")

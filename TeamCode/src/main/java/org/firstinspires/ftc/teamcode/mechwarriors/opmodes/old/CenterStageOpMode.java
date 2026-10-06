@@ -9,12 +9,12 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.Behavior;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.CloseClaw;
-import org.firstinspires.ftc.teamcode.mechwarriors.behaviors.OpenClaw;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.IntoTheDeepRobot;
+import org.firstinspires.ftc.teamcode.mechwarriors.Miscellaneous.Utilities;
+import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.Behavior;
+import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.CloseClaw;
+import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.OpenClaw;
+import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.Claw;
+import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.IntoTheDeepRobot;
 
 import java.util.ArrayList;
 import java.util.List;

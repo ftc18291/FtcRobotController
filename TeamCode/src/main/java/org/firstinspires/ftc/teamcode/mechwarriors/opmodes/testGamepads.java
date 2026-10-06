@@ -18,7 +18,7 @@ gamepad = gamepad2;
     public void loop() {
 
         if (gamepad.a) {
-            telemetry.addLine("aButtonPressed1");
+            telemetry.addLine("aButtonPressed1 xx");
         }
         if (gamepad.b) {
             telemetry.addLine("bButtonPressed1");

@@ -1,0 +1,22 @@
+package org.firstinspires.ftc.teamcode.mechwarriors.Miscellaneous;
+
+
+public enum LiftHeight {
+
+    BOTTOM(0),    // 0"
+    RETRIEVE(400),  // ~3"
+    LOW(1900), // 23.5"
+
+    HIGHAIDAN(4025),
+    HIGH(4200);   // 33.5"
+
+    private final int ticks;
+
+    LiftHeight(final int ticks) {
+        this.ticks = ticks;
+    }
+
+    public int getTicks() {
+        return ticks;
+    }
+}

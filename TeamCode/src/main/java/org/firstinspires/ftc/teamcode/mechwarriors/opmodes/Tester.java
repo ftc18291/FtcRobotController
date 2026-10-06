@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.LEDIndicator;
+import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.LEDIndicator;
 
 @TeleOp
 public class Tester extends OpMode {

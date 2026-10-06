@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.mechwarriors.Utilities;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.Claw;
-import org.firstinspires.ftc.teamcode.mechwarriors.hardware.IntoTheDeepRobot;
+import org.firstinspires.ftc.teamcode.mechwarriors.Miscellaneous.Utilities;
+import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.Claw;
+import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.IntoTheDeepRobot;
 
 @TeleOp(group = "PowerPlay")
 @Disabled
