@@ -23,5 +23,8 @@ public class PNLauncher {
     public void startPNLauncher() {
         pnLauncher.setVelocity(1000);
     }
+    public void stopPNLauncher() {
+        pnLauncher.setVelocity(0);
+    }
 
 }
