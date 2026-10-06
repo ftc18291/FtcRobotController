@@ -20,8 +20,8 @@ public class PNLauncher {
         pnLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void startPNLauncher(int pnLauncherSpeed) {
-        pnLauncher.setVelocity(pnLauncherSpeed);
+    public void startPNLauncher() {
+        pnLauncher.setVelocity(1000);
     }
 
 }

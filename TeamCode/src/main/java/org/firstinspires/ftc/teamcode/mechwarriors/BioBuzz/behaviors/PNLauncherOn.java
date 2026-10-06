@@ -16,7 +16,7 @@ public class PNLauncherOn extends Behavior {
 
     @Override
     public void start() {
-        pnLauncher.startPNLauncher(pnLauncher.PNLauncherSpeed);
+        pnLauncher.startPNLauncher();
     }
 
     @Override
