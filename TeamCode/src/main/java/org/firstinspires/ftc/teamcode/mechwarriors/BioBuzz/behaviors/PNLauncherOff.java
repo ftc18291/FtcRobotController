@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.Beh
 
         @Override
         public void run() {
-
+            isDone = true;
         }
     }
 
