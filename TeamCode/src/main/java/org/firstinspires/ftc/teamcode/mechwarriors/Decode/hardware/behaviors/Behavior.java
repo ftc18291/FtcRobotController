@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public abstract class Behavior {
-    String name;
-    Telemetry telemetry;
+    protected String name;
+    public Telemetry telemetry;
     protected boolean isDone = false;
 
     //public Behavior(String name) {
