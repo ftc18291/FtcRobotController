@@ -16,8 +16,10 @@ public class BioBuzzTeleOp extends OpMode {
     int pnLauncherSpeed;
 
     PNServo pnServo;
+    PNFlowerServo pnFlowerServo;
 
     PnServoState pnServoState = PnServoState.HOME;
+    PNFlowerServoState pnFlowerServoState = PNFlowerServoState.IN;
 
     @Override
     public void init() {
@@ -25,6 +27,7 @@ public class BioBuzzTeleOp extends OpMode {
         pnLauncher = new PNLauncher(hardwareMap, telemetry);
 //        drivetrain = new DriveTrain(hardwareMap, telemetry);
         pnServo = new PNServo(hardwareMap);
+        pnFlowerServo = new PNFlowerServo(hardwareMap);
     }
 
     @Override
@@ -45,6 +48,13 @@ public class BioBuzzTeleOp extends OpMode {
         if (gamepad2.left_trigger > 0.3 && PnServoState.LAUNCH == pnServoState) {
             pnServo.setPositionHOME();
         }
+        if (gamepad2.x && PNFlowerServoState.IN== pnFlowerServoState) {
+            pnFlowerServo.setPositionOUT();
+        }
+        if (gamepad2.x && PNFlowerServoState.OUT == pnFlowerServoState) {
+            pnFlowerServo.setPositionIN();
+        }
+
 
 
         // telemetry.addData("Intake Speed:", gamepad2.right_trigger);
