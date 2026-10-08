@@ -161,7 +161,12 @@ public class DecodeTeleOpMode extends OpMode {
             telemetry.addData("calculatedX", calculatedX);
             rx = calculatedX;
         } else {
-            rx = gamepad1.right_stick_x;
+
+
+
+
+
+
         }
         telemetry.addData("rx", rx);
         telemetry.addData("calculated rx", autoAimPID.calculate(limelightTargetX));

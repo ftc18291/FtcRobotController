@@ -13,10 +13,9 @@ public class BioBuzzTeleOp extends OpMode {
 
     PNLauncher pnLauncher;
 
-    int pnLauncherSpeed;
-
     PNServo pnServo;
     PNFlowerServo pnFlowerServo;
+    private DriveTrain drivetrain;
 
     PnServoState pnServoState = PnServoState.HOME;
     PNFlowerServoState pnFlowerServoState = PNFlowerServoState.IN;
@@ -25,7 +24,7 @@ public class BioBuzzTeleOp extends OpMode {
     public void init() {
         intakeSpinner = new IntakeSpinner(hardwareMap);
         pnLauncher = new PNLauncher(hardwareMap, telemetry);
-//        drivetrain = new DriveTrain(hardwareMap, telemetry);
+        drivetrain = new DriveTrain(hardwareMap, telemetry);
         pnServo = new PNServo(hardwareMap);
         pnFlowerServo = new PNFlowerServo(hardwareMap);
     }
@@ -42,12 +41,10 @@ public class BioBuzzTeleOp extends OpMode {
         }
 
 
-        if (gamepad2.left_trigger > 0.3 && PnServoState.HOME == pnServoState) {
+        if (gamepad2.left_trigger > 0.5 ) {
             pnServo.setPositionLAUNCH();
-        }
-        if (gamepad2.left_trigger > 0.3 && PnServoState.LAUNCH == pnServoState) {
-            pnServo.setPositionHOME();
-        }
+        } else {pnServo.setPositionHOME();}
+
         if (gamepad2.x && PNFlowerServoState.IN== pnFlowerServoState) {
             pnFlowerServo.setPositionOUT();
         }
@@ -67,7 +64,7 @@ public class BioBuzzTeleOp extends OpMode {
 //        }
 
 
-//     drivetrain.drive(x, y, rx);
+        drivetrain.drive(x, y, rx);
 
     }
 }
