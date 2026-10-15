@@ -1,23 +1,22 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.behaviors;
 
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.PNLauncher;
-import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.PNServo;
+import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.PLauncher;
 import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.Behavior;
 
-public class PNServoLAUNCH extends Behavior {
+public class PLauncherOn extends Behavior {
     Telemetry telemetry;
-    PNServo pnServo;
+    PLauncher pnLauncher;
 
-    public PNServoLAUNCH(Telemetry telemetry, PNServo pnServo) {
+
+    public PLauncherOn(Telemetry telemetry, PLauncher pnLauncher) {
         this.telemetry = telemetry;
-        this.pnServo = pnServo;
+        this.pnLauncher = pnLauncher;
     }
 
     @Override
     public void start() {
-        pnServo.setPositionLAUNCH();
+        pnLauncher.startPNLauncher();
     }
 
     @Override

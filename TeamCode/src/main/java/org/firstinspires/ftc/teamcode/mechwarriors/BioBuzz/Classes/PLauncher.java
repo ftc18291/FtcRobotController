@@ -6,25 +6,25 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class PNLauncher {
-    DcMotorEx pnLauncher;
+public class PLauncher {
+    DcMotorEx pLauncher;
     Telemetry telemetry;
     public int PNLauncherSpeed = 1000;
 
 
-    public PNLauncher(HardwareMap hardwareMap, Telemetry telemetry) {
+    public PLauncher(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
-        pnLauncher = hardwareMap.get(DcMotorEx.class, "pnLauncher");
-        pnLauncher.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        pnLauncher.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
-        pnLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
+        pLauncher = hardwareMap.get(DcMotorEx.class, "pnLauncher");
+        pLauncher.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        pLauncher.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
+        pLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void startPNLauncher() {
-        pnLauncher.setVelocity(1000);
+        pLauncher.setVelocity(1000);
     }
     public void stopPNLauncher() {
-        pnLauncher.setVelocity(0);
+        pLauncher.setVelocity(0);
     }
 
 }
