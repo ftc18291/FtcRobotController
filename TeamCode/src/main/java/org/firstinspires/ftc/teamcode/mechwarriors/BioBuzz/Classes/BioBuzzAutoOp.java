@@ -32,9 +32,11 @@ public class BioBuzzAutoOp extends OpMode {
 
     private final Pose redActionStartPose = new Pose(9, 24, Math.toRadians(0));
     private final Pose redActionShootPose = new Pose(58,24, Math.toRadians(90));
-    private final Pose blueStartPose = new Pose(135, 24, Math.toRadians(180));
+    private final Pose blueActionStartPose = new Pose(135, 24, Math.toRadians(180));
+    private final Pose blueActionShootPose = new Pose(130, 24, Math.toRadians(90));
 
     private Path goToRedActionShoot;
+    private Path goToBlueActionShoot;
 
     @Override
     public void init() {
@@ -96,6 +98,9 @@ public class BioBuzzAutoOp extends OpMode {
     private void buildPaths() {
         Path goToRedActionShoot = new Path(new BezierLine(redActionStartPose, redActionShootPose));
         goToRedActionShoot.setLinearHeadingInterpolation(redActionStartPose.getHeading(), redActionShootPose.getHeading());
+
+        Path goToBlueActionShoot = new Path(new BezierLine(blueActionStartPose, blueActionShootPose));
+        goToBlueActionShoot.setLinearHeadingInterpolation(blueActionStartPose.getHeading(), blueActionShootPose.getHeading());
     }
 
 }
