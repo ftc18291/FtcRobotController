@@ -6,22 +6,33 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class IntakeSpinner {
     DcMotorEx intakeSpinner;
+    DcMotorEx upperIntakeSpinner;
 
     public IntakeSpinner(HardwareMap hardwareMap) {
         intakeSpinner = hardwareMap.get(DcMotorEx.class, "intakeSpinner");
         //intakeSpinner.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeSpinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        upperIntakeSpinner = hardwareMap.get(DcMotorEx.class, "upperIntakeSpinner");
+        upperIntakeSpinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        upperIntakeSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
     }
 
     public void runIntakeSpinner() {
         intakeSpinner.setVelocity(2000);
+        upperIntakeSpinner.setVelocity(2000);
     }
     public void reverseRunIntakeSpinner() {
         intakeSpinner.setVelocity(-2000);
+        upperIntakeSpinner.setVelocity(-2000);
     }
     public void stopIntakeSpinner() {
         intakeSpinner.setVelocity(0);
+        upperIntakeSpinner.setVelocity(0);
     }
+
+
 
 }

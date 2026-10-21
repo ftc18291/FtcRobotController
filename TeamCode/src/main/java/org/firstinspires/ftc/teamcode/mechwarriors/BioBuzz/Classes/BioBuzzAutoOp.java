@@ -21,10 +21,17 @@ public class BioBuzzAutoOp extends OpMode {
 
     private Follower follower;
     IntakeSpinner intakeSpinner;
-    PLauncher pnLauncher;
+
+    PLauncher pLauncher;
+    NLauncher nLauncher;
+
     PNFlowerServo pnFlowerServo;
-    PServo pnServo;
+
+    PServo pServo;
+    NServo nServo;
+
     DriveTrain driveTrain;
+
     List<Behavior> behaviors = new ArrayList<>();
     int state = 0;
     AllianceColor allianceColor = AllianceColor.BLUE;
@@ -45,8 +52,8 @@ public class BioBuzzAutoOp extends OpMode {
     @Override
     public void start() {
         behaviors.add(new IntakeSpinnerOff(telemetry, intakeSpinner));
-        behaviors.add(new PServoHOME(telemetry, pnServo));
-        behaviors.add(new PLauncherOff(telemetry, pnLauncher));
+        behaviors.add(new PServoHOME(telemetry, pServo));
+        behaviors.add(new PLauncherOff(telemetry, pLauncher));
         if (allianceColor == AllianceColor.BLUE) {
             if (apMode == APMode.ACTION) {
                 follower.setStartingPose(redActionStartPose);
