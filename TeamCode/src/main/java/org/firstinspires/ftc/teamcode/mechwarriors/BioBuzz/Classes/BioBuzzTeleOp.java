@@ -19,7 +19,7 @@ public class BioBuzzTeleOp extends OpMode {
     NServo nServo;
 
     PNFlowerServo pnFlowerServo;
-    private DriveTrain drivetrain;
+    //private DriveTrain drivetrain;
 
     PServoState pServoState = PServoState.HOME;
     NServoState nServoState = NServoState.HOME;
@@ -30,7 +30,7 @@ public class BioBuzzTeleOp extends OpMode {
         //Initialize hardware
         intakeSpinner = new IntakeSpinner(hardwareMap);
         pnLauncher = new PLauncher(hardwareMap, telemetry);
-        drivetrain = new DriveTrain(hardwareMap, telemetry);
+        //drivetrain = new DriveTrain(hardwareMap, telemetry);
         pServo = new PServo(hardwareMap);
         nServo = new NServo(hardwareMap);
         pnFlowerServo = new PNFlowerServo(hardwareMap);
@@ -77,15 +77,15 @@ public class BioBuzzTeleOp extends OpMode {
 
         // telemetry.addData("Intake Speed:", gamepad2.right_trigger);
 
-        double y = gamepad1.left_stick_y;
-        double x = gamepad1.left_stick_x;
-        double rx = gamepad1.right_stick_x;
+//        double y = gamepad1.left_stick_y;
+//        double x = gamepad1.left_stick_x;
+//        double rx = gamepad1.right_stick_x;
             if (gamepad2.right_trigger > 0.3) {
             pnLauncher.startPNLauncher();
         }
 
 
-        drivetrain.drive(x, y, rx);
+        //drivetrain.drive(x, y, rx);
 
     }
 }
