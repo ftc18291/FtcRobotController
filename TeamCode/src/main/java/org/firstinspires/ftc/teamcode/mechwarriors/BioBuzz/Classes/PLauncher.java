@@ -14,16 +14,16 @@ public class PLauncher {
 
     public PLauncher(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
-        pLauncher = hardwareMap.get(DcMotorEx.class, "pnLauncher");
+        pLauncher = hardwareMap.get(DcMotorEx.class, "pLauncher");
         pLauncher.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         pLauncher.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
-        pLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
+        //pLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void startPNLauncher() {
+    public void startPLauncher() {
         pLauncher.setVelocity(1000);
     }
-    public void stopPNLauncher() {
+    public void stopPLauncher() {
         pLauncher.setVelocity(0);
     }
 

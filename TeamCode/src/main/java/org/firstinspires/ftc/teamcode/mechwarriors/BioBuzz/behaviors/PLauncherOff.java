@@ -7,17 +7,17 @@ import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.Beh
 
     public class PLauncherOff extends Behavior {
         Telemetry telemetry;
-        PLauncher pnLauncher;
+        PLauncher pLauncher;
 
 
         public PLauncherOff(Telemetry telemetry, PLauncher pnLauncher) {
             this.telemetry = telemetry;
-            this.pnLauncher = pnLauncher;
+            this.pLauncher = pnLauncher;
         }
 
         @Override
         public void start() {
-            pnLauncher.stopPNLauncher();
+            pLauncher.stopPLauncher();
         }
 
         @Override

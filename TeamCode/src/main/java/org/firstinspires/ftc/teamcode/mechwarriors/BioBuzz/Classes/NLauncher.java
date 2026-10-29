@@ -19,10 +19,10 @@ public class NLauncher {
         nLauncher.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
         nLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
         }
-        public void startPNLauncher() {
+        public void startNLauncher() {
             nLauncher.setVelocity(1000);
         }
-        public void stopPNLauncher() {
+        public void stopNLauncher() {
             nLauncher.setVelocity(0);
         }
 

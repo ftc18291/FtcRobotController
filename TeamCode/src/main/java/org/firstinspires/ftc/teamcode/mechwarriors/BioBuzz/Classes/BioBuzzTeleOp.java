@@ -13,7 +13,8 @@ public class BioBuzzTeleOp extends OpMode {
 
     IntakeSpinner intakeSpinner;
 
-    PLauncher pnLauncher;
+    PLauncher pLauncher;
+    NLauncher nLauncher;
 
     PServo pServo;
     NServo nServo;
@@ -29,7 +30,8 @@ public class BioBuzzTeleOp extends OpMode {
     public void init() {
         //Initialize hardware
         intakeSpinner = new IntakeSpinner(hardwareMap);
-        pnLauncher = new PLauncher(hardwareMap, telemetry);
+        pLauncher = new PLauncher(hardwareMap, telemetry);
+        nLauncher = new NLauncher(hardwareMap, telemetry);
         //drivetrain = new DriveTrain(hardwareMap, telemetry);
         pServo = new PServo(hardwareMap);
         nServo = new NServo(hardwareMap);
@@ -80,12 +82,20 @@ public class BioBuzzTeleOp extends OpMode {
 //        double y = gamepad1.left_stick_y;
 //        double x = gamepad1.left_stick_x;
 //        double rx = gamepad1.right_stick_x;
-            if (gamepad2.right_trigger > 0.3) {
-            pnLauncher.startPNLauncher();
+        if (gamepad2.b) {
+            pLauncher.startPLauncher();
+        } else pLauncher.stopPLauncher();
+
+        if (gamepad2.x) {
+            nLauncher.startNLauncher();
+        } else nLauncher.stopNLauncher();
+
+
         }
+
 
 
         //drivetrain.drive(x, y, rx);
 
     }
-}
+

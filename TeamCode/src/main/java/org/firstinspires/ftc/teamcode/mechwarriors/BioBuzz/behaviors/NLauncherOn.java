@@ -16,7 +16,7 @@ public class NLauncherOn extends Behavior {
     }
 
     @Override
-    public void start() {nLauncher.startPNLauncher();
+    public void start() {nLauncher.startNLauncher();
     }
 
     @Override

@@ -18,7 +18,7 @@ public class NLauncherOff extends Behavior {
 
     @Override
     public void start() {
-        nLauncher.stopPNLauncher();
+        nLauncher.stopNLauncher();
     }
 
     @Override
