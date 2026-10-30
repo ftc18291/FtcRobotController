@@ -21,7 +21,7 @@ public class PLauncher {
     }
 
     public void startPLauncher() {
-        pLauncher.setVelocity(1621);
+        pLauncher.setVelocity(1200);
     }
     public void stopPLauncher() {
         pLauncher.setVelocity(0);

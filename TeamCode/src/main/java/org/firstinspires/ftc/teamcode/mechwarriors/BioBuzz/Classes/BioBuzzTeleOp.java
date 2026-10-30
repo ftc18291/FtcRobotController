@@ -92,7 +92,7 @@ public class BioBuzzTeleOp extends OpMode {
             nLauncher.startNLauncher();
         } else nLauncher.stopNLauncher();
         //Gamepad 2 Colors
-        if (pLauncher.getVelocity() >= 1621) {
+        if (pLauncher.getVelocity() >= 1200) {
             gamepad2.setLedColor(0.0, 1.0, 0.0, Gamepad.LED_DURATION_CONTINUOUS);
         } else gamepad2.setLedColor(1.0, 0.0, 0.0, Gamepad.LED_DURATION_CONTINUOUS);
 
