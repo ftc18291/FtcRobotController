@@ -10,8 +10,8 @@ public class PServo {
         pServo = hardwareMap.get(Servo.class, "pServo");
         pServo.scaleRange(0, 1.0);
         //pnServo.setDirection(Servo.Direction.REVERSE);
-        pServo.setPosition(0);
+        pServo.setPosition(1.0);
     }
-    public void setPositionHOME() {pServo.setPosition(0);}
-    public void setPositionLAUNCH() {pServo.setPosition(1.0);}
+    public void setPositionHOME() {pServo.setPosition(1.0);}
+    public void setPositionLAUNCH() {pServo.setPosition(0.75);}
 }

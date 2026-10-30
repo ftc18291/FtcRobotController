@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.Enumerations.NServoState;
 import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.Enumerations.PNFlowerServoState;
@@ -51,11 +52,11 @@ public class BioBuzzTeleOp extends OpMode {
         }
 
 
-       //PLauncher
+       //PServo
         if (gamepad2.right_bumper) {
             pServo.setPositionLAUNCH();
         } else {pServo.setPositionHOME();}
-       //NLauncher
+       //NServo
         if (gamepad2.left_bumper) {
             nServo.setPositionLAUNCH();
         } else {nServo.setPositionHOME();}
@@ -68,13 +69,13 @@ public class BioBuzzTeleOp extends OpMode {
             pnFlowerServo.setPositionIN();
         }
         //PServo
-        if (gamepad2.right_trigger > 0.3 && PServoState.HOME == pServoState) {
-            pServo.setPositionLAUNCH();
-        } else  {pServo.setPositionHOME();}
-        //NServo
-        if (gamepad2.left_trigger > 0.3 && NServoState.HOME == nServoState) {
-            nServo.setPositionLAUNCH();
-        } else  {nServo.setPositionHOME();}
+//        if (gamepad2.right_trigger > 0.3 && PServoState.HOME == pServoState) {
+//            pServo.setPositionLAUNCH();
+//        } else  {pServo.setPositionHOME();}
+//        //NServo
+//        if (gamepad2.left_trigger > 0.3 && NServoState.HOME == nServoState) {
+//            nServo.setPositionLAUNCH();
+//        } else  {nServo.setPositionHOME();}
 
 
         // telemetry.addData("Intake Speed:", gamepad2.right_trigger);
@@ -82,13 +83,18 @@ public class BioBuzzTeleOp extends OpMode {
 //        double y = gamepad1.left_stick_y;
 //        double x = gamepad1.left_stick_x;
 //        double rx = gamepad1.right_stick_x;
+        //PLauncher
         if (gamepad2.b) {
             pLauncher.startPLauncher();
         } else pLauncher.stopPLauncher();
-
+        //NLauncher
         if (gamepad2.x) {
             nLauncher.startNLauncher();
         } else nLauncher.stopNLauncher();
+        //Gamepad 2 Colors
+        if (pLauncher.getVelocity() >= 1621) {
+            gamepad2.setLedColor(0.0, 1.0, 0.0, Gamepad.LED_DURATION_CONTINUOUS);
+        } else gamepad2.setLedColor(1.0, 0.0, 0.0, Gamepad.LED_DURATION_CONTINUOUS);
 
 
         }
