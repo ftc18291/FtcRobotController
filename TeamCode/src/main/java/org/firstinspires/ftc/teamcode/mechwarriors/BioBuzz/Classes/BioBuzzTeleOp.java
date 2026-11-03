@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.Enumerations.
 import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.Enumerations.PServoState;
 
 @TeleOp
+@Config
 public class BioBuzzTeleOp extends OpMode {
 
 
@@ -27,6 +29,10 @@ public class BioBuzzTeleOp extends OpMode {
     NServoState nServoState = NServoState.HOME;
     PNFlowerServoState pnFlowerServoState = PNFlowerServoState.IN;
 
+    public boolean ledSet = false;
+
+    public static int pLauncherSpeed = 1300;
+
     @Override
     public void init() {
         //Initialize hardware
@@ -37,10 +43,15 @@ public class BioBuzzTeleOp extends OpMode {
         pServo = new PServo(hardwareMap);
         nServo = new NServo(hardwareMap);
         pnFlowerServo = new PNFlowerServo(hardwareMap);
+
+        gamepad2.setLedColor(1.0,0.0,0.4, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
     public void loop() {
+        //pLauncher.setpLauncherSpeed(pLauncherSpeed);
+        //Telemetry
+        telemetry.addData("pLauncherSpeed:", pLauncher.getVelocity());
         //Intake Spinner
         if (gamepad2.dpad_up) {
             intakeSpinner.runIntakeSpinner();
@@ -52,17 +63,21 @@ public class BioBuzzTeleOp extends OpMode {
         }
 
 
-       //PServo
+        //PServo
         if (gamepad2.right_bumper) {
             pServo.setPositionLAUNCH();
-        } else {pServo.setPositionHOME();}
-       //NServo
+        } else {
+            pServo.setPositionHOME();
+        }
+        //NServo
         if (gamepad2.left_bumper) {
             nServo.setPositionLAUNCH();
-        } else {nServo.setPositionHOME();}
+        } else {
+            nServo.setPositionHOME();
+        }
 
         //PNFlowerServo
-        if (gamepad2.x && PNFlowerServoState.IN== pnFlowerServoState) {
+        if (gamepad2.x && PNFlowerServoState.IN == pnFlowerServoState) {
             pnFlowerServo.setPositionOUT();
         }
         if (gamepad2.x && PNFlowerServoState.OUT == pnFlowerServoState) {
@@ -92,16 +107,20 @@ public class BioBuzzTeleOp extends OpMode {
             nLauncher.startNLauncher();
         } else nLauncher.stopNLauncher();
         //Gamepad 2 Colors
-        if (pLauncher.getVelocity() >= 1200) {
+        if (pLauncher.getVelocity() >= 1100) {
             gamepad2.setLedColor(0.0, 1.0, 0.0, Gamepad.LED_DURATION_CONTINUOUS);
-        } else gamepad2.setLedColor(1.0, 0.0, 0.0, Gamepad.LED_DURATION_CONTINUOUS);
 
+        } else {
+            gamepad2.setLedColor(1.0, 0.0, 0.0, Gamepad.LED_DURATION_CONTINUOUS);
 
         }
 
 
 
-        //drivetrain.drive(x, y, rx);
-
     }
+
+
+    //drivetrain.drive(x, y, rx);
+
+}
 

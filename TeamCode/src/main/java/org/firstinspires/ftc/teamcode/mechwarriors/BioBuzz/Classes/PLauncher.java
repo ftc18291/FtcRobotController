@@ -9,7 +9,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class PLauncher {
     DcMotorEx pLauncher;
     Telemetry telemetry;
-    public int PNLauncherSpeed = 1000;
+
+    public void setpLauncherSpeed(int pLauncherSpeed) {
+        this.pLauncherSpeed = pLauncherSpeed;
+    }
+
+    public int pLauncherSpeed = 1225;
 
 
     public PLauncher(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -21,7 +26,7 @@ public class PLauncher {
     }
 
     public void startPLauncher() {
-        pLauncher.setVelocity(1200);
+        pLauncher.setVelocity(pLauncherSpeed);
     }
     public void stopPLauncher() {
         pLauncher.setVelocity(0);
