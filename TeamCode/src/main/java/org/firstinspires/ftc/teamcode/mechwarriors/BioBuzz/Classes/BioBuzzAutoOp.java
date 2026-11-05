@@ -4,6 +4,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.Enumerations.APMode;
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.Miscellaneous.AllianceColor;
 import java.util.ArrayList;
 import java.util.List;
 
+@Autonomous
 public class BioBuzzAutoOp extends OpMode {
 
     private Follower follower;
