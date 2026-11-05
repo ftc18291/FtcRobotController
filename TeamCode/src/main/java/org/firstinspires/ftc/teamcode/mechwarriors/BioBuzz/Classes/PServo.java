@@ -12,6 +12,12 @@ public class PServo {
         //pnServo.setDirection(Servo.Direction.REVERSE);
         pServo.setPosition(1.0);
     }
-    public void setPositionHOME() {pServo.setPosition(1.0);}
-    public void setPositionLAUNCH() {pServo.setPosition(0.75);}
+
+    public void setPositionHOME() {
+        pServo.setPosition(1.0);
+    }
+
+    public void setPositionLAUNCH() {
+        pServo.setPosition(0.75);
+    }
 }

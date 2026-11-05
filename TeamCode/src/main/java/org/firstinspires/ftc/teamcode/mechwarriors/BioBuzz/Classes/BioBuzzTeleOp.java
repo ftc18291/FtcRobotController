@@ -67,9 +67,9 @@ public class BioBuzzTeleOp extends OpMode {
         double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
         double rx = gamepad1.right_stick_x;
 
-        y = Utilities.squareInputWithSign(y);
-        x = Utilities.squareInputWithSign(x);
-        rx = Utilities.squareInputWithSign(rx);
+       // y = Utilities.squareInputWithSign(y);
+       // x = Utilities.squareInputWithSign(x);
+       // rx = Utilities.squareInputWithSign(rx);
 
         drivetrain.drive(x, y, rx);
 

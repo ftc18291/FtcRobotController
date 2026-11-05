@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.mechwarriors.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
+@Disabled
 public class LaunchServoTestOpMode extends OpMode {
     Servo launcherServo;
     AnalogInput launchServoPosition;

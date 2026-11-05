@@ -6,6 +6,7 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.Enumerations.APMode;
 import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.behaviors.IntakeSpinnerOff;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.behaviors.PServoHOME;
 import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.Behavior;
 import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.PedroPath;
 import org.firstinspires.ftc.teamcode.mechwarriors.Miscellaneous.AllianceColor;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,11 @@ public class BioBuzzAutoOp extends OpMode {
 
     @Override
     public void init() {
+        follower = Constants.createFollower(hardwareMap);
+        telemetry.addData("follower", follower.getCurrentTValue());
+        pServo = new PServo(hardwareMap);
+        pLauncher = new PLauncher(hardwareMap, telemetry);
+        intakeSpinner = new IntakeSpinner(hardwareMap);
 
     }
     @Override

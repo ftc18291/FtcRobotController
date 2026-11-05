@@ -23,12 +23,12 @@ public class IntakeSpinner {
     }
 
     public void runIntakeSpinner() {
-        intakeSpinner.setVelocity(2000);
-        upperIntakeSpinner.setVelocity(2000);
+        intakeSpinner.setVelocity(1500);
+        upperIntakeSpinner.setVelocity(1200);
     }
     public void reverseRunIntakeSpinner() {
         intakeSpinner.setPower(-1.0);
-        upperIntakeSpinner.setPower(-1.0);
+        upperIntakeSpinner.setPower(-0.75);
     }
     public void stopIntakeSpinner() {
         intakeSpinner.setVelocity(0);
