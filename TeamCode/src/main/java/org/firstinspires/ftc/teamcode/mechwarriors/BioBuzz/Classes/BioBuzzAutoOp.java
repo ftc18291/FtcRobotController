@@ -41,6 +41,8 @@ public class BioBuzzAutoOp extends OpMode {
     private final Pose redActionShootPose = new Pose(58,24, Math.toRadians(90));
     private final Pose blueActionStartPose = new Pose(135, 24, Math.toRadians(180));
     private final Pose blueActionShootPose = new Pose(130, 24, Math.toRadians(90));
+    private final Pose redPassiveMovePose = new Pose(35,24, Math.toRadians(0));
+    private final Pose bluePassiveMovePose = new Pose(107, 24, Math.toRadians(180));
 
     private Path goToRedActionShoot;
     private Path goToBlueActionShoot;
@@ -56,15 +58,18 @@ public class BioBuzzAutoOp extends OpMode {
         behaviors.add(new PLauncherOff(telemetry, pLauncher));
         if (allianceColor == AllianceColor.BLUE) {
             if (apMode == APMode.ACTION) {
-                follower.setStartingPose(redActionStartPose);
-                behaviors.add(new PedroPath(follower, goToRedActionShoot, redActionShootPose, telemetry));
-            }
+                follower.setStartingPose(blueActionStartPose);
+                behaviors.add(new PedroPath(follower, goToBlueActionShoot, blueActionShootPose, telemetry));
+
             if (apMode == APMode.PASSIVE) {
 
             }
         }
         if (allianceColor == AllianceColor.RED) {
             if (apMode == APMode.ACTION) {
+                follower.setStartingPose(redActionStartPose);
+                behaviors.add(new PedroPath(follower, goToRedActionShoot, redActionShootPose, telemetry));
+                }
 
             }
             if (apMode == APMode.PASSIVE) {

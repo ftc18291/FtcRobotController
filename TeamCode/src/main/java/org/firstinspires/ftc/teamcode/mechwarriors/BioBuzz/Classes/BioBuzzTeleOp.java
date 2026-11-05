@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.Enumerations.NServoState;
 import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.Enumerations.PNFlowerServoState;
 import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.Classes.Enumerations.PServoState;
+import org.firstinspires.ftc.teamcode.mechwarriors.Miscellaneous.Utilities;
 
 @TeleOp
 @Config
@@ -23,7 +24,7 @@ public class BioBuzzTeleOp extends OpMode {
     NServo nServo;
 
     PNFlowerServo pnFlowerServo;
-    //private DriveTrain drivetrain;
+    private DriveTrain drivetrain;
 
     PServoState pServoState = PServoState.HOME;
     NServoState nServoState = NServoState.HOME;
@@ -33,13 +34,14 @@ public class BioBuzzTeleOp extends OpMode {
 
     public static int pLauncherSpeed = 1300;
 
+
     @Override
     public void init() {
         //Initialize hardware
         intakeSpinner = new IntakeSpinner(hardwareMap);
         pLauncher = new PLauncher(hardwareMap, telemetry);
         nLauncher = new NLauncher(hardwareMap, telemetry);
-        //drivetrain = new DriveTrain(hardwareMap, telemetry);
+        drivetrain = new DriveTrain(hardwareMap, telemetry);
         pServo = new PServo(hardwareMap);
         nServo = new NServo(hardwareMap);
         pnFlowerServo = new PNFlowerServo(hardwareMap);
@@ -61,6 +63,15 @@ public class BioBuzzTeleOp extends OpMode {
         } else {
             intakeSpinner.stopIntakeSpinner();
         }
+        double y = gamepad1.left_stick_y; // Remember, Y stick value is reversed
+        double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+        double rx = gamepad1.right_stick_x;
+
+        y = Utilities.squareInputWithSign(y);
+        x = Utilities.squareInputWithSign(x);
+        rx = Utilities.squareInputWithSign(rx);
+
+        drivetrain.drive(x, y, rx);
 
 
         //PServo
@@ -120,7 +131,7 @@ public class BioBuzzTeleOp extends OpMode {
     }
 
 
-    //drivetrain.drive(x, y, rx);
+
 
 }
 
