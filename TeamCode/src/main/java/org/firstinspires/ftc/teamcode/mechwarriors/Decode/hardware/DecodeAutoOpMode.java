@@ -9,6 +9,7 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -32,6 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Config
 @Autonomous(name = "Decode Auto OpMode")
+@Disabled
 public class DecodeAutoOpMode extends OpMode {
 
 
