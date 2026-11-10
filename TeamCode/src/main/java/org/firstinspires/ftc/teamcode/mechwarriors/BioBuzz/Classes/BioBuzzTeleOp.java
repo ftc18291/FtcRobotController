@@ -75,7 +75,7 @@ public class BioBuzzTeleOp extends OpMode {
 
 
         //PServo
-        if (gamepad2.right_bumper) {
+        if (gamepad2.right_bumper && pLauncher.getVelocity() > 1215 && pLauncher.getVelocity() < 1235) {
             pServo.setPositionLAUNCH();
         } else {
             pServo.setPositionHOME();

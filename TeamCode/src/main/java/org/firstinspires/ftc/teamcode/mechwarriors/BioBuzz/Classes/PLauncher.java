@@ -14,7 +14,7 @@ public class PLauncher {
         this.pLauncherSpeed = pLauncherSpeed;
     }
 
-    public int pLauncherSpeed = 1200;
+    public int pLauncherSpeed = 1225;
 
 
     public PLauncher(HardwareMap hardwareMap, Telemetry telemetry) {

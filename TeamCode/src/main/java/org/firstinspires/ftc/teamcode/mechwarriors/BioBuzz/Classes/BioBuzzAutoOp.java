@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.behaviors.PLauncherOf
 import org.firstinspires.ftc.teamcode.mechwarriors.BioBuzz.behaviors.PServoHOME;
 import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.Behavior;
 import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.PedroPath;
+import org.firstinspires.ftc.teamcode.mechwarriors.Decode.hardware.behaviors.Wait;
 import org.firstinspires.ftc.teamcode.mechwarriors.Miscellaneous.AllianceColor;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -41,11 +42,11 @@ public class BioBuzzAutoOp extends OpMode {
     AllianceColor allianceColor = AllianceColor.BLUE;
     APMode apMode = APMode.ACTION;
 
-    private final Pose redActionStartPose = new Pose(9, 24, Math.toRadians(0));
-    private final Pose redActionShootPose = new Pose(58,24, Math.toRadians(90));
+    private final Pose redActionStartPose = new Pose(33, 24, Math.toRadians(0));
+    private final Pose redActionShootPose = new Pose(58, 24, Math.toRadians(0));
     private final Pose blueActionStartPose = new Pose(135, 24, Math.toRadians(180));
-    private final Pose blueActionShootPose = new Pose(130, 24, Math.toRadians(90));
-    private final Pose redPassiveMovePose = new Pose(35,24, Math.toRadians(0));
+    private final Pose blueActionShootPose = new Pose(130, 24, Math.toRadians(180));
+    private final Pose redPassiveMovePose = new Pose(35, 24, Math.toRadians(0));
     private final Pose bluePassiveMovePose = new Pose(107, 24, Math.toRadians(180));
 
     private Path goToRedActionShoot;
@@ -58,10 +59,12 @@ public class BioBuzzAutoOp extends OpMode {
         pServo = new PServo(hardwareMap);
         pLauncher = new PLauncher(hardwareMap, telemetry);
         intakeSpinner = new IntakeSpinner(hardwareMap);
-
+        buildPaths();
     }
+
     @Override
     public void start() {
+        behaviors.add(new Wait(telemetry, 22500));
         behaviors.add(new IntakeSpinnerOff(telemetry, intakeSpinner));
         behaviors.add(new PServoHOME(telemetry, pServo));
         behaviors.add(new PLauncherOff(telemetry, pLauncher));
@@ -70,14 +73,14 @@ public class BioBuzzAutoOp extends OpMode {
                 follower.setStartingPose(blueActionStartPose);
                 behaviors.add(new PedroPath(follower, goToBlueActionShoot, blueActionShootPose, telemetry));
 
-            if (apMode == APMode.PASSIVE) {
+                if (apMode == APMode.PASSIVE) {
 
+                }
             }
-        }
-        if (allianceColor == AllianceColor.RED) {
-            if (apMode == APMode.ACTION) {
-                follower.setStartingPose(redActionStartPose);
-                behaviors.add(new PedroPath(follower, goToRedActionShoot, redActionShootPose, telemetry));
+            if (allianceColor == AllianceColor.RED) {
+                if (apMode == APMode.ACTION) {
+                    follower.setStartingPose(redActionStartPose);
+                    behaviors.add(new PedroPath(follower, goToRedActionShoot, redActionShootPose, telemetry));
                 }
 
             }
@@ -89,11 +92,11 @@ public class BioBuzzAutoOp extends OpMode {
 
     @Override
     public void loop() {
-        follower.update();
-        runBehaviors();
-
-        follower.update();
+            follower.update();
+            runBehaviors();
+            follower.update();
     }
+
     private void runBehaviors() {
         // checking to see if we still have behaviors left in the list
         if (state < behaviors.size()) {
@@ -114,13 +117,15 @@ public class BioBuzzAutoOp extends OpMode {
             //if all behaviors are finished, stop the robot
             telemetry.addLine("Program done");
             this.stop();
+            this.terminateOpModeNow();
         }
     }
+
     private void buildPaths() {
-        Path goToRedActionShoot = new Path(new BezierLine(redActionStartPose, redActionShootPose));
+        goToRedActionShoot = new Path(new BezierLine(redActionStartPose, redActionShootPose));
         goToRedActionShoot.setLinearHeadingInterpolation(redActionStartPose.getHeading(), redActionShootPose.getHeading());
 
-        Path goToBlueActionShoot = new Path(new BezierLine(blueActionStartPose, blueActionShootPose));
+        goToBlueActionShoot = new Path(new BezierLine(blueActionStartPose, blueActionShootPose));
         goToBlueActionShoot.setLinearHeadingInterpolation(blueActionStartPose.getHeading(), blueActionShootPose.getHeading());
     }
 
