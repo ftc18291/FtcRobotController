@@ -4,11 +4,15 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class PLauncher {
     DcMotorEx pLauncher;
     Telemetry telemetry;
+    PServo pServo;
+
 
     public void setpLauncherSpeed(int pLauncherSpeed) {
         this.pLauncherSpeed = pLauncherSpeed;
@@ -17,8 +21,9 @@ public class PLauncher {
     public int pLauncherSpeed = 1225;
 
 
-    public PLauncher(HardwareMap hardwareMap, Telemetry telemetry) {
+    public PLauncher(HardwareMap hardwareMap, Telemetry telemetry, PServo pServo) {
         this.telemetry = telemetry;
+        this.pServo = pServo;
         pLauncher = hardwareMap.get(DcMotorEx.class, "pLauncher");
         pLauncher.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         pLauncher.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
@@ -33,6 +38,13 @@ public class PLauncher {
     }
     public double getVelocity() {
         return pLauncher.getVelocity();
+
+    }
+    public void shoot() {
+        startPLauncher();
+       if (getVelocity() > 1215 && getVelocity() < 1235) {
+           pServo.setPositionLAUNCH();
+       }
 
     }
 
