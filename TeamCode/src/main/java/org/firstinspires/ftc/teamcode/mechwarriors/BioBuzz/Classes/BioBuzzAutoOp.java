@@ -57,7 +57,7 @@ public class BioBuzzAutoOp extends OpMode {
         follower = Constants.createFollower(hardwareMap);
         telemetry.addData("follower", follower.getCurrentTValue());
         pServo = new PServo(hardwareMap);
-        pLauncher = new PLauncher(hardwareMap, telemetry);
+        pLauncher = new PLauncher(hardwareMap, telemetry, pServo);
         intakeSpinner = new IntakeSpinner(hardwareMap);
         buildPaths();
     }

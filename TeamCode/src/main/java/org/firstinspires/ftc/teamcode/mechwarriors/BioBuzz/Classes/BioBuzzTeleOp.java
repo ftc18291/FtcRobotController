@@ -39,7 +39,7 @@ public class BioBuzzTeleOp extends OpMode {
     public void init() {
         //Initialize hardware
         intakeSpinner = new IntakeSpinner(hardwareMap);
-        pLauncher = new PLauncher(hardwareMap, telemetry);
+        pLauncher = new PLauncher(hardwareMap, telemetry, pServo);
         nLauncher = new NLauncher(hardwareMap, telemetry);
         drivetrain = new DriveTrain(hardwareMap, telemetry);
         pServo = new PServo(hardwareMap);
